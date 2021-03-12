@@ -3,10 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-var Connection = require("tedious").Connection;
-var Request = require("tedious").Request;
-const dbconfig = require('./dbconfig');
-const sql = require('mssql');
+var dboperations = require('./Data/dbOperations');
 
 // Create a new express application named 'app'
 const app = express();
@@ -14,17 +11,10 @@ const app = express();
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 5000;
 
-async function testequerybd() {
-    try {
-        let pool = await sql.connect(dbconfig);
-        let products = await pool.request().query("SELECT * from us WHERE usstamp = 'ADM07041241822,942852511'");
-        console.log(products.recordsets);
-    }
-    catch (error) {
-        console.log(error);
-    }
-}
-testequerybd();
+//teste de query a bd
+dboperations.testequerybd().then(() => {
+    console.log("yey");
+})
 
 
 // This application level middleware prints incoming requests to the servers console, useful to see incoming requests
@@ -50,15 +40,12 @@ const api = require("./routes/routes");
 app.use("/api/v1/", api);
 
 // This middleware informs the express application to serve our compiled React files
-if (
-  process.env.NODE_ENV === "production" ||
-  process.env.NODE_ENV === "staging"
-) {
-  app.use(express.static(path.join(__dirname, "../../client/build")));
-
-  app.get("*", function (req, res) {
-    res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
-  });
+if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
+  
+    app.use(express.static(path.join(__dirname, "../../client/build")));
+    app.get("*", function (req, res) {
+        res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
+    });
 }
 
 // Catch any bad requests
