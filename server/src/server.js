@@ -19,16 +19,16 @@ dboperations.testequerybd().then(() => {
 
 // This application level middleware prints incoming requests to the servers console, useful to see incoming requests
 app.use((req, res, next) => {
-  console.log(`Request_Endpoint: ${req.method} ${req.url}`);
-  next();
+    console.log(`Request_Endpoint: ${req.method} ${req.url}`);
+    next();
 });
 
 // Configure the bodyParser middleware
 app.use(bodyParser.json());
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
+    bodyParser.urlencoded({
+        extended: true,
+    })
 );
 
 // Configure the CORs middleware
@@ -41,18 +41,18 @@ app.use("/api/v1/", api);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
-  
+
     app.use(express.static(path.join(__dirname, "../../client/build")));
-    app.get("*", function (req, res) {
+    app.get("*", function(req, res) {
         res.sendFile(path.join(__dirname, "../../client/build", "index.html"));
     });
 }
 
 // Catch any bad requests
 app.get("*", (req, res) => {
-  res.status(200).json({
-    msg: "Catch All",
-  });
+    res.status(200).json({
+        msg: "Catch All",
+    });
 });
 
 // Configure our server to listen on the port defiend by our port variable
