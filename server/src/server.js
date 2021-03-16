@@ -3,7 +3,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-var dboperations = require('./Data/dbOperations');
+var dboperations = require('./data/dbOperations');
 
 // Create a new express application named 'app'
 const app = express();
