@@ -6,29 +6,47 @@ async function getItemByRef(itemRef) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
-            .query("SELECT * from us WHERE usstamp = @itemRef");
+            .query("SELECT ref,design,fornecedor,fornec,desc2,usr1,usr2,usr3,usr4,usr5 from st WHERE ref = @itemRef");
         //console.log(result.recordsets);
-        return result.recordsets;
+        return result.recordsets[0];
     } catch (error) {
         console.log(error);
     }
 }
 
-
-
-async function testeUser(itemRef) {
+async function getItemByName(nome) {
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .query("SELECT * from us WHERE usstamp = @itemRef");
+            .input('nome', sql.VarChar, nome)
+            .query("SELECT ref,design,fornecedor,fornec,desc2,usr1,usr2,usr3,usr4,usr5 from st WHERE design = @nome");
         //console.log(result.recordsets);
-        return result.recordsets;
+        return result.recordsets[0];
     } catch (error) {
         console.log(error);
     }
 }
 
 
+
+async function getItemBycategory(categ) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('categ', sql.VarChar, categ)
+            .query("SELECT ref,design,fornecedor,fornec,desc2,usr1,usr2,usr3,usr4,usr5 from st WHERE usr1 = @categ");
+        //console.log(result.recordsets);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
 module.exports = {
-    getItemByRef: getItemByRef
+    getItemByRef: getItemByRef,
+    getItemBycategory: getItemBycategory,
+    getItemByName: getItemByName
 }

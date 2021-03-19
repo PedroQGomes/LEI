@@ -4,6 +4,10 @@
 - ref -- referencia do artigo
 - design -- designaçao do artigo
 - fornecedor -- fornecedor do artigo
-- desc2 -- grupo que pertence , admin etc
+- fornec -- numero do fornecedor
+- desc2 -- nota adicional sobre fornecdor
+- usr1 -- modelo
 - usr2 -- estaçao, PV - primavera verao, OI - Outono inverno
-- usr1 -- modelo,aka,categoria
+- usr3 -- ano da coleçao
+- usr4 -- tipo do artigo
+- usr5 -- composiçao do artigo 

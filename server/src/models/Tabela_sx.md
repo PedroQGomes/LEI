@@ -1,4 +1,4 @@
-# Tabela de artigos por armazem
+# Tabela de artigos por cores e tamanhos (lojas)
 
 - sxstamp -- id unico da entrada
 - ref -- referencia para o artigo
