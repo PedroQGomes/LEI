@@ -1,10 +1,14 @@
 var { poolPromise } = require('./dbConn');
+var sql = require('mssql');
 
-async function testequerybd() {
+async function getItemByRef(itemRef) {
     try {
         const pool = await poolPromise
-        const result = await pool.request().query("SELECT * from us WHERE usstamp = 'ADM07041241822,942852511'");
+        const result = await pool.request()
+            .input('itemRef', sql.VarChar, itemRef)
+            .query("SELECT * from us WHERE usstamp = @itemRef");
         console.log(result.recordsets);
+        return result.recordsets;
     } catch (error) {
         console.log(error);
     }
@@ -12,5 +16,5 @@ async function testequerybd() {
 
 
 module.exports = {
-    testequerybd: testequerybd
+    getItemByRef: getItemByRef
 }

@@ -3,18 +3,13 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
-var dboperations = require('./data/dbOperations');
+
 
 // Create a new express application named 'app'
 const app = express();
 
 // Set our backend port to be either an environment variable or port 5000
 const port = process.env.PORT || 5000;
-
-//teste de query a bd
-dboperations.testequerybd().then(() => {
-    console.log("yey");
-})
 
 
 // This application level middleware prints incoming requests to the servers console, useful to see incoming requests
@@ -37,7 +32,7 @@ app.use(cors());
 // Require Route
 const api = require("./routes/routes");
 // Configure app to use route
-app.use("/api/v1/", api);
+app.use("/", api);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
