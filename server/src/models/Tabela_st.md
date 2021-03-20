@@ -10,4 +10,4 @@
 - usr2 -- estaçao, PV - primavera verao, OI - Outono inverno
 - usr3 -- ano da coleçao
 - usr4 -- tipo do artigo
-- usr5 -- composiçao do artigo 
+- usr5 -- composiçao do artigo

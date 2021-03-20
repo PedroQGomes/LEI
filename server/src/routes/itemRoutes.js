@@ -6,10 +6,10 @@ const itemController = require('../controllers/itemControllers');
 
 
 
-router.get('/category/', itemController.getItemsOfcategory);
+router.get('/category/:cat', itemController.getItemsOfcategory);
 
 
-router.get('/name/', itemController.getItemByName);
+router.get('/name/:name', itemController.getItemByName);
 
 
 router.get('/:id', itemController.getItemByRef);

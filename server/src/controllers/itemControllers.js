@@ -18,14 +18,13 @@ const getItemByRef = (req, res, next) => {
 };
 
 const getItemByName = (req, res, next) => {
-    console.log("bouas");
 
     // pesquisa por artigos de um dado nome
-    if (req.query.name === undefined) {
+    if (req.params.name === undefined) {
         res.status(400).send();
     }
 
-    var name = req.query.name;
+    var name = req.params.name;
     //console.log(name);
     dboperations.getItemByName(name).then((results) => {
         res.status(200).json(results);
@@ -37,12 +36,12 @@ const getItemByName = (req, res, next) => {
 
 const getItemsOfcategory = (req, res, next) => {
 
-    if (req.query.fam === undefined) {
+    if (req.params.cat === undefined) {
         res.status(400).send();
     }
 
 
-    var categ = req.query.fam;
+    var categ = req.params.cat;
     dboperations.getItemBycategory(categ).then((results) => {
         res.status(200).json({
             totalresults: results.length,
