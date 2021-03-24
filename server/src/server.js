@@ -3,6 +3,11 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const itemapi = require("./routes/itemRoutes");
+const userapi = require("./routes/userRoutes");
+
+
+require('dotenv').config()
 
 
 // Create a new express application named 'app'
@@ -30,9 +35,9 @@ app.use(
 app.use(cors());
 
 // Require Route
-const itemapi = require("./routes/itemRoutes");
-
 app.use("/item", itemapi);
+
+app.use("/user", userapi);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
@@ -45,9 +50,7 @@ if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging")
 
 // Catch any bad requests
 app.get("*", (req, res) => {
-    res.status(200).json({
-        msg: "Catch All",
-    });
+    res.status(404).send();
 });
 
 // Configure our server to listen on the port defiend by our port variable
