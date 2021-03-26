@@ -3,10 +3,9 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
+const cookieParser = require("cookie-parser");
 const itemapi = require("./routes/itemRoutes");
 const userapi = require("./routes/userRoutes");
-
-
 require('dotenv').config()
 
 
@@ -33,6 +32,8 @@ app.use(
 
 // Configure the CORs middleware
 app.use(cors());
+
+app.use(cookieParser());
 
 // Require Route
 app.use("/item", itemapi);

@@ -2,17 +2,17 @@ const express = require('express');
 const router = express.Router();
 var itemsService = require('../services/itemService');
 var constants = require('../constants');
+var authUtils = require('../authUtils');
 //const itemController = require('../controllers/itemControllers');
 
 
 
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  
-router.get('/category/:cat', (req, res, next) => {
+router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.cat === undefined) {
         res.status(400).send();
     }
-
 
     var categ = req.params.cat;
     itemsService.getItemBycategory(categ).then((results) => {
@@ -26,7 +26,7 @@ router.get('/category/:cat', (req, res, next) => {
 });
 
 //  exemplo = localhost:5000/item/name/TUNICA NÉVOA
-router.get('/name/:name', (req, res, next) => {
+router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
 
     // pesquisa por artigos de um dado nome
     if (req.params.name === undefined) {
@@ -44,7 +44,7 @@ router.get('/name/:name', (req, res, next) => {
 
 
 // exemplo = localhost:5000/item/PV18SN91645
-router.get('/:id', (req, res, next) => {
+router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.id === undefined) {
         res.status(400).send();
@@ -54,21 +54,18 @@ router.get('/:id', (req, res, next) => {
     //console.log(itemRef);
 
     itemsService.getItemByRef(itemRef).then((results) => {
-        res.status(200).json(results);
+        if (results.length > 0) {
+            res.status(200).json(results[0]);
+        } else {
+            res.status(404).send("id not found");
+        }
+
     })
 
 
 });
 
 
-
-// para teste apenas
-router.get('/teste/:id', (req, res, next) => {
-    console.log(req.params);
-    res.status(200).json({
-        body: 'Hello from the server!'
-    });
-});
 
 
 
