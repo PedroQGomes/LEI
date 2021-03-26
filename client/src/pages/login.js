@@ -1,35 +1,51 @@
 import React, { Component } from 'react';
-import axios from 'axios'
+import axios from 'axios';
+import { Input,Button } from "@chakra-ui/react";
+import '../App.css'
 
 class Login extends Component {
   state = {
-    response: {}
+    username: "",
+    password : ""
   };
-  
-  componentDidMount() {
-    axios.post('/user/login',{
-        username:"Filipe",
-	    password:"filipe"
-    }).then((res) => {
-        //console.log(document.cookie);
-        axios.get('item/PV18SN91645').then((res)=> {
-            const response = res.data;
-            console.log(response);
 
-            this.setState({response});
-        });
-      
+
+  handleSubmit = () => {
+    console.log(this.state);
+    axios.post('/user/login',{
+        username: this.state.username,
+	    password: this.state.password
+    }).then((res) => {
+        console.log("bouas irmaos");
+    
     });
+
   }
 
 
+  handleChange = (event) =>{
+      this.setState({
+        [event.target.name]: event.target.value
+      });
+
+  }
 
   render() {
     return (
-      <div className="App">
-        <h1>Hello from the frontend!</h1>
-        <h1>{JSON.stringify(this.state.response)}</h1>
-      </div>
+      <form onSubmit={this.handleSubmit}> 
+        <div className="DottedBox"> 
+            <Input placeholder="username" name="username" onChange={this.handleChange}/>
+        </div>
+        
+        <div className="DottedBox"> 
+            <Input placeholder="password" type='password' name="password" onChange={this.handleChange}/>
+        </div>
+
+        <div className="DottedBox"> 
+            <Button colorScheme="blue" onClick={this.handleSubmit}>Log In</Button>
+        </div>
+      </form>
+      
     );
   }
 }
