@@ -3,7 +3,7 @@ import axios from 'axios';
 import { Input,Button } from "@chakra-ui/react";
 import '../App.css';
 
-const Login = () => {
+const Login = (props) => {
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +15,8 @@ const Login = () => {
         username: username,
 	      password: password
     }).then((res) => {
-        console.log("bouas irmaos");
+        console.log(res);
+        props.history.push('/');
     
     });
 

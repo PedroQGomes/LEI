@@ -2,8 +2,8 @@ const express = require('express');
 const router = express.Router();
 const jwt = require('jsonwebtoken');
 const userService = require('../services/userService');
+var authUtils = require('../authUtils');
 require('dotenv').config();
-
 
 
 router.post('/login/', (req, res, next) => {
@@ -16,8 +16,8 @@ router.post('/login/', (req, res, next) => {
     }
 
 
-    userService.getUser(username, passw).then((results) => {
-        user = results[0];
+    userService.loginUser(username, passw).then((results) => {
+        user = results;
         if (user) {
 
             const accessToken = jwt.sign({ id: user.userno, adm: user.ESA }, process.env.JWTKEY, {
@@ -38,6 +38,24 @@ router.post('/login/', (req, res, next) => {
     });
 
 
+});
+
+
+router.get('/info/', authUtils.authenticateJWT, (req, res, next) => {
+    const token = req.cookies.accessToken;
+    let decoded = jwt.decode(token);
+    userService.getUser(decoded.id).then((results) => {
+
+        if (results) {
+            res.status(200).json(results);
+        } else {
+            res.status(404).send();
+        }
+
+
+    }).catch((err) => {
+        res.status(404).send();
+    });
 });
 
 
