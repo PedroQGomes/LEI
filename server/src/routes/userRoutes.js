@@ -26,9 +26,7 @@ router.post('/login/', (req, res, next) => {
 
             res.cookie('accessToken', accessToken, { httpOnly: true });
 
-            res.status(200).json({
-                token: accessToken
-            })
+            res.status(200).json(user);
 
 
         } else {

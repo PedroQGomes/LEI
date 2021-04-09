@@ -1,25 +1,15 @@
-import React, { useState,useEffect } from 'react';
+import React, { useState,useEffect,useContext } from 'react';
 import axios from 'axios';
 import { Input,Button } from "@chakra-ui/react";
-import '../App.css'
+import '../App.css';
+import { useAuth } from '../context/AuthContext';
 
-const Home = (props) => {
+const Home = () => {
 
-    const [user, setuser] = useState(() => {
-        axios.get('/user/info').then((res) => {
-            console.log(res);
-            return res;
-        }).catch((error) => {
-            console.log(error);
-            props.history.push('/login');
-            return null;
-        });
-    })
-    
 
     return (
     <div>
-        <div>home</div>
+        <div>hoeme page</div>
     </div>
     );
 }
