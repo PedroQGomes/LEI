@@ -12,15 +12,25 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true)
 
     function login(username, password) {
-        return axios.post('/user/login', {
+        console.log()
+        axios.post('/user/login', {
             username: username,
             password: password
         }).then((res) => {
             setCurrentUser(res.data);
         });
+
     }
 
     useEffect(() => {
+
+        axios.get('/user/info').then((res) => {
+            setCurrentUser(res.data);
+            setLoading(false);
+        }).catch((error) => {
+            // console.log(error);
+            setLoading(false);
+        });
         
     }, [])
 

@@ -4,8 +4,9 @@ import './App.css';
 import Login from './pages/login';
 import Home from './pages/home';
 import Error from './pages/error';
-import axios from 'axios';
 import { AuthProvider } from "./context/AuthContext"
+import PrivateRoute from "./routes/PrivateRoute"
+import PublicRoute from './routes/PublicRoute';
 
 const App = () => {
   
@@ -14,8 +15,8 @@ const App = () => {
     <BrowserRouter>
       <AuthProvider>
       <Switch>
-        <Route path="/" exact component={Home} />
-        <Route path="/login" exact component={Login} />
+        <PrivateRoute path="/" exact component={Home} />
+        <PublicRoute path="/login" exact component={Login} />
         <Route path="/" component={Error} />
       </Switch>
       </AuthProvider>

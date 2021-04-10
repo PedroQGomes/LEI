@@ -19,6 +19,7 @@ const Login = () => {
       try {
       await login(username, password);
       history.push("/");
+      console.log("alo");
     } catch {
       console.log("Failed to log in");
     }
@@ -36,15 +37,7 @@ const Login = () => {
 
   };
 
-
-  if(loading){
-    return (
-      <div > 
-            loading...
-      </div>
-    );
-  }else{
- 
+   
     return (
       <form onSubmit={handleSubmit}> 
         <div className="DottedBox"> 
@@ -61,7 +54,6 @@ const Login = () => {
       </form>
       
     );
-  }
   
 };
 //

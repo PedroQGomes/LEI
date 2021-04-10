@@ -24,7 +24,7 @@ router.post('/login/', (req, res, next) => {
                 expiresIn: '30m'
             });
 
-            res.cookie('accessToken', accessToken, { httpOnly: true });
+            res.cookie('accessToken', accessToken, { maxAge: 30 * 60 * 1000, httpOnly: true });
 
             res.status(200).json(user);
 
