@@ -13,7 +13,7 @@ export function AuthProvider({ children }) {
 
     function login(username, password) {
         console.log()
-        axios.post('/user/login', {
+        axios.post('/user/authenticate', {
             username: username,
             password: password
         }).then((res) => {

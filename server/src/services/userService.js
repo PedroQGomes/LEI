@@ -30,8 +30,6 @@ async function getUser(userno) {
 }
 
 
-
-
 module.exports = {
     getUser: getUser,
     loginUser: loginUser

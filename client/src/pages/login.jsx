@@ -19,7 +19,7 @@ const Login = () => {
       try {
       await login(username, password);
       history.push("/");
-      console.log("alo");
+      //console.log("alo");
     } catch {
       console.log("Failed to log in");
     }
