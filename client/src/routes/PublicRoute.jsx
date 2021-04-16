@@ -9,7 +9,7 @@ export default function PublicRoute({ component: Component, ...rest }) {
     <Route
       {...rest}
       render={props => {
-        return currentUser ?  <Redirect to="/" /> : <Component {...props} />
+        return currentUser ?  <Redirect to="/dashboard" /> : <Component {...props} />
       }}
     ></Route>
   )

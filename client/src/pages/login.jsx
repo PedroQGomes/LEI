@@ -18,7 +18,7 @@ const Login = () => {
 
       try {
       await login(username, password);
-      history.push("/");
+      history.push("/dashboard");
       //console.log("alo");
     } catch {
       console.log("Failed to log in");

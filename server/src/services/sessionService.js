@@ -46,7 +46,7 @@ async function revokeJWT(token, userno) {
         const result = await pool.request()
             .input('userno', sql.VarChar, userno)
             .input('token', sql.VarChar, token)
-            .query("UPDATE UserSession SET revoked = 1 WHERE UserId = @userno AND RefreshToken = @token");
+            .query("DELETE FROM UserSession WHERE UserId = @userno AND RefreshToken = @token");
     } catch (error) {
         throw error;
     }
