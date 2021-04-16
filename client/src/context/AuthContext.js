@@ -18,6 +18,18 @@ export function AuthProvider({ children }) {
             password: password
         }).then((res) => {
             setCurrentUser(res.data);
+        }).catch((error) => {
+        });
+
+    }
+
+    function logout() {
+        console.log()
+        axios.post('/user/revoke-token').then((res) => {
+            setCurrentUser(null);
+            
+        }).catch((error) => {
+            setCurrentUser(null);
         });
 
     }
@@ -36,7 +48,8 @@ export function AuthProvider({ children }) {
 
     const value = {
         currentUser,
-        login
+        login,
+        logout
     }
 
    return (

@@ -1,15 +1,26 @@
 import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
 import * as AiIcons from 'react-icons/ai';
-import { Link } from 'react-router-dom';
+import { Link,useHistory } from 'react-router-dom';
 import { SidebarData } from './SideBarData';
 import './SideBar.css';
 import { IconContext } from 'react-icons';
+import { useAuth } from '../../context/AuthContext';
+
 
 function SideBar() {
   const [sidebar, setSidebar] = useState(false);
 
+  const { logout } = useAuth();
+  const history = useHistory();
+
   const showSidebar = () => setSidebar(!sidebar);
+
+  async function logoutUser (){
+      await logout();
+      history.push("/");
+  } 
+
 
   return (
     <>
@@ -18,6 +29,13 @@ function SideBar() {
           <Link to='#' className='menu-bars'>
             <FaIcons.FaBars onClick={showSidebar} />
           </Link>
+          <Link to='/profile' className='nav-text'>
+            Profile
+          </Link>
+          <Link onClick={logoutUser} className='nav-text'>
+              Logout 
+          </Link>
+          
         </div>
         <nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
           <ul className='nav-menu-items' onClick={showSidebar}>

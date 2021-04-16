@@ -11,7 +11,7 @@ import PrivateRoute from "./routes/PrivateRoute"
 import PublicRoute from './routes/PublicRoute';
 
 
-import SideBar from './components/SideBar/SideBar';
+import SideBar from './components/NavBar/NavBar';
 
 const DashboardStruct = ({match}) => {
   return(
