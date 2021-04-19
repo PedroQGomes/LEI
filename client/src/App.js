@@ -11,16 +11,21 @@ import PrivateRoute from "./routes/PrivateRoute"
 import PublicRoute from './routes/PublicRoute';
 
 
-import SideBar from './components/NavBar/NavBar';
+import Navbar from './components/NavBar/NavBar';
+import SideBar from './components/SideBar/SideBar';
 
 const DashboardStruct = ({match}) => {
   return(
+    
     <BrowserRouter>
-    <SideBar />
-    <Switch>
-      <Route path={match.url} exact={true} component={Dashboard} />
-      <Route path={`${match.url}/products`} exact={true} component={Products} />
-    </Switch>
+    <Navbar />
+    <div class="side-nav-and-content-wrapper">
+      <SideBar />
+      <Switch>
+        <Route path={match.url} exact={true} component={Dashboard} />
+        <Route path={`${match.url}/products`} exact={true} component={Products} />
+      </Switch>
+    </div>
     </BrowserRouter>
   );
 };
