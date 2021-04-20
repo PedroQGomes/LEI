@@ -33,7 +33,7 @@ const authenticateRefreshJWT = (req, res, next) => {
             next();
         });
     } else {
-        res.sendStatus(401);
+        res.status(401).send("refresh token invalid");
     }
 };
 

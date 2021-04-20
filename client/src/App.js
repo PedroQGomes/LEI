@@ -9,17 +9,19 @@ import Error from './pages/error';
 import { AuthProvider } from "./context/AuthContext"
 import PrivateRoute from "./routes/PrivateRoute"
 import PublicRoute from './routes/PublicRoute';
-
+import axios from 'axios';
 
 import Navbar from './components/NavBar/NavBar';
 import SideBar from './components/SideBar/SideBar';
+
+
 
 const DashboardStruct = ({match}) => {
   return(
     
     <BrowserRouter>
     <Navbar />
-    <div class="side-nav-and-content-wrapper">
+    <div className="side-nav-and-content-wrapper">
       <SideBar />
       <Switch>
         <Route path={match.url} exact={true} component={Dashboard} />
@@ -33,8 +35,8 @@ const DashboardStruct = ({match}) => {
 
 
 const App = () => {
-  
 
+  
   return (
     <BrowserRouter>
       <AuthProvider>

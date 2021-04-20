@@ -54,15 +54,16 @@ router.post('/refresh-token/', authUtils.authenticateRefreshJWT, (req, res, next
 
     sessionService.verifyJwt(token, payload.id).then((results) => {
         if (results) {
-            if (results.revoked == 1) {
-                res.status(401).send();
+            user = {
+                userno: payload.id,
+                ESA: payload.adm
             }
             const accessToken = authUtils.generateAccessToken(user);
             res.cookie('accessToken', accessToken, { maxAge: constants.accessCookie, httpOnly: true });
 
             res.status(200).send();
         } else {
-            res.status(401).send();
+            res.status(401).send("refresh token invalid");
         }
 
     })

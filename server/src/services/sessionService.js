@@ -14,10 +14,9 @@ async function saveJwtToken(token, userno, ip) {
             .input('token', sql.VarChar, token)
             .input('ip', sql.VarChar, ip)
             .input('expires', sql.VarChar, expires)
-            .input('revoked', sql.VarChar, revoked)
             .input('issued', sql.VarChar, issued)
-            .query("INSERT INTO UserSession (RefreshToken, IpAddress, UserId,revoked,issued,expires) VALUES(@token,@ip,@userno,@revoked,@issued,@expires)");
-        console.log(result);
+            .query("INSERT INTO UserSession (RefreshToken, IpAddress, UserId,issued,expires) VALUES(@token,@ip,@userno,@issued,@expires)");
+        //console.log(result);
         return;
     } catch (error) {
         throw error;
@@ -33,7 +32,7 @@ async function verifyJwt(token, userno) {
             .input('userno', sql.VarChar, userno)
             .input('token', sql.VarChar, token)
             .query("SELECT * FROM UserSession WHERE UserId = @userno AND RefreshToken = @token");
-        console.log(result);
+        //console.log(result);
         return result.recordsets[0];
     } catch (error) {
         throw error;
