@@ -39,6 +39,25 @@ async function verifyJwt(token, userno) {
     }
 }
 
+async function updateRefreshJWT(oldtoken, newtoken, userno) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('userno', sql.VarChar, userno)
+            .input('oldtoken', sql.VarChar, oldtoken)
+            .input('newtoken', sql.VarChar, newtoken)
+            .query("UPDATE UserSession SET RefreshToken = @newtoken WHERE UserId = @userno AND RefreshToken = @oldtoken;");
+        //console.log(result);
+        return result.recordsets[0];
+    } catch (error) {
+        throw error;
+    }
+}
+
+
+
+
+
 async function revokeJWT(token, userno) {
     try {
         const pool = await poolPromise
@@ -68,5 +87,6 @@ function GetFormattedDate(date) {
 module.exports = {
     saveJwtToken: saveJwtToken,
     verifyJwt: verifyJwt,
-    revokeJWT: revokeJWT
+    revokeJWT: revokeJWT,
+    updateRefreshJWT: updateRefreshJWT
 }

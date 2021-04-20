@@ -25,7 +25,7 @@ const authenticateRefreshJWT = (req, res, next) => {
 
     if (token) {
 
-        jwt.verify(token, process.env.JWTKEY, (err, user) => {
+        jwt.verify(token, process.env.REFRESHJWTKEY, (err, user) => {
             if (err) {
                 return res.sendStatus(403);
             }
@@ -47,7 +47,7 @@ const generateAccessToken = (user) => {
 
 
 const generateRefreshToken = (user) => {
-    const refreshToken = jwt.sign({ id: user.userno, adm: user.ESA }, process.env.JWTKEY, {
+    const refreshToken = jwt.sign({ id: user.userno, adm: user.ESA }, process.env.REFRESHJWTKEY, {
         expiresIn: constants.refreshToken
     });
     return refreshToken;

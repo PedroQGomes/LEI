@@ -61,15 +61,19 @@ router.post('/refresh-token/', authUtils.authenticateRefreshJWT, (req, res, next
             const accessToken = authUtils.generateAccessToken(user);
             res.cookie('accessToken', accessToken, { maxAge: constants.accessCookie, httpOnly: true });
 
-            res.status(200).send();
+            const refreshToken = authUtils.generateRefreshToken(user);
+
+            sessionService.updateRefreshJWT(token, refreshToken, payload.id).then(() => {
+                res.cookie('refreshToken', refreshToken, { maxAge: constants.refreshCookie, httpOnly: true });
+                res.status(200).send();
+            }).catch(() => {
+                res.status(401).send("refresh token invalid");
+            })
         } else {
             res.status(401).send("refresh token invalid");
         }
 
     })
-
-
-
 });
 
 
