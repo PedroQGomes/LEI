@@ -1,6 +1,6 @@
 import React, {useState,useContext,useEffect} from 'react';
 import { Input,Button } from "@chakra-ui/react";
-import '../App.css';
+import './css/home.css';
 import { useAuth } from '../context/AuthContext';
 import { Link, useHistory } from "react-router-dom";
 

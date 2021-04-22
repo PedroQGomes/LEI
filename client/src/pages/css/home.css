@@ -1,0 +1,15 @@
+.home {
+    background: #2F4050;
+    height: 100vh;
+    width: 100%;
+    display: 'flex';
+}
+
+.nav-links {
+    color: white;
+    text-decoration: none;
+}
+
+body {
+    background-color: #2F4050;
+}
