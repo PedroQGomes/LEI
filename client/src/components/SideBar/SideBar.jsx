@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import * as FaIcons from 'react-icons/fa';
-import * as AiIcons from 'react-icons/ai';
+import * as BiIcons from 'react-icons/bi';
+import * as BSIcons from 'react-icons/bs';
+import * as GOIcons from 'react-icons/go';
 import { Link,useHistory } from 'react-router-dom';
 import './SideBar.css';
 import { useAuth } from '../../context/AuthContext';
@@ -9,16 +11,13 @@ import { IconContext } from 'react-icons';
 
 function SideBar() {
 
-  const { logout } = useAuth();
   const history = useHistory();
 
   const [sidebar, setSidebar] = useState(false);
-  const showSidebar = () => setSidebar(!sidebar);
-
-  async function logoutUser (){
-      await logout();
-      history.push("/");
-  } 
+  const handleChange = () => {
+    history.push("/profile");
+    
+  };
 
 
   return (
@@ -27,17 +26,18 @@ function SideBar() {
         <ProSidebar collapsed={sidebar}>
           <SidebarContent>
             <Menu iconShape="square">
-            <MenuItem icon={<FaIcons.FaBars />}>Dashboard</MenuItem>
-            <MenuItem icon={<FaIcons.FaBars />}>Dashboard</MenuItem>
-            <MenuItem icon={<FaIcons.FaBars />}>Dashboard</MenuItem>
-            <MenuItem icon={<FaIcons.FaBars />}>Dashboard</MenuItem>
-            <SubMenu title="Components" icon={< AiIcons.AiFillHome />}>
-              <MenuItem>Component 1</MenuItem>
-              <MenuItem>Component 2</MenuItem>
+            <MenuItem icon={<GOIcons.GoGraph />}>Dashboard <Link to="/dashboard" /></MenuItem>
+            <SubMenu title="Pesquisa" icon={< BSIcons.BsSearch />}>
+              <MenuItem>Por Referencia <Link to="/search/ref" /></MenuItem>
+              <MenuItem>Por Nome <Link to="/search/name" /> </MenuItem>
+              <MenuItem>Por Categoria <Link to="/search/category" /> </MenuItem>
             </SubMenu>
+            <MenuItem icon={<FaIcons.FaWarehouse />}>Inventario <Link to="/inventory" /> </MenuItem>
+            <MenuItem icon={<BiIcons.BiEnvelope />}>Encomendas <Link to="/orders" /> </MenuItem>
+            <MenuItem icon={<BSIcons.BsGearFill />}>Definições <Link to="/settings" /> </MenuItem>
           </Menu>
           </SidebarContent>
-          
+
         </ProSidebar>
         </div>
     </>

@@ -28,18 +28,18 @@ function Navbar() {
         </Link>
         <ul className={click ? 'nav-menu active' : 'nav-menu'}>
           <li className='nav-item'>
-            <Link to='/' className='nav-links' onClick={closeMobileMenu}>
-              Profile
+            <Link to='/profile' className='nav-links' onClick={closeMobileMenu}>
+              Perfil
             </Link>
           </li>
           <li className='nav-item'>
             <Link to='/contact-us' className='nav-links' onClick={closeMobileMenu}>
-              Contact Us
+              Contactos
             </Link>
           </li>
           <li className='nav-item'>
             <Link to='/' className='nav-links' onClick={logOutUser}>
-              Sign Out
+              Logout
             </Link>
           </li>
         </ul>

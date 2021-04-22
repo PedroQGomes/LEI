@@ -4,12 +4,18 @@ import './App.css';
 import Login from './pages/login';
 import Home from './pages/home';
 import Dashboard from './pages/dashboard';
-import Products from './pages/products';
 import Error from './pages/error';
+import Profile from './pages/profile';
+import contact_us from './pages/contact-us';
+import searchRef from './pages/searchRef';
+import searchName from './pages/searchName';
+import searchCategory from './pages/searchCategory';
+import inventory from './pages/inventory';
+import orders from './pages/orders';
+import settings from './pages/settings';
 import { AuthProvider } from "./context/AuthContext"
 import PrivateRoute from "./routes/PrivateRoute"
 import PublicRoute from './routes/PublicRoute';
-import axios from 'axios';
 
 import Navbar from './components/NavBar/NavBar';
 import SideBar from './components/SideBar/SideBar';
@@ -24,8 +30,15 @@ const DashboardStruct = ({match}) => {
     <div className="side-nav-and-content-wrapper">
       <SideBar />
       <Switch>
-        <Route path={match.url} exact={true} component={Dashboard} />
-        <Route path={`${match.url}/products`} exact={true} component={Products} />
+        <PrivateRoute path={match.url} exact={true} component={Dashboard} />
+        <PrivateRoute path='/profile' exact={true} component={Profile} />
+        <PrivateRoute path='/contact-us' exact={true} component={contact_us} />
+        <PrivateRoute path='/search/ref' exact={true} component={searchRef} />
+        <PrivateRoute path='/search/name' exact={true} component={searchName} />
+        <PrivateRoute path='/search/category' exact={true} component={searchCategory} />
+        <PrivateRoute path='/inventory' exact={true} component={inventory} />
+        <PrivateRoute path='/orders' exact={true} component={orders} />
+        <PrivateRoute path='/settings' exact={true} component={settings} />
       </Switch>
     </div>
     </BrowserRouter>

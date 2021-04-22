@@ -1,11 +1,11 @@
 import React from 'react'
 
-function Products() {
+function orders() {
     return (
         <div>
-            products page
+            historial de Encomendas
         </div>
     )
 }
 
-export default Products
+export default orders
