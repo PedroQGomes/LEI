@@ -1,11 +1,11 @@
 import React from 'react'
 
-function settings() {
+const Settings = () => {
     return (
         <div>
-            pagina de Definições
+            settings
         </div>
     )
 }
 
-export default settings
+export default Settings

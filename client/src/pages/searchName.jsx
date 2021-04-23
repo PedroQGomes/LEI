@@ -1,6 +1,6 @@
 import React from 'react'
 
-function searchName() {
+const SearchName = () => {
     return (
         <div>
             pesquisa por nome
@@ -8,4 +8,4 @@ function searchName() {
     )
 }
 
-export default searchName
+export default SearchName

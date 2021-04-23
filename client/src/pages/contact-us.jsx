@@ -1,6 +1,6 @@
 import React from 'react'
 
-function contact_us() {
+const Contact_us = () => {
     return (
         <div>
             contact us page
@@ -8,4 +8,4 @@ function contact_us() {
     )
 }
 
-export default contact_us
+export default Contact_us

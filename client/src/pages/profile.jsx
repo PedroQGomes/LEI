@@ -1,13 +1,9 @@
 import React from 'react'
 
-function Profile() {
+const Profile = () => {
     return (
-        <div >
-            <div>profile page</div>
-            <div>profile page</div>
-            <div>profile page</div>
-            <div>profile page</div>
-            
+        <div>
+            profile page
         </div>
     )
 }

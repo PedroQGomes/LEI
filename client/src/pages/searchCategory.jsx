@@ -1,6 +1,6 @@
 import React from 'react'
 
-function searchCategory() {
+const SearchCategory = () => {
     return (
         <div>
             pesquisa por categoria
@@ -8,4 +8,4 @@ function searchCategory() {
     )
 }
 
-export default searchCategory
+export default SearchCategory

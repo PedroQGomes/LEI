@@ -1,11 +1,11 @@
 import React from 'react'
 
-function inventory() {
+const Inventory = () => {
     return (
         <div>
-            inventario
+            inventory page
         </div>
     )
 }
 
-export default inventory
+export default Inventory

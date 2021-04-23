@@ -1,11 +1,17 @@
-import React from 'react'
+import React,{useState} from 'react'
 
-function searchRef() {
+const SearchRef = () => {
+    const [referencia, setreferencia] = useState("")
     return (
-        <div>
-            pesquisa por referencia
-        </div>
-    )
+    <input 
+     key="random1"
+     value={referencia}
+     placeholder="Pesquisa por referencia"
+     onChange={(e) => setreferencia(e.target.value)}
+    />
+  );
 }
 
-export default searchRef
+export default SearchRef
+
+
