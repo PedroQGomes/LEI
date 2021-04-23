@@ -34,14 +34,19 @@ router.post('/authenticate/', (req, res, next) => {
                 res.status(200).json(user);
 
             }).catch((err) => {
+                console.log("aqui");
+                console.log(err);
                 res.status(404).send();
             });
 
 
         } else {
+            console.log("aqui2");
             res.status(404).send();
         }
     }).catch((err) => {
+        console.log("aqui3");
+        console.log(err);
         res.status(404).send();
     });
 });
