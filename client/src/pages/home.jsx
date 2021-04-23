@@ -9,14 +9,14 @@ const Home = () => {
     const history = useHistory();
 
 
-    const closeMobileMenu = () => {
+    const pushToLogin = () => {
         history.push("/login");
     }
 
     
     return (
     <body className = 'home'>
-        <Button pos="absolute" top="60%" left="50%" colorScheme='blue' color='white' onClick={closeMobileMenu}>Join now</Button>
+        <Button pos="absolute" top="60%" left="50%" colorScheme='blue' color='white' onClick={pushToLogin}>Join now</Button>
         <div className = 'ferrache'>
             Ferrache
         </div>
