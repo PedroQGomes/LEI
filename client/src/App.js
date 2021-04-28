@@ -16,47 +16,42 @@ import settings from './pages/settings';
 import { AuthProvider } from "./context/AuthContext"
 import PrivateRoute from "./routes/PrivateRoute"
 import PublicRoute from './routes/PublicRoute';
+import ItemPage from './pages/item';
 
 import Navbar from './components/NavBar/NavBar';
 import SideBar from './components/SideBar/SideBar';
 
 
 
-const DashboardStruct = ({match}) => {
-  return(
-    
-    <BrowserRouter>
-    <Navbar />
-    <div className="side-nav-and-content-wrapper">
-      <SideBar />
-      <Switch>
-        <PrivateRoute path={match.url} exact={true} component={Dashboard} />
-        <PrivateRoute path='/profile' exact={true} component={Profile} />
-        <PrivateRoute path='/contact-us' exact={true} component={contact_us} />
-        <PrivateRoute path='/search/ref' exact={true} component={searchRef} />
-        <PrivateRoute path='/search/name' exact={true} component={searchName} />
-        <PrivateRoute path='/search/category' exact={true} component={searchCategory} />
-        <PrivateRoute path='/inventory' exact={true} component={inventory} />
-        <PrivateRoute path='/orders' exact={true} component={orders} />
-        <PrivateRoute path='/settings' exact={true} component={settings} />
-      </Switch>
-    </div>
-    </BrowserRouter>
-  );
-};
 
 
 
 const App = () => {
 
-  
   return (
     <BrowserRouter>
       <AuthProvider>
       <Switch>
         <PublicRoute path="/" exact component={Home} />
         <PublicRoute path="/login" exact component={Login} />
-        <PrivateRoute path='/dashboard' component={DashboardStruct} />
+        <PrivateRoute path='/artigo' exact={true} component={ItemPage} />
+        <div>
+            <Navbar />
+            <div className="side-nav-and-content-wrapper">
+            <SideBar />
+              <Switch>
+                <PrivateRoute path='/dashboard' exact={true} component={Dashboard} />
+                <PrivateRoute path='/profile' exact={true} component={Profile} />
+                <PrivateRoute path='/contact-us' exact={true} component={contact_us} />
+                <PrivateRoute path='/search/ref' exact={true} component={searchRef} />
+                <PrivateRoute path='/search/name' exact={true} component={searchName} />
+                <PrivateRoute path='/search/category' exact={true} component={searchCategory} />
+                <PrivateRoute path='/inventory' exact={true} component={inventory} />
+                <PrivateRoute path='/orders' exact={true} component={orders} />
+                <PrivateRoute path='/settings' exact={true} component={settings} />
+              </Switch>
+            </div>
+        </div>
         <Route path="/" component={Error} />
       </Switch>
       </AuthProvider>

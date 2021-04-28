@@ -3,9 +3,9 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import App from './App';
 import { ChakraProvider } from "@chakra-ui/react"
-
+import tema from './theme'
 ReactDOM.render(
-    <ChakraProvider>
+    <ChakraProvider theme ={tema}>
       <App />
     </ChakraProvider>,
   document.getElementById('root')
