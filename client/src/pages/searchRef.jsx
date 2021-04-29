@@ -2,6 +2,9 @@ import React,{useState} from 'react'
 import { Input,Button,Box } from "@chakra-ui/react"
 import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
+import ItemBox from "../components/ItemBox/ItemBox";
+import './css/search.css';
+
 
 const SearchRef = () => {
     const [referencia, setreferencia] = useState("");
@@ -11,31 +14,28 @@ const SearchRef = () => {
 
     const searchRef = () =>{
        axios.get('/item/'+ referencia).then((res) => {
-         history.push({
-          pathname: '/artigo',
-          state: {  // location state
-            update: "bouas", 
-          },
-          }); 
+         setartigo(res.data);
          
         }).catch((error) => {
+           setartigo(null);
         });
     }
 
-    if(artigo !== null){
-      return(
-        <Box>
-        {JSON.stringify(artigo)}
-      </Box>
-      );
-    }
-
+    
     return (
-     <div>
-       <Input variant="flushed" placeholder="Flushed" onChange={(e) => setreferencia(e.target.value)}/>
+     <Box className="box">
+          <Box className="input-and-button-wrapper">
+            <Input variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)}/>
 
-       <Button pos="absolute" top="60%" left="50%" colorScheme='blue' color='white' onClick={searchRef}>Join now</Button>
-     </div>
+            <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Search</Button>
+          </Box>
+          {artigo ? 
+           <ItemBox artigo={artigo}/> : 
+          <div>
+            pesquisa por referencia
+          </div>
+          }
+      </Box>
   );
 }
 
