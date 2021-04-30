@@ -13,20 +13,21 @@ export function AuthProvider({ children }) {
     const [loading, setLoading] = useState(true)
     const history = useHistory();
 
-    function login(username, password) {
-        console.log()
-        axios.post('/user/authenticate', {
+    async function login(username, password) {
+        //console.log()
+       return axios.post('/user/authenticate', {
             username: username,
             password: password
         }).then((res) => {
             setCurrentUser(res.data);
         }).catch((error) => {
+            throw error; 
         });
 
     }
 
-    function logout() {
-        console.log()
+    async function logout() {
+        //console.log()
         axios.post('/user/revoke-token').then((res) => {
             setCurrentUser(null);
             
@@ -56,7 +57,7 @@ export function AuthProvider({ children }) {
     }, function (error) {
 
         const originalRequest = error.config;
-        console.log(error.response);
+        //console.log(error.response);
 
         if (error.response.status === 401 && !originalRequest._retry && error.response.data !== "refresh token invalid") {
 
@@ -64,7 +65,7 @@ export function AuthProvider({ children }) {
 
         return axios.post('/user/refresh-token')
         .then((response) => {
-            console.log("new acess token");
+            //console.log("new acess token");
             return axios(originalRequest);
       });
   }

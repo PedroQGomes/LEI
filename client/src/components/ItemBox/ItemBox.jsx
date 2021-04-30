@@ -17,19 +17,16 @@ const ItemBox = (props) => {
           <Box className="textbox">
             <Box className="firstTextBox">
               <FormLabel className="text">
-                Referencia : {JSON.stringify(props.artigo.ref).split('"').join('')}
+                Referencia : {props.artigo.ref.split('"').join('')}
               </FormLabel>
               <FormLabel className="text">
-                Design : {JSON.stringify(props.artigo.design).split('"').join('')}
+                Design : {props.artigo.design.split('"').join('')}
               </FormLabel>
               <FormLabel className="text"> 
-                Fornecedor : {JSON.stringify(props.artigo.fornecedor).split('"').join('')}
+                Fornecedor : {props.artigo.fornecedor.split('"').join('') + " " +  props.artigo.desc2}
               </FormLabel>
               <FormLabel className="text">
-                Descrição : {JSON.stringify(props.artigo.desc2).split('"').join('')}
-              </FormLabel>
-              <FormLabel className="text">
-                  Modelo : {JSON.stringify(props.artigo.usr1).split('"').join('')}
+                  Modelo : {props.artigo.usr1.split('"').join('')}
               </FormLabel>
               
             </Box>
