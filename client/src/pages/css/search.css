@@ -13,5 +13,16 @@
 }
 
 .button {
+    margin-top: 0vw;
     margin-left: 5vw;
+}
+
+.error-message {
+    margin-left: 30vw;
+    margin-top: 10vh;
+}
+
+.loading {
+    margin-top: 20vw;
+    margin-left: 30vw;
 }

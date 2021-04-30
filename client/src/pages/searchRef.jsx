@@ -1,5 +1,5 @@
 import React,{useState} from 'react'
-import { Input,Button,Box } from "@chakra-ui/react"
+import { Input,Button,Box,FormLabel,Spinner } from "@chakra-ui/react"
 import axios from 'axios';
 import { Link, useHistory } from "react-router-dom";
 import ItemBox from "../components/ItemBox/ItemBox";
@@ -9,31 +9,39 @@ import './css/search.css';
 const SearchRef = () => {
     const [referencia, setreferencia] = useState("");
     const [artigo, setartigo] = useState(null);
-    const history = useHistory();
-
+    const [errormessage, seterrormessage] = useState(false);
+    const [loading, setloading] = useState(false);
 
     const searchRef = () =>{
+      setloading(true);
        axios.get('/item/'+ referencia).then((res) => {
          setartigo(res.data);
+         seterrormessage(false);
+         setloading(false);
          
         }).catch((error) => {
-           setartigo(null);
+          seterrormessage(true);
+          setartigo(null);
+          setloading(false);
         });
+    }
+
+    if(loading){
+      return(<Spinner className="loading" size="xl" color="red.500" />);
     }
 
     
     return (
      <Box className="box">
           <Box className="input-and-button-wrapper">
-            <Input variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)}/>
+            <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)}/>
 
             <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Search</Button>
           </Box>
           {artigo ? 
            <ItemBox artigo={artigo}/> : 
-          <div>
-            pesquisa por referencia
-          </div>
+          <FormLabel className="error-message">0 Artigos Encontrados</FormLabel>
+          
           }
       </Box>
   );

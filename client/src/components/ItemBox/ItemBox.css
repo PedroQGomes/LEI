@@ -21,7 +21,7 @@
 
 .secondTextBox {
     margin-top: 1vh;
-    margin-left: 10vw;
+    margin-left: 7vw;
 }
 
 .text {
@@ -32,4 +32,10 @@
     margin-left: 1vh;
     margin-top: 1vh;
     margin-bottom: 1vh;
+}
+
+.plusbutton {
+    margin-right: 2vw;
+    margin-top: 12vh;
+    text-align: center;
 }

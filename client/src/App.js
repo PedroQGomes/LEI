@@ -34,7 +34,6 @@ const App = () => {
       <Switch>
         <PublicRoute path="/" exact component={Home} />
         <PublicRoute path="/login" exact component={Login} />
-        <PrivateRoute path='/artigo' exact={true} component={ItemPage} />
         <div>
             <Navbar />
             <div className="side-nav-and-content-wrapper">
@@ -49,6 +48,7 @@ const App = () => {
                 <PrivateRoute path='/inventory' exact={true} component={inventory} />
                 <PrivateRoute path='/orders' exact={true} component={orders} />
                 <PrivateRoute path='/settings' exact={true} component={settings} />
+                <PrivateRoute path="/item/:id" exact component={ItemPage} />
               </Switch>
             </div>
         </div>
