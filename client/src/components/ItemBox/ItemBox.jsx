@@ -1,5 +1,5 @@
 import React from 'react'
-import { Box,Image,FormLabel,Button } from "@chakra-ui/react"
+import { Box,Image,FormLabel,Button,Table,Thead,Tr,Th,Td,Tbody,Text } from "@chakra-ui/react"
 import { Link, useHistory } from "react-router-dom";
 import './ItemBox.css';
 
@@ -8,46 +8,89 @@ const ItemBox = (props) => {
   const history = useHistory();
 
   const moreInfo = () =>{
-      history.push("/item/" + props.artigo.ref);
+      history.push("/item/" + props.artigo.info.ref);
   }
 
     return (
-        <Box className="itemBox" borderWidth="7px" borderRadius="lg" overflow="hidden" bg="#C0C2C2">
+        <Box className="itemBox" borderWidth="7px" borderRadius="lg" overflow="hidden" bg="#A3CFEC">
           <Image src={process.env.PUBLIC_URL + '/android-chrome-192x192.png'} className="image"/>
           <Box className="textbox">
             <Box className="firstTextBox">
-              <FormLabel className="text">
-                Referencia : {props.artigo.ref.split('"').join('')}
-              </FormLabel>
-              <FormLabel className="text">
-                Design : {props.artigo.design.split('"').join('')}
-              </FormLabel>
-              <FormLabel className="text"> 
-                Fornecedor : {props.artigo.fornecedor.split('"').join('') + " " +  props.artigo.desc2}
-              </FormLabel>
-              <FormLabel className="text">
-                  Modelo : {props.artigo.usr1.split('"').join('')}
-              </FormLabel>
+              <Text className="text">
+                Ref : {props.artigo.info.ref.split('"').join('')}
+              </Text>
+              <Text className="text">
+                Nome: {props.artigo.info.design.split('"').join('')}
+              </Text>
+              <Text className="text">
+                Cat: {props.artigo.info.usr1.split('"').join('')}
+              </Text>
+              <Text className="text">
+                {JSON.stringify(props.artigo.info.usr5).split('"').join('')}
+              </Text> 
+              <Text className="text2">
+                Stock Total : {props.artigo.totalStock}
+              </Text> 
+              <Text className="text">
+                {props.artigo.info.opendata.substring(0, 10)}
+              </Text> 
               
             </Box>
-              <Box className="secondTextBox">
-                <FormLabel className="text">
-                  Estação : {JSON.stringify(props.artigo.usr2).split('"').join('')}
-                </FormLabel>
-                <FormLabel className="text">
-                  Ano : {JSON.stringify(props.artigo.usr3).split('"').join('')}
-                </FormLabel>
-                <FormLabel className="text">
-                  Tipo : {JSON.stringify(props.artigo.usr4).split('"').join('')}
-                </FormLabel>
-                <FormLabel className="text">
-                  Composição : {JSON.stringify(props.artigo.usr5).split('"').join('')}
-                </FormLabel> 
-            </Box> 
+             
+            <Box className="tabela">
+              <Table size="sm" variant="simple">
+                <Thead>
+                    <Tr>
+                    <Th>Loja</Th>
+                    <Th isNumeric>Stock</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>Barcelos</Td>
+                    <Td isNumeric>{props.artigo.stock.barcelos}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Viana</Td>
+                    <Td isNumeric>{props.artigo.stock.viana}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Guimaraes</Td>
+                    <Td isNumeric>{props.artigo.stock.guima}</Td>
+                  </Tr>
+                </Tbody>
+            </Table>
+            </Box>
+
+            <Box className="tabela">
+              <Table size="sm" variant="simple">
+                <Thead>
+                    <Tr>
+                    <Th>Loja</Th>
+                    <Th isNumeric>Stock</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  <Tr>
+                    <Td>Santander</Td>
+                    <Td isNumeric>{props.artigo.stock.satander}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Leiria</Td>
+                    <Td isNumeric>{props.artigo.stock.leiria}</Td>
+                  </Tr>
+                  <Tr>
+                    <Td>Caldas</Td>
+                    <Td isNumeric>{props.artigo.stock.caldas}</Td>
+                  </Tr>
+                </Tbody>
+            </Table>
+            </Box>
+            
             <Button className="plusbutton" colorScheme='blue' color='white' onClick={moreInfo}>+</Button>
           </Box>
         </Box> 
-     
+
     )
 }
 

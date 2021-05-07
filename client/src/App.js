@@ -34,7 +34,7 @@ const App = () => {
       <Switch>
         <PublicRoute path="/" exact component={Home} />
         <PublicRoute path="/login" exact component={Login} />
-        <div>
+        <>
             <Navbar />
             <div className="side-nav-and-content-wrapper">
             <SideBar />
@@ -51,7 +51,7 @@ const App = () => {
                 <PrivateRoute path="/item/:id" exact component={ItemPage} />
               </Switch>
             </div>
-        </div>
+        </>
         <Route path="/" component={Error} />
       </Switch>
       </AuthProvider>

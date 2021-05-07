@@ -15,6 +15,7 @@ const SearchRef = () => {
     const searchRef = () =>{
       setloading(true);
        axios.get('/item/'+ referencia).then((res) => {
+         console.log(res.data);
          setartigo(res.data);
          seterrormessage(false);
          setloading(false);
