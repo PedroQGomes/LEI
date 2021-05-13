@@ -1,0 +1,19 @@
+.first-half-item-fullstats {
+    height: 30vh;
+    margin-left: 1vw;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.first-half-item-FirstTextBox {
+    width: 20vw;
+}
+
+.first-half-item-SecondTextBox {
+    width: 60vw;
+}
+
+.first-half-item-Tabs {
+    width: 30vw;
+}

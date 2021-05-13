@@ -73,7 +73,7 @@ const ItemBox = (props) => {
                 <Tbody>
                   <Tr>
                     <Td>Santander</Td>
-                    <Td isNumeric>{props.artigo.stock.satander}</Td>
+                    <Td isNumeric>{props.artigo.stock.santander}</Td>
                   </Tr>
                   <Tr>
                     <Td>Leiria</Td>

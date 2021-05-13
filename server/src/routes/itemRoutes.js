@@ -67,32 +67,59 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                 }
 
                 for (var i = 0; i < colors.length; i++) {
+
                     var obj = colors[i];
                     if (myMap.get(obj.cor) === undefined) {
                         let value = {
-                            ...lojas
+                            ...lojas,
+                            totalStockBarcelos: 0,
+                            totalStockViana: 0,
+                            totalStockBGuima: 0,
+                            totalStockSantander: 0,
+                            totalStockLeiria: 0,
+                            totalStockCaldas: 0,
                         };
                         myMap.set(obj.cor, value);
                         //console.log(myMap.get(obj.cor));
                     }
+                    var tmp = "";
                     switch (obj.armazem) {
+
                         case 9:
-                            myMap.get(obj.cor).barcelos = myMap.get(obj.cor).barcelos.concat(obj.tam, ",");
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockBarcelos += obj.stock;
+                            myMap.get(obj.cor).barcelos = myMap.get(obj.cor).barcelos.concat(tmp).concat(obj.tam, ",");
+
                             break;
                         case 10:
-                            myMap.get(obj.cor).viana = myMap.get(obj.cor).viana.concat(obj.tamanho, ",");
+
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockViana += obj.stock;
+                            myMap.get(obj.cor).viana = myMap.get(obj.cor).viana.concat(tmp).concat(obj.tamanho, ",");
                             break;
                         case 11:
-                            myMap.get(obj.cor).guima = myMap.get(obj.cor).guima.concat(obj.tam, ",");
+
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockBGuima += obj.stock;
+                            myMap.get(obj.cor).guima = myMap.get(obj.cor).guima.concat(tmp).concat(obj.tam, ",");
                             break;
                         case 132:
-                            myMap.get(obj.cor).santander = myMap.get(obj.cor).santander.concat(obj.tam, ",");
+
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockSantander += obj.stock;
+                            myMap.get(obj.cor).santander = myMap.get(obj.cor).santander.concat(tmp).concat(obj.tam, ",");
                             break;
                         case 200:
-                            myMap.get(obj.cor).leiria = myMap.get(obj.cor).leiria.concat(obj.tam, ",");
+
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockLeiria += obj.stock;
+                            myMap.get(obj.cor).leiria = myMap.get(obj.cor).leiria.concat(tmp).concat(obj.tam, ",");
                             break;
                         case 201:
-                            myMap.get(obj.cor).caldas = myMap.get(obj.cor).caldas.concat(obj.tam, ",");
+
+                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                            myMap.get(obj.cor).totalStockCaldas += obj.stock;
+                            myMap.get(obj.cor).caldas = myMap.get(obj.cor).caldas.concat(tmp).concat(obj.tam, ",");
                             break;
 
                         default:
@@ -102,15 +129,19 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                 }
 
                 var coresEtamanhos = {};
+                var coresEtamanhosArr = [];
 
                 function registrarElementosDoMapa(valor, chave, mapa) {
-                    coresEtamanhos[chave] = valor;
+                    coresEtamanhos.lojas = valor;
+                    coresEtamanhos.cor = chave;
+                    coresEtamanhosArr.push(coresEtamanhos);
+                    coresEtamanhos = {};
                 }
                 myMap.forEach(registrarElementosDoMapa);
 
                 const final = {
                     "info": results[0],
-                    "stock": coresEtamanhos,
+                    "stock": coresEtamanhosArr,
                     "totalStock": totalStock
                 };
                 res.status(200).json(final);
@@ -121,7 +152,6 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
         }
 
     })
-
 
 });
 
@@ -165,7 +195,7 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
                             lojas.guima = obj.stock
                             break;
                         case 132:
-                            lojas.satander = obj.stock
+                            lojas.santander = obj.stock
                             break;
                         case 200:
                             lojas.leiria = obj.stock
