@@ -11,9 +11,20 @@
 }
 
 .first-half-item-SecondTextBox {
-    width: 60vw;
+    width: 50vw;
 }
 
 .first-half-item-Tabs {
     width: 30vw;
+}
+
+.second-half-sales-statistics {
+    width: 80vw;
+    height: 60vh;
+}
+
+.second-half-sales-graph {
+    margin-top: 10vh;
+    float: right;
+    clear: both;
 }

@@ -36,9 +36,9 @@ app.use(cors());
 app.use(cookieParser());
 
 // Require Route
-app.use("/item", itemapi);
+app.use("/api/item", itemapi);
 
-app.use("/user", userapi);
+app.use("/api/user", userapi);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {
