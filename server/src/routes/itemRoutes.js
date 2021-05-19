@@ -144,11 +144,32 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                     "stock": coresEtamanhosArr,
                     "totalStock": totalStock
                 };
-                res.status(200).json(final);
-            })
+                itemsService.getItemSales(itemRef).then((sales) => {
+                    for (var j = 0; j < sales.length; j++) {
+                        var venda = sales[j];
+                        sales[j].datalc = sales[j].datalc.toLocaleDateString('en-GB');
+                        if (venda.qtt > 0) {
+                            sales[j].vendas = sales[j].qtt;
+                            delete sales[j].qtt;
+
+                        } else {
+                            sales[j].retornos = Math.abs(sales[j].qtt);
+                            delete sales[j].qtt;
+                        }
+                    }
+                    final.sales = sales;
+
+                    res.status(200).json(final);
+
+                }).catch((err) => {
+                    res.status(404).send("sales not found");
+                });
+            }).catch((err) => {
+                res.status(404).send("sizes and colors not found");
+            });
 
         } else {
-            res.status(404).send("id not foundss");
+            res.status(404).send("id not found");
         }
 
     })

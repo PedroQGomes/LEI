@@ -23,7 +23,7 @@ function SideBar() {
   return (
     <>
      <div className='sidebar'>
-        <ProSidebar collapsed={sidebar}>
+        <ProSidebar collapsed={sidebar} width ="15vw" >
           <SidebarContent>
             <Menu iconShape="square">
             <MenuItem icon={<GOIcons.GoGraph />}>Dashboard <Link to="/dashboard" /></MenuItem>

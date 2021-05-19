@@ -1,30 +1,35 @@
 .first-half-item-fullstats {
     height: 30vh;
-    margin-left: 1vw;
+    width: 85vw;
     display: flex;
     flex-direction: row;
     flex: 1;
 }
 
 .first-half-item-FirstTextBox {
-    width: 20vw;
+    font-family: 'KoHo', sans-serif;
 }
 
 .first-half-item-SecondTextBox {
     width: 50vw;
 }
 
-.first-half-item-Tabs {
-    width: 30vw;
+.first-half-image {
+    width: 15vw;
 }
 
 .second-half-sales-statistics {
-    width: 80vw;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+    width: 85vw;
     height: 60vh;
 }
 
 .second-half-sales-graph {
     margin-top: 10vh;
-    float: right;
-    clear: both;
+}
+
+.second-half-sales-return-graph {
+    margin-top: 10vh;
 }

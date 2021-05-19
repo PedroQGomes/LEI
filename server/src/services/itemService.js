@@ -90,9 +90,9 @@ async function getItemSales(ref) {
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .input('categ', sql.VarChar, categ)
-            .query("select ref,datalc,qtt,armazem,tam,ETT from sl where sl.ref='PV21SN10403' and armazem in (9,10,11,132,200,201) and sl.cm >50 and sl.trfa = 0 AND datalc > '2021/02/19' ORDER BY datalc ASC");
-        //console.log(result.recordsets);
+            .input('ref', sql.VarChar, ref)
+            .query("select datalc,SUM (qtt) AS qtt,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+        //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -107,5 +107,6 @@ module.exports = {
     getItemByName: getItemByName,
     getItemStockInStores: getItemStockInStores,
     getItemByCollersAndSizes: getItemByCollersAndSizes,
-    getItemByRefAllData: getItemByRefAllData
+    getItemByRefAllData: getItemByRefAllData,
+    getItemSales: getItemSales
 }
