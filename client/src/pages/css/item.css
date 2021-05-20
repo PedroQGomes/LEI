@@ -7,7 +7,8 @@
 }
 
 .first-half-item-FirstTextBox {
-    font-family: 'KoHo', sans-serif;
+    width: 20vw;
+    margin-top: 2vh;
 }
 
 .first-half-item-SecondTextBox {
@@ -18,6 +19,19 @@
     width: 15vw;
 }
 
+.first-half-item-text {
+    margin-top: 0.5vh;
+    margin-left: 1vw;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.first-half-item-saldo {
+    margin-top: 2vh;
+    margin-left: 1vw;
+}
+
 .second-half-sales-statistics {
     display: flex;
     flex-direction: row;
@@ -26,10 +40,29 @@
     height: 60vh;
 }
 
+.second-half-1st-box {
+    width: 20vw;
+    height: 60vh;
+}
+
+.second-half-2st-box {
+    width: 35vw;
+    height: 60vh;
+}
+
+.second-half-3st-box {
+    width: 35vw;
+    height: 60vh;
+}
+
 .second-half-sales-graph {
     margin-top: 10vh;
+    height: 30vh;
+    width: 30vw;
 }
 
 .second-half-sales-return-graph {
     margin-top: 10vh;
+    height: 30vh;
+    width: 30vw;
 }

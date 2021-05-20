@@ -3,7 +3,8 @@ import { BarChart ,XAxis,Tooltip,CartesianGrid,YAxis,Legend,Bar,ResponsiveContai
 const SalesNreturns = (props) => {
 
     return (
-        <BarChart width={800} height={300} data={props.vendas}>
+        <ResponsiveContainer width="100%" height="100%">
+            <BarChart data={props.vendas} >
                 <CartesianGrid strokeDasharray="3 3" />
                 <XAxis dataKey="datalc" />
                 <YAxis allowDecimals={false}/>
@@ -11,8 +12,8 @@ const SalesNreturns = (props) => {
                 <Legend />
                 <Bar dataKey="vendas" stackId="a" fill="#35AD1A" />
                 <Bar dataKey="retornos"stackId="a"  fill="#EE0C0C" />
-        </BarChart>
-        
+            </BarChart>
+        </ResponsiveContainer>
     )
 }
 
