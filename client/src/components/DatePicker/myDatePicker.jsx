@@ -4,7 +4,7 @@ import { Button} from "@chakra-ui/react"
 import {FaCalendarAlt}  from 'react-icons/fa';
 import "react-datepicker/dist/react-datepicker.css";
 import pt from 'date-fns/locale/pt';
-import moment from 'moment';
+
 
 registerLocale('pt', pt);
 setDefaultLocale('pt');
@@ -12,20 +12,12 @@ setDefaultLocale('pt');
 
 const MyDatePicker = (props) => {
     
-    const [startDate, setStartDate] = useState(()=> {
-        var dateMomentObject = moment(props.startDate, "DD/MM/YYYY");
-        return dateMomentObject.toDate();
-    });
-
-    const handleChange = (date) => {
-        setStartDate(date)
-    }
 
     return (
         <DatePicker
         dateFormat="dd/MM/yyyy"
-        selected={startDate}
-        onChange={handleChange}
+        selected={props.data}
+        onChange={props.onClick}
         
         customInput={<CustomInput />}
         />
