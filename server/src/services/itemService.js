@@ -100,6 +100,24 @@ async function getItemSales(ref) {
 }
 
 
+async function getItemSalesInDates(ref, data1, data2) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .input('data1', sql.DateTime, data1)
+            .input('data2', sql.DateTime, data2)
+            //console.log(result.recordsets[0]);
+            .query("select datalc,SUM (qtt) AS qtt,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201) and sl.cm >50 and sl.trfa = 0 AND datalc > @data1 AND datalc < @data2 GROUP BY datalc ORDER BY datalc ASC");
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
 async function getItemReturns(ref) {
     try {
         const pool = await poolPromise
@@ -112,8 +130,6 @@ async function getItemReturns(ref) {
         console.log(error);
     }
 }
-
-
 module.exports = {
     getItemByRef: getItemByRef,
     getItemBycategory: getItemBycategory,
@@ -122,5 +138,7 @@ module.exports = {
     getItemByCollersAndSizes: getItemByCollersAndSizes,
     getItemByRefAllData: getItemByRefAllData,
     getItemSales: getItemSales,
+    getItemSalesInDates: getItemSalesInDates,
     getItemReturns: getItemReturns
+
 }

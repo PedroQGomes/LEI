@@ -4,8 +4,32 @@ var itemsService = require('../services/itemService');
 var constants = require('../constants');
 var authUtils = require('../authUtils');
 const itemService = require('../services/itemService');
-//const itemController = require('../controllers/itemControllers');
+const moment = require('moment');
 
+
+router.get('/sales/:id', authUtils.authenticateJWT, (req, res, next) => {
+
+    if (req.params.id === undefined) {
+        res.status(400).send();
+    }
+
+    if (req.query.data1 === undefined) {
+        res.status(400).send();
+    }
+
+    if (req.query.data2 === undefined) {
+        res.status(400).send();
+    }
+    id = req.params.id
+    var dateMomentObject = moment(req.query.data1, "DD/MM/YYYY");
+    data1 = dateMomentObject.toDate();
+    var dateMomentObject2 = moment(req.query.data2, "DD/MM/YYYY");
+    data2 = dateMomentObject2.toDate();
+    itemsService.getItemSalesInDates(id, data1, data2).then((results) => {
+        res.status(200).json(results);
+    });
+
+});
 
 
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  

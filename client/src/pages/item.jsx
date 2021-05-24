@@ -7,25 +7,45 @@ import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
 import DatePicker from '../components/DatePicker/myDatePicker'
-
+import moment from 'moment';
 
 const Item = ({ match }) => {
     const [artigo, setartigo] = useState(null);
     const [vendas, setvendas] = useState(null);
     
-    
+    const [startDate, setstartDate] = useState(null);
+    const [endDate, setendDate] = useState(null)
     useEffect(() => {
 
         axios.get('/api/item/'+ match.params.id + "/fullstats").then((res) => {
 
             setartigo(res.data);
             setvendas(res.data.sales);
+        
+            var dateMomentObject = moment(res.data.sales[0].datalc.toString(), "DD/MM/YYYY");
+            setstartDate(dateMomentObject.toDate());
+            var dateMomentObject2 = moment(res.data.sales[res.data.sales.length - 1].datalc.toString(), "DD/MM/YYYY");
+            setendDate(dateMomentObject2.toDate());
             
         }).catch((error) => {
+            console.log(error)
             setartigo(null);
         });
         
     }, [])
+
+    /*
+    useEffect(() => {
+        axios.get('file://192.168.1.1/FOTOS/PV18SN90024.jpg').then((res) => {
+                console.log("works")
+                
+            }).catch((error) => {
+                console.log(error)
+            });
+
+    }, []); */
+
+
 
     if(artigo === null || vendas === null){
         return(
@@ -33,9 +53,8 @@ const Item = ({ match }) => {
             loading....
         </div>
         );
-        
     };
-
+   
     
 
      
@@ -71,7 +90,7 @@ const Item = ({ match }) => {
                 
                 <Image src={process.env.PUBLIC_URL + '/android-chrome-192x192.png'} className="first-half-image"/>
                 
-                <Box className="first-half-item-SecondTextBox">
+                <Box className="first-half-item-SecondTextBox" overflowY="auto" >
                      <StockTabs stock={artigo.stock}/>
                 </Box>
             </Box>
@@ -97,8 +116,8 @@ const Item = ({ match }) => {
                     
                 </Box>
                 <Box className="second-half-2st-box"  borderWidth="5px" borderRadius="lg" overflow="hidden">
-                    <DatePicker startDate={vendas[0].datalc.toString()}/>
-                    <DatePicker startDate={vendas[vendas.length - 1].datalc.toString()}/>
+                    <DatePicker data={startDate} onClick={setstartDate}/>
+                    <DatePicker data={endDate} onClick={setendDate}/>
                     <Box className="second-half-sales-return-graph">
                          <SalesNreturns vendas={vendas}/>
                     </Box>
