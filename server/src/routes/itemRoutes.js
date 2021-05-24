@@ -139,27 +139,36 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                 }
                 myMap.forEach(registrarElementosDoMapa);
 
-                const final = {
-                    "info": results[0],
-                    "stock": coresEtamanhosArr,
-                    "totalStock": totalStock
-                };
+
                 itemsService.getItemSales(itemRef).then((sales) => {
+
                     for (var j = 0; j < sales.length; j++) {
-                        var venda = sales[j];
-                        sales[j].datalc = sales[j].datalc.toLocaleDateString('en-GB');
-                        if (venda.qtt > 0) {
-                            sales[j].vendas = sales[j].qtt;
-                            delete sales[j].qtt;
-
-                        } else {
-                            sales[j].retornos = Math.abs(sales[j].qtt);
-                            delete sales[j].qtt;
-                        }
+                        datastring = sales[j].datalc.toLocaleDateString('en-GB');
+                        sales[j].datalc = datastring;
+                        sales[j].vendas = sales[j].qtt;
+                        delete sales[j].qtt;
                     }
-                    final.sales = sales;
 
-                    res.status(200).json(final);
+                    itemsService.getItemReturns(itemRef).then((returns) => {
+
+                        for (var i = 0; i < returns.length; i++) {
+                            datastring = returns[i].datalc.toLocaleDateString('en-GB');
+                            returns[i].datalc = datastring;
+                            returns[i].vendas = returns[i].qtt;
+                            delete returns[i].qtt;
+                        }
+                        const final = {
+                            "info": results[0],
+                            "stock": coresEtamanhosArr,
+                            "totalStock": totalStock,
+                            "sales": sales,
+                            "retornos": returns
+                        };
+                        res.status(200).json(final);
+
+                    });
+
+
 
                 }).catch((err) => {
                     res.status(404).send("sales not found");
