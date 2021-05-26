@@ -1,35 +1,8 @@
 const express = require('express');
 const router = express.Router();
-var itemsService = require('../services/itemService');
 var constants = require('../constants');
 var authUtils = require('../authUtils');
-const itemService = require('../services/itemService');
-const moment = require('moment');
-
-
-router.get('/sales/:id', authUtils.authenticateJWT, (req, res, next) => {
-
-    if (req.params.id === undefined) {
-        res.status(400).send();
-    }
-
-    if (req.query.data1 === undefined) {
-        res.status(400).send();
-    }
-
-    if (req.query.data2 === undefined) {
-        res.status(400).send();
-    }
-    id = req.params.id
-    var dateMomentObject = moment(req.query.data1, "DD/MM/YYYY");
-    data1 = dateMomentObject.toDate();
-    var dateMomentObject2 = moment(req.query.data2, "DD/MM/YYYY");
-    data2 = dateMomentObject2.toDate();
-    itemsService.getItemSalesInDates(id, data1, data2).then((results) => {
-        res.status(200).json(results);
-    });
-
-});
+const stockService = require('../services/stockService');
 
 
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  
@@ -40,7 +13,7 @@ router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
     }
 
     var categ = req.params.cat;
-    itemsService.getItemBycategory(categ).then((results) => {
+    stockService.getItemBycategory(categ).then((results) => {
         res.status(200).json({
             totalresults: results.length,
             totalpages: Math.ceil(results.length / constants.pagesize),
@@ -60,7 +33,7 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
 
     var name = req.params.name;
     //console.log(name);
-    itemsService.getItemByName(name).then((results) => {
+    stockService.getItemByName(name).then((results) => {
         res.status(200).json(results);
     });
 
@@ -76,9 +49,9 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
 
     var itemRef = req.params.id;
 
-    itemsService.getItemByRefAllData(itemRef).then((results) => {
+    stockService.getItemByRefAllData(itemRef).then((results) => {
         if (results.length > 0) {
-            itemService.getItemByCollersAndSizes(itemRef).then((colors) => {
+            stockService.getItemByCollersAndSizes(itemRef).then((colors) => {
                 var myMap = new Map();
                 totalStock = 0;
                 const lojas = {
@@ -162,50 +135,13 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                     coresEtamanhos = {};
                 }
                 myMap.forEach(registrarElementosDoMapa);
+                const final = {
+                    "info": results[0],
+                    "stock": coresEtamanhosArr,
+                    "totalStock": totalStock,
+                };
+                res.status(200).json(final);
 
-
-                itemsService.getItemSales(itemRef).then((sales) => {
-
-                    for (var j = 0; j < sales.length; j++) {
-                        datastring = sales[j].datalc.toLocaleDateString('en-GB');
-                        ano = sales[j].datalc.getFullYear();
-                        mes = sales[j].datalc.getMonth();
-                        sales[j].ano = ano;
-                        sales[j].mes = mes;
-                        sales[j].datalc = datastring;
-                        sales[j].vendas = sales[j].qtt;
-                        delete sales[j].qtt;
-                    }
-
-                    itemsService.getItemReturns(itemRef).then((returns) => {
-
-                        for (var i = 0; i < returns.length; i++) {
-                            datastring = returns[i].datalc.toLocaleDateString('en-GB');
-                            returns[i].datalc = datastring;
-                            returns[i].retornos = returns[i].qtt;
-                            delete returns[i].qtt;
-                        }
-
-
-
-
-                        const final = {
-                            "info": results[0],
-                            "stock": coresEtamanhosArr,
-                            "totalStock": totalStock,
-                            "sales": sales,
-                            "retornos": returns,
-                            "money": returns
-                        };
-                        res.status(200).json(final);
-
-                    });
-
-
-
-                }).catch((err) => {
-                    res.status(404).send("sales not found");
-                });
             }).catch((err) => {
                 res.status(404).send("sizes and colors not found");
             });
@@ -232,9 +168,9 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
 
     var itemRef = req.params.id;
 
-    itemsService.getItemByRef(itemRef).then((results) => {
+    stockService.getItemByRef(itemRef).then((results) => {
         if (results.length > 0) {
-            itemService.getItemStockInStores(itemRef).then((stores) => {
+            stockService.getItemStockInStores(itemRef).then((stores) => {
                 let totalStock = 0;
                 const lojas = {
                     "barcelos": 0,

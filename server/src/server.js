@@ -4,7 +4,8 @@ const bodyParser = require("body-parser");
 const cors = require("cors");
 const path = require("path");
 const cookieParser = require("cookie-parser");
-const itemapi = require("./routes/itemRoutes");
+const stockapi = require("./routes/stockRoutes");
+const salesapi = require("./routes/salesRoutes");
 const userapi = require("./routes/userRoutes");
 require('dotenv').config()
 
@@ -36,7 +37,8 @@ app.use(cors());
 app.use(cookieParser());
 
 // Require Route
-app.use("/api/item", itemapi);
+app.use("/api/stock", stockapi);
+app.use("/api/sales", salesapi);
 
 app.use("/api/user", userapi);
 
