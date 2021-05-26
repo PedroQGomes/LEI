@@ -168,6 +168,10 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
 
                     for (var j = 0; j < sales.length; j++) {
                         datastring = sales[j].datalc.toLocaleDateString('en-GB');
+                        ano = sales[j].datalc.getFullYear();
+                        mes = sales[j].datalc.getMonth();
+                        sales[j].ano = ano;
+                        sales[j].mes = mes;
                         sales[j].datalc = datastring;
                         sales[j].vendas = sales[j].qtt;
                         delete sales[j].qtt;
@@ -178,15 +182,20 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
                         for (var i = 0; i < returns.length; i++) {
                             datastring = returns[i].datalc.toLocaleDateString('en-GB');
                             returns[i].datalc = datastring;
-                            returns[i].vendas = returns[i].qtt;
+                            returns[i].retornos = returns[i].qtt;
                             delete returns[i].qtt;
                         }
+
+
+
+
                         const final = {
                             "info": results[0],
                             "stock": coresEtamanhosArr,
                             "totalStock": totalStock,
                             "sales": sales,
-                            "retornos": returns
+                            "retornos": returns,
+                            "money": returns
                         };
                         res.status(200).json(final);
 

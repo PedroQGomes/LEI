@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import './css/item.css';
-import { Image,Box,OrderedList,ListItem} from "@chakra-ui/react"
+import { Image,Box,OrderedList,ListItem,Switch} from "@chakra-ui/react"
 import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
@@ -12,15 +12,19 @@ import moment from 'moment';
 const Item = ({ match }) => {
     const [artigo, setartigo] = useState(null);
     const [vendas, setvendas] = useState(null);
+    const [retornos, setretornos] = useState(null);
     
     const [startDate, setstartDate] = useState(null);
-    const [endDate, setendDate] = useState(null)
+    const [endDate, setendDate] = useState(null);
+    const [switchVal, setswitchVal] = useState(true);
+
     useEffect(() => {
 
         axios.get('/api/item/'+ match.params.id + "/fullstats").then((res) => {
 
             setartigo(res.data);
             setvendas(res.data.sales);
+            setretornos(res.data.retornos)
         
             var dateMomentObject = moment(res.data.sales[0].datalc.toString(), "DD/MM/YYYY");
             setstartDate(dateMomentObject.toDate());
@@ -47,7 +51,7 @@ const Item = ({ match }) => {
 
 
 
-    if(artigo === null || vendas === null){
+    if(artigo === null || vendas === null || retornos === null){
         return(
             <div>
             loading....
@@ -55,12 +59,10 @@ const Item = ({ match }) => {
         );
     };
    
-    
-
      
     return (
         <Box>
-            <Box className="first-half-item-fullstats"  borderWidth="5px" borderRadius="lg" overflow="hidden">
+            <Box className="first-half-item-fullstats"  borderWidth="2px" borderRadius="lg" overflow="hidden">
                 <Box className="first-half-item-FirstTextBox" >
                     <Box className="first-half-item-text">
                         
@@ -97,7 +99,7 @@ const Item = ({ match }) => {
            
           
             <Box className="second-half-sales-statistics">
-                <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="5px" borderRadius="lg" overflow="hidden">
+                <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" overflow="hidden">
                     <OrderedList >
                         <ListItem>Lorem ipsum dolor sit amet</ListItem>
                         <ListItem>Consectetur adipiscing elit</ListItem>
@@ -115,14 +117,15 @@ const Item = ({ match }) => {
                     </OrderedList>
                     
                 </Box>
-                <Box className="second-half-2st-box"  borderWidth="5px" borderRadius="lg" overflow="hidden">
+                <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" overflow="hidden">
                     <DatePicker data={startDate} onClick={setstartDate}/>
                     <DatePicker data={endDate} onClick={setendDate}/>
                     <Box className="second-half-sales-return-graph">
-                         <SalesNreturns vendas={vendas}/>
+                        <SalesNreturns vendas={vendas} retornos={retornos}/>
                     </Box>
+                    
                 </Box>
-                <Box className="second-half-3st-box"  borderWidth="5px" borderRadius="lg" overflow="hidden">
+                <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" overflow="hidden">
                     <Box className="second-half-sales-graph">
                      <Totalsales vendas={artigo.sales}/>   
                     </Box>
