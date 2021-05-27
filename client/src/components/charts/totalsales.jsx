@@ -5,8 +5,7 @@ const Totalsales = (props) => {
     if(props.vendas.length > 1){
         return(
             <ResponsiveContainer width="100%" height="100%">
-                <AreaChart data={props.vendas}
-                    margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+                <AreaChart data={props.vendas}>
                     <defs>
                         <linearGradient id="colorUv" x1="0" y1="0" x2="0" y2="1">
                         <stop offset="5%" stopColor="#8884d8" stopOpacity={0.8}/>
@@ -43,5 +42,7 @@ const Totalsales = (props) => {
         </ResponsiveContainer>
     )
 }
+
+
 
 export default Totalsales

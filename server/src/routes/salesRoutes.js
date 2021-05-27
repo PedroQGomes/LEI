@@ -6,18 +6,14 @@ const moment = require('moment');
 const salesService = require('../services/salesService');
 
 
-/*
-router.get('/sales/:id', authUtils.authenticateJWT, (req, res, next) => {
 
-    if (req.params.id === undefined) {
+router.get('/season/', authUtils.authenticateJWT, (req, res, next) => {
+
+    if (req.query.epoca === undefined) {
         res.status(400).send();
     }
 
-    if (req.query.data1 === undefined) {
-        res.status(400).send();
-    }
-
-    if (req.query.data2 === undefined) {
+    if (req.query.year === undefined) {
         res.status(400).send();
     }
     id = req.params.id
@@ -25,12 +21,12 @@ router.get('/sales/:id', authUtils.authenticateJWT, (req, res, next) => {
     data1 = dateMomentObject.toDate();
     var dateMomentObject2 = moment(req.query.data2, "DD/MM/YYYY");
     data2 = dateMomentObject2.toDate();
-    salesService.getItemSalesInDates(id, data1, data2).then((results) => {
+    salesService.getItemSalesQttInDates(id, data1, data2).then((results) => {
         res.status(200).json(results);
     });
 
 });
-*/
+
 
 
 router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
@@ -40,13 +36,9 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
     itemRef = req.params.ref;
 
 
-    salesService.getItemSales(itemRef).then((sales) => {
+    salesService.getItemSalesQtt(itemRef).then((sales) => {
         for (var j = 0; j < sales.length; j++) {
             datastring = sales[j].datalc.toLocaleDateString('en-GB');
-            ano = sales[j].datalc.getFullYear();
-            mes = sales[j].datalc.getMonth();
-            sales[j].ano = ano;
-            sales[j].mes = mes;
             sales[j].datalc = datastring;
             sales[j].vendas = sales[j].qtt;
             delete sales[j].qtt;
@@ -54,18 +46,30 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
 
         salesService.getItemReturns(itemRef).then((returns) => {
 
-            for (var i = 0; i < returns.length; i++) {
-                datastring = returns[i].datalc.toLocaleDateString('en-GB');
-                returns[i].datalc = datastring;
-                returns[i].retornos = returns[i].qtt;
-                delete returns[i].qtt;
-            }
-            const final = {
-                "sales": sales,
-                "retornos": returns
-            };
-            res.status(200).json(final);
+            returns = formatDateArray(returns);
 
+
+            salesService.getItemSalesCorlorsNSizes(itemRef).then((topvendas) => {
+
+                salesService.getItemSalesValues(itemRef).then((totalsales) => {
+                    totalsales = formatDateArray(totalsales);
+
+                    const final = {
+                        "sales": sales,
+                        "retornos": returns,
+                        "topvendas": topvendas,
+                        "totalsales": totalsales
+                    };
+                    res.status(200).json(final);
+                }).catch((err) => {
+                    res.status(404).send("sales not found");
+                });
+
+            }).catch((err) => {
+                res.status(404).send("sales not found");
+            });
+        }).catch((err) => {
+            res.status(404).send("sales not found");
         });
 
     }).catch((err) => {
@@ -79,7 +83,15 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
 
 
 
-
+const formatDateArray = (array) => {
+    for (var i = 0; i < array.length; i++) {
+        datastring = array[i].datalc.toLocaleDateString('en-GB');
+        array[i].datalc = datastring;
+        array[i].retornos = array[i].qtt;
+        delete array[i].qtt;
+    }
+    return array
+}
 
 
 

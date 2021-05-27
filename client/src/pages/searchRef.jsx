@@ -14,7 +14,7 @@ const SearchRef = () => {
 
     const searchRef = () =>{
       setloading(true);
-       axios.get('/api/item/'+ referencia).then((res) => {
+       axios.get('/api/stock/'+ referencia).then((res) => {
          console.log(res.data);
          setartigo(res.data);
          seterrormessage(false);

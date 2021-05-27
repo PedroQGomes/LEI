@@ -57,8 +57,9 @@ const SalesNreturns = (props) => {
                 <YAxis  allowDecimals={false} />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
+                <Legend />
                 <Area type="monotone" data={vendas} dataKey="vendas" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
-                <Area type="monotone" data={retornos} dataKey="retornos" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
+                <Area type="monotone" dataKey="retornos" stroke="#82ca9d" fillOpacity={1} fill="url(#colorPv)" />
             </AreaChart>
         </ResponsiveContainer>
     )

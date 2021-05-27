@@ -3,7 +3,7 @@ var sql = require('mssql');
 
 
 
-async function getItemSales(ref) {
+async function getItemSalesQtt(ref) {
     try {
         const pool = await poolPromise
         const result = await pool.request()
@@ -17,7 +17,7 @@ async function getItemSales(ref) {
 }
 
 
-async function getItemSalesInDates(ref, data1, data2) {
+async function getItemSalesQttInDates(ref, data1, data2) {
     try {
         const pool = await poolPromise
         const result = await pool.request()
@@ -55,7 +55,7 @@ async function getItemSalesCorlorsNSizes(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("SELECT SUM(qtt) AS qtt,cor,tam FROM sl Where ref =@ref and sl.cm > 50 and sl.trfa = 0 and cor != '' and tam != '' GROUP BY cor,tam");
+            .query("SELECT SUM(qtt) AS qtt,cor,tam FROM sl Where ref =@ref and sl.cm > 50 and sl.trfa = 0 and cor != '' and tam != '' GROUP BY cor,tam ORDER BY qtt DESC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -70,7 +70,19 @@ async function getItemSalesValues(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("SELECT SUM(qtt) AS qtt,cor,tam FROM sl Where ref = 'PV21SN91202' and sl.cm >50 and sl.trfa = 0 and cor != '' and tam != '' GROUP BY cor,tam");
+            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+async function getSeasonSalesQtt(ref) { // TODO
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -78,11 +90,27 @@ async function getItemSalesValues(ref) {
 }
 
 
+async function getSeasonSalesValues(ref) { // TODO
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 module.exports = {
-    getItemSales: getItemSales,
-    getItemSalesInDates: getItemSalesInDates,
+    getItemSalesQtt: getItemSalesQtt,
+    getItemSalesQttInDates: getItemSalesQttInDates,
     getItemReturns: getItemReturns,
     getItemSalesCorlorsNSizes: getItemSalesCorlorsNSizes,
-    getItemSalesValues: getItemSalesValues
+    getItemSalesValues: getItemSalesValues,
+    getSeasonSalesQtt: getSeasonSalesQtt,
+    getSeasonSalesValues: getSeasonSalesValues
 
 }
