@@ -21,7 +21,7 @@ const Totalsales = (props) => {
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
                     <Legend />
-                    <Area type="monotone" dataKey="ETT" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+                    <Area type="monotone" dataKey="receita" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
                 </AreaChart>
         </ResponsiveContainer>
         )
