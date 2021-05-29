@@ -8,7 +8,7 @@ async function getItemSalesQtt(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select datalc,SUM (qtt) AS qtt,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt >0 GROUP BY datalc ORDER BY datalc ASC");
+            .query("select datalc,SUM (qtt) AS vendas from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt >0 GROUP BY datalc ORDER BY datalc ASC");
         //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
@@ -25,7 +25,7 @@ async function getItemSalesQttInDates(ref, data1, data2) {
             .input('data1', sql.DateTime, data1)
             .input('data2', sql.DateTime, data2)
             //console.log(result.recordsets[0]);
-            .query("select datalc,SUM (qtt) AS qtt,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND datalc > @data1 AND datalc < @data2 GROUP BY datalc ORDER BY datalc ASC");
+            .query("select datalc,SUM (qtt) AS vendas from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND datalc > @data1 AND datalc < @data2 GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -40,8 +40,22 @@ async function getItemReturns(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select datalc,ABS(SUM (qtt)) AS qtt,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY datalc ORDER BY datalc ASC");
+            .query("select datalc,ABS(SUM (qtt)) AS retornos from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY datalc ORDER BY datalc ASC");
         //console.log(result.recordsets[0]);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+async function getItemSalesValues(ref) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .query("select datalc,MAX(ETT) AS receita from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -63,39 +77,45 @@ async function getItemSalesCorlorsNSizes(ref) {
 }
 
 
-
-
-async function getItemSalesValues(ref) {
+async function getYearSalesQtt(year) {
+    firstdate = new Date(year, 0, 1);
+    lastdate = new Date(year, 11, 31);
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .input('ref', sql.VarChar, ref)
-            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+            .input('firstdate', sql.DateTime, firstdate)
+            .input('lastdate', sql.DateTime, lastdate)
+            .query("select datalc,SUM (qtt) AS vendas from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt > 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
     }
 }
 
-async function getSeasonSalesQtt(ref) { // TODO
+async function getYearSalesReturns(year) {
+    firstdate = new Date(year, 0, 1);
+    lastdate = new Date(year, 11, 31);
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .input('ref', sql.VarChar, ref)
-            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+            .input('firstdate', sql.DateTime, firstdate)
+            .input('lastdate', sql.DateTime, lastdate)
+            .query("select datalc,SUM (qtt) AS retornos from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt < 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
     }
 }
 
-
-async function getSeasonSalesValues(ref) { // TODO
+async function getYearSalesValues(year) {
+    firstdate = new Date(year, 0, 1);
+    lastdate = new Date(year, 11, 31);
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .input('ref', sql.VarChar, ref)
-            .query("select datalc,MAX(ETT) AS ETT from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+            .input('firstdate', sql.DateTime, firstdate)
+            .input('lastdate', sql.DateTime, lastdate)
+            .query("select datalc,MAX(ETT) AS receita from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY datalc ORDER BY datalc ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -110,7 +130,8 @@ module.exports = {
     getItemReturns: getItemReturns,
     getItemSalesCorlorsNSizes: getItemSalesCorlorsNSizes,
     getItemSalesValues: getItemSalesValues,
-    getSeasonSalesQtt: getSeasonSalesQtt,
-    getSeasonSalesValues: getSeasonSalesValues
+    getYearSalesQtt: getYearSalesQtt,
+    getYearSalesValues: getYearSalesValues,
+    getYearSalesReturns: getYearSalesReturns
 
 }
