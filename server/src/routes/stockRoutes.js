@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var constants = require('../constants');
+var { lojasDefault, formatLojasDefault, formatLojasColorsNSizes, pagesize } = require('../constants');
 var authUtils = require('../authUtils');
 const stockService = require('../services/stockService');
 
@@ -12,13 +12,45 @@ router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
     }
 
+    var page = req.query.page;
+
+    if (page === undefined) {
+        page = 0;
+    }
+
     var categ = req.params.cat;
-    stockService.getItemBycategory(categ).then((results) => {
-        res.status(200).json({
-            totalresults: results.length,
-            totalpages: Math.ceil(results.length / constants.pagesize),
-            content: results.slice(0, constants.pagesize)
+    stockService.getItemBycategory(categ, page).then((results) => { // no maximo da 5 resultados -- page size
+        var tamanho = results.length;
+        if (results.length === 0) {
+            res.status(404).send();
+        }
+
+        for (j = results.length; j < pagesize; j++) {
+            results.push({ ref: "" });
+        }
+        const finalArr = [];
+
+        stockService.get5ItemsStockInStores(results[0].ref, results[1].ref, results[2].ref, results[3].ref, results[4].ref).then((stocks) => {
+            for (i = 0; i < tamanho; i++) {
+                lojas = {...lojasDefault };
+                totalStock = 0;
+                lojas, totalStock = formatLojasDefault(lojas, stocks[i], totalStock);
+
+                finalArr[i] = {
+                    info: results[i],
+                    stock: lojas,
+                    totalStock: totalStock
+                }
+
+            }
+            res.status(200).json({
+                totalresults: results[0].total,
+                totalpages: Math.ceil(results[0].total / pagesize),
+                content: finalArr
+            });
+
         });
+
     });
 
 });
@@ -30,11 +62,45 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
     if (req.params.name === undefined) {
         res.status(400).send();
     }
+    var page = req.query.page;
+
+    if (req.query.page === undefined) {
+        page = 0;
+    }
 
     var name = req.params.name;
     //console.log(name);
-    stockService.getItemByName(name).then((results) => {
-        res.status(200).json(results);
+    stockService.getItemByName(name, page).then((results) => {
+        var tamanho = results.length;
+        if (results.length === 0) {
+            res.status(404).send();
+        }
+
+        for (j = results.length; j < pagesize; j++) {
+            results.push({ ref: "" });
+        }
+        const finalArr = [];
+
+        stockService.get5ItemsStockInStores(results[0].ref, results[1].ref, results[2].ref, results[3].ref, results[4].ref).then((stocks) => {
+            for (i = 0; i < tamanho; i++) {
+                lojas = {...lojasDefault };
+                totalStock = 0;
+                lojas, totalStock = formatLojasDefault(lojas, stocks[i], totalStock);
+
+                finalArr[i] = {
+                    info: results[i],
+                    stock: lojas,
+                    totalStock: totalStock
+                }
+
+            }
+            res.status(200).json({
+                totalresults: results[0].total,
+                totalpages: Math.ceil(results[0].total / pagesize),
+                content: finalArr
+            });
+
+        });
     });
 
 
@@ -54,76 +120,7 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
             stockService.getItemByCollersAndSizes(itemRef).then((colors) => {
                 var myMap = new Map();
                 totalStock = 0;
-                const lojas = {
-                    "barcelos": "",
-                    "viana": "",
-                    "guima": "",
-                    "santander": "",
-                    "leiria": "",
-                    "caldas": "",
-                }
-
-                for (var i = 0; i < colors.length; i++) {
-
-                    var obj = colors[i];
-                    if (myMap.get(obj.cor) === undefined) {
-                        let value = {
-                            ...lojas,
-                            totalStockBarcelos: 0,
-                            totalStockViana: 0,
-                            totalStockBGuima: 0,
-                            totalStockSantander: 0,
-                            totalStockLeiria: 0,
-                            totalStockCaldas: 0,
-                        };
-                        myMap.set(obj.cor, value);
-                        //console.log(myMap.get(obj.cor));
-                    }
-                    var tmp = "";
-                    switch (obj.armazem) {
-
-                        case 9:
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockBarcelos += obj.stock;
-                            myMap.get(obj.cor).barcelos = myMap.get(obj.cor).barcelos.concat(tmp).concat(obj.tam, ",");
-
-                            break;
-                        case 10:
-
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockViana += obj.stock;
-                            myMap.get(obj.cor).viana = myMap.get(obj.cor).viana.concat(tmp).concat(obj.tamanho, ",");
-                            break;
-                        case 11:
-
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockBGuima += obj.stock;
-                            myMap.get(obj.cor).guima = myMap.get(obj.cor).guima.concat(tmp).concat(obj.tam, ",");
-                            break;
-                        case 132:
-
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockSantander += obj.stock;
-                            myMap.get(obj.cor).santander = myMap.get(obj.cor).santander.concat(tmp).concat(obj.tam, ",");
-                            break;
-                        case 200:
-
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockLeiria += obj.stock;
-                            myMap.get(obj.cor).leiria = myMap.get(obj.cor).leiria.concat(tmp).concat(obj.tam, ",");
-                            break;
-                        case 201:
-
-                            obj.stock > 1 ? tmp = obj.stock : tmp = ""
-                            myMap.get(obj.cor).totalStockCaldas += obj.stock;
-                            myMap.get(obj.cor).caldas = myMap.get(obj.cor).caldas.concat(tmp).concat(obj.tam, ",");
-                            break;
-
-                        default:
-                            console.log("localizaçao desconhecida");
-                    }
-                    totalStock += obj.stock
-                }
+                myMap, totalStock = formatLojasColorsNSizes(myMap, colors, totalStock);
 
                 var coresEtamanhos = {};
                 var coresEtamanhosArr = [];
@@ -172,43 +169,10 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
         if (results.length > 0) {
             stockService.getItemStockInStores(itemRef).then((stores) => {
                 let totalStock = 0;
-                const lojas = {
-                    "barcelos": 0,
-                    "viana": 0,
-                    "guima": 0,
-                    "santander": 0,
-                    "leiria": 0,
-                    "caldas": 0,
-                }
+                const lojas = {...lojasDefault };
 
-                for (var i = 0; i < stores.length; i++) {
-                    var obj = stores[i];
-                    switch (obj.armazem) {
-                        case 9:
-                            lojas.barcelos = obj.stock
-                            break;
-                        case 10:
-                            lojas.viana = obj.stock
-                            break;
-                        case 11:
-                            lojas.guima = obj.stock
-                            break;
-                        case 132:
-                            lojas.santander = obj.stock
-                            break;
-                        case 200:
-                            lojas.leiria = obj.stock
-                            break;
-                        case 201:
-                            lojas.caldas = obj.stock
-                            break;
+                lojas, totalStock = formatLojasDefault(lojas, stores, totalStock);
 
-                        default:
-                            console.log("localizaçao desconhecida");
-                    }
-
-                    totalStock += obj.stock
-                }
                 const final = {
                     "info": results[0],
                     "stock": lojas,
@@ -227,8 +191,6 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
 
 
 });
-
-
 
 
 
