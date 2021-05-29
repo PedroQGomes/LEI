@@ -1,9 +1,10 @@
 .box {
     height: 90vh;
-    width: 100vw;
+    width: 85vw;
 }
 
 .input-and-button-wrapper {
+    height: 5vh;
     margin-left: 10vw;
     margin-right: 10vw;
     display: flex;
