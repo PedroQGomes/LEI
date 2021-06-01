@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-var constants = require('../constants');
+var constants, { month, formatReceitasinMonth, formatVendasinMonth } = require('../constants');
 var authUtils = require('../authUtils');
 const moment = require('moment');
 const salesService = require('../services/salesService');
@@ -13,9 +13,23 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
     }
     year = req.params.year;
+    console.log(year)
 
-    salesService.getYearSalesValues(year).then((results) => {
-        res.status(200).json(results);
+    salesService.getYearSalesValues(year).then((receita) => {
+
+        receitasMonth = formatReceitasinMonth(receita);
+
+        salesService.getYearSalesQtt(year).then((vendas) => {
+
+            vendas = formatVendasinMonth(vendas);
+            console.log(vendas)
+            console.log(receitasMonth)
+            res.status(200).json({
+                receita: receitasMonth,
+                vendas: vendas
+            });
+        })
+
     });
 
 });
@@ -96,4 +110,5 @@ const formatDateArray = (array) => {
 
 
 
+module.exports = router;
 module.exports = router;

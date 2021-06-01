@@ -85,7 +85,7 @@ async function getYearSalesQtt(year) {
         const result = await pool.request()
             .input('firstdate', sql.DateTime, firstdate)
             .input('lastdate', sql.DateTime, lastdate)
-            .query("select datalc,SUM (qtt) AS vendas from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt > 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY datalc ORDER BY datalc ASC");
+            .query("select mes = DATEPART(MONTH, datalc),SUM (qtt) AS vendas from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt > 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY (DATEPART(MONTH, datalc)) ORDER BY (DATEPART(MONTH, datalc)) ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -115,7 +115,7 @@ async function getYearSalesValues(year) {
         const result = await pool.request()
             .input('firstdate', sql.DateTime, firstdate)
             .input('lastdate', sql.DateTime, lastdate)
-            .query("select datalc,MAX(ETT) AS receita from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0  AND datalc >= @firstdate AND datalc <= @lastdate GROUP BY datalc ORDER BY datalc ASC");
+            .query("select mes = DATEPART(MONTH, datalc),MAX(ETT) AS receita from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0  AND datalc >=@firstdate  AND datalc <=@lastdate  and ETT > 0 GROUP BY (DATEPART(MONTH, datalc)) ORDER BY (DATEPART(MONTH, datalc)) ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);

@@ -4,3 +4,34 @@
     flex-direction: column;
     background-color: #fff;
 }
+
+.graphs-and-selected-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.graph-receitas-year {
+    height: 40vh;
+    width: 70vw;
+}
+
+.graph-salesNreturns-year {
+    height: 40vh;
+    width: 70vw;
+}
+
+.title-dashboard {
+    margin-top: 1vh;
+    font-size: xx-large;
+    text-align: center;
+}
+
+.select-year-box-dashboard {
+    margin-left: 2vw;
+}
+
+.select-year-text-dashboard {
+    font-size: large;
+    margin-bottom: 1vh;
+}

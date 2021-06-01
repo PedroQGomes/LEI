@@ -4,6 +4,17 @@ const accessToken = '30m';
 const refreshCookie = 7 * 24 * 60 * 60 * 1000;
 const refreshToken = '7d';
 
+const monthReceita = [{ mes: "Jan", receita: 0 }, { mes: "Fev", receita: 0 }, { mes: "Mar", receita: 0 }, { mes: "Abr", receita: 0 }, { mes: "Mai", receita: 0 }, { mes: "Jun", receita: 0 },
+    { mes: "Jul", receita: 0 }, { mes: "Ago", receita: 0 }, { mes: "Set", receita: 0 }, { mes: "Out", receita: 0 }, { mes: "Nov", receita: 0 }, { mes: "Dez", receita: 0 }
+]
+
+
+const monthVendas = [{ mes: "Jan", vendas: 0 }, { mes: "Fev", vendas: 0 }, { mes: "Mar", vendas: 0 }, { mes: "Abr", vendas: 0 }, { mes: "Mai", vendas: 0 }, { mes: "Jun", vendas: 0 },
+    { mes: "Jul", vendas: 0 }, { mes: "Ago", vendas: 0 }, { mes: "Set", vendas: 0 }, { mes: "Out", vendas: 0 }, { mes: "Nov", vendas: 0 }, { mes: "Dez", vendas: 0 }
+]
+
+
+
 const lojasDefault = {
     "barcelos": 0,
     "viana": 0,
@@ -12,6 +23,7 @@ const lojasDefault = {
     "leiria": 0,
     "caldas": 0,
 }
+
 
 const lojasColorsNSizes = {
     "barcelos": "",
@@ -27,6 +39,33 @@ const lojasColorsNSizes = {
     totalStockLeiria: 0,
     totalStockCaldas: 0,
 };
+
+
+const formatReceitasinMonth = (receita) => {
+    receitasMonth = [{ mes: "Jan", receita: 0 }, { mes: "Fev", receita: 0 }, { mes: "Mar", receita: 0 }, { mes: "Abr", receita: 0 }, { mes: "Mai", receita: 0 }, { mes: "Jun", receita: 0 },
+        { mes: "Jul", receita: 0 }, { mes: "Ago", receita: 0 }, { mes: "Set", receita: 0 }, { mes: "Out", receita: 0 }, { mes: "Nov", receita: 0 }, { mes: "Dez", receita: 0 }
+    ];
+    for (var i = 0; i < receita.length; i++) {
+        var entry = receita[i].mes;
+        receitasMonth[entry - 1].receita = receita[i].receita;
+    }
+    return receitasMonth
+
+}
+
+
+const formatVendasinMonth = (vendas) => {
+    var vendasMonth = [{ mes: "Jan", vendas: 0 }, { mes: "Fev", vendas: 0 }, { mes: "Mar", vendas: 0 }, { mes: "Abr", vendas: 0 }, { mes: "Mai", vendas: 0 }, { mes: "Jun", vendas: 0 },
+        { mes: "Jul", vendas: 0 }, { mes: "Ago", vendas: 0 }, { mes: "Set", vendas: 0 }, { mes: "Out", vendas: 0 }, { mes: "Nov", vendas: 0 }, { mes: "Dez", vendas: 0 }
+    ];
+    for (var i = 0; i < vendas.length; i++) {
+        var entry = vendas[i].mes;
+        vendasMonth[entry - 1].vendas = vendas[i].vendas;
+    }
+    return vendasMonth
+
+}
+
 
 
 const formatLojasDefault = (lojas, stores, totalStock) => {
@@ -133,5 +172,7 @@ module.exports = {
     lojasDefault: lojasDefault,
     formatLojasDefault: formatLojasDefault,
     lojasColorsNSizes: lojasColorsNSizes,
-    formatLojasColorsNSizes: formatLojasColorsNSizes
+    formatLojasColorsNSizes: formatLojasColorsNSizes,
+    formatReceitasinMonth: formatReceitasinMonth,
+    formatVendasinMonth: formatVendasinMonth
 };

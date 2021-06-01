@@ -41,14 +41,13 @@ const Item = ({ match }) => {
             setretornos(res.data.retornos);
             setlucro(res.data.totalsales);
             settopVendas(res.data.topvendas);
-            console.log(topVendas);
-            console.log(res.data.topvendas);
+            
             setstartDate(moment(res.data.sales[0].datalc.toString(), "DD/MM/YYYY").toDate());
             setendDate(moment(res.data.sales[res.data.sales.length - 1].datalc.toString(), "DD/MM/YYYY").toDate());
             setsalesLoading(false);
             
         }).catch((error) => {
-            //console.log(error)
+            console.log(error)
             setvendas(null);
             setretornos(null);
             setsalesLoading(false);
@@ -76,8 +75,9 @@ const Item = ({ match }) => {
         </div>
         );
     };
-
-    if(artigo === null || vendas === null || retornos === null || topVendas=== null ){
+   
+ 
+    if(artigo === null){
         return(
             <div>
             artigo inexistente
@@ -126,7 +126,7 @@ const Item = ({ match }) => {
            
           
             <Box className="second-half-sales-statistics">
-                <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" >
+                {(topVendas.length  !== 0) ? <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" >
                     <Table size="x-sm" variant="simple" className="tabela-top-vendas" >
                         <Thead>
                             <Tr>
@@ -140,20 +140,29 @@ const Item = ({ match }) => {
                         </Tbody>
                     </Table>
                     
-                </Box>
-                <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
+                </Box>: <div>
+                    o artigo nao tem vendas
+                </div>}
+                {vendas ? <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
                     <DatePicker data={startDate} onClick={setstartDate}/>
                     <DatePicker data={endDate} onClick={setendDate}/>
                     <Box className="second-half-sales-return-graph">
                         <SalesNreturns vendas={vendas} retornos={retornos}/>
                     </Box>
                     
-                </Box>
-                <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
+                </Box> : <div>
+                    
+                </div>}
+                
+                { (lucro.length !== 0) ? <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
                     <Box className="second-half-sales-graph">
                      <Totalsales vendas={lucro}/>   
                     </Box>
-                </Box>
+                </Box> : <div>
+                    
+                </div>
+                }
+                
                 
             </Box>
             
