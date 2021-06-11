@@ -30,6 +30,25 @@ const SearchRef = () => {
     if(loading){
       return(<Spinner className="loading" size="xl" color="red.500" />);
     }
+    
+
+    if(artigo === null){
+        return(
+        <Box className="box">
+          <Box className="input-and-button-wrapper">
+            <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)}/>
+
+            <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Pesquisar</Button>
+          </Box>
+          {errormessage ? 
+           <FormLabel className="error-message">0 Artigos Encontrados</FormLabel> 
+           : <FormLabel className="error-message">Faça uma pesquisa de um artigo por referencia, ex: PV21SN10403</FormLabel>
+          }
+          
+      </Box>
+      );
+    }
+
 
     
     return (
@@ -37,13 +56,9 @@ const SearchRef = () => {
           <Box className="input-and-button-wrapper">
             <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)}/>
 
-            <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Search</Button>
+            <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Pesquisar</Button>
           </Box>
-          {artigo ? 
-           <ItemBox artigo={artigo}/> : 
-          <FormLabel className="error-message">0 Artigos Encontrados</FormLabel>
-          
-          }
+          <ItemBox artigo={artigo}/>
       </Box>
   );
 }

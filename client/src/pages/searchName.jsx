@@ -7,7 +7,7 @@ import './css/pagingSearch.css';
 const SearchName = () => {
     const [nome, setnome] = useState("")
     const [currPage, setcurrPage] = useState(0)
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const [pageCount, setPageCount] = useState(0);
     const [errormessage, seterrormessage] = useState(false);
     const [loading, setloading] = useState(false);
@@ -26,24 +26,30 @@ const SearchName = () => {
          
         }).catch((error) => {
           seterrormessage(true);
-          setData([]);
+          setData(null);
           setloading(false);
         });
     }
 
     useEffect(() => {
-         axios.get('/api/stock/name/'+ nome +"?page=" + currPage).then((res) => {
+        if(nome !== ""){
+
+            axios.get('/api/stock/name/'+ nome +"?page=" + currPage).then((res) => {
             setPageCount(res.data.totalpages);
             var artigos = res.data.content;
              const postData = artigos.map(pd => <div>
                     <ItemBox artigo={pd}/> : 
             </div>)
             setData(postData);
+            seterrormessage(false);
          
-        }).catch((error) => {
-            setData([]);
-          
-        });
+            }).catch((error) => {
+                seterrormessage(true);
+                setData(null);
+            
+            });
+        }
+         
     }, [currPage])
     
         
@@ -57,7 +63,7 @@ const SearchName = () => {
       return(<Spinner className="loading" size="xl" color="red.500" />);
     }
 
-    if(data.length === 0){
+    if(data === null){
         return(
         <Box className="page" >
 
@@ -66,6 +72,10 @@ const SearchName = () => {
 
                 <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Search</Button>
             </Box> 
+            {errormessage ? 
+                <FormLabel className="error-message">0 Artigos Encontrados</FormLabel> 
+                : <FormLabel className="error-message">Faça uma pesquisa de um artigo por nome, ex: CALÇA 10403</FormLabel>
+            }
       </Box>);
     }
 
@@ -76,7 +86,7 @@ const SearchName = () => {
             <Box className="input-and-button-wrapper">
                 <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Nome" onChange={(e) => setnome(e.target.value)}/>
 
-                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Search</Button>
+                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box>
 
             <Box className="dataGrid"  overflowY="auto" borderWidth="2px" borderRadius="lg" >

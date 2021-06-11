@@ -30,7 +30,7 @@ const Item = ({ match }) => {
             setartigo(res.data);
             setstockLoading(false);
         }).catch((error) => {
-            //console.log(error)
+            console.log(error)
             setstockLoading(false);
             setartigo(null);
         });
@@ -55,16 +55,7 @@ const Item = ({ match }) => {
         
     }, [])
 
-    /*
-    useEffect(() => {
-        axios.get('file://192.168.1.1/FOTOS/PV18SN90024.jpg').then((res) => {
-                console.log("works")
-                
-            }).catch((error) => {
-                console.log(error)
-            });
-
-    }, []); */
+   
 
 
 
@@ -116,17 +107,23 @@ const Item = ({ match }) => {
                     </Box>
 
                 </Box>
+                <Box className="first-half-image">
+                    <Image src={process.env.PUBLIC_URL + artigo.info.imagem.substring(13)} />    
+                </Box>
                 
-                <Image src={process.env.PUBLIC_URL + '/fotos/'+'OI20SN91333'+'.jpg'} className="first-half-image"/>
                 
                 <Box className="first-half-item-SecondTextBox" overflowY="auto" >
-                     <StockTabs stock={artigo.stock}/>
+                    {artigo.stock.length !== 0 ? <StockTabs stock={artigo.stock}/>:<Box>
+                        Stock nao encontrado do artigo
+                    </Box>}
+                     
                 </Box>
             </Box>
            
           
             <Box className="second-half-sales-statistics">
-                {(topVendas.length  !== 0) ? <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" >
+                <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" >
+                    {(topVendas.length  !== 0) ?
                     <Table size="x-sm" variant="simple" className="tabela-top-vendas" >
                         <Thead>
                             <Tr>
@@ -138,30 +135,33 @@ const Item = ({ match }) => {
                         <Tbody>
                             {topVendas.map((tab,index) => (formatTopVendasEntry(topVendas[index])))}
                         </Tbody>
-                    </Table>
-                    
-                </Box>: <div>
-                    o artigo nao tem vendas
-                </div>}
-                {vendas ? <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
-                    <DatePicker data={startDate} onClick={setstartDate}/>
-                    <DatePicker data={endDate} onClick={setendDate}/>
-                    <Box className="second-half-sales-return-graph">
-                        <SalesNreturns vendas={vendas} retornos={retornos}/>
+                        </Table>: <div>
+                        o artigo nao tem top vendas
+                    </div>}
+                </Box>
+                <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
+                    {vendas ?
+                    <Box>
+                        <DatePicker data={startDate} onClick={setstartDate}/>
+                        <DatePicker data={endDate} onClick={setendDate}/>
+                        <Box className="second-half-sales-return-graph">
+                            <SalesNreturns vendas={vendas} retornos={retornos}/>
+                        </Box>   
                     </Box>
-                    
-                </Box> : <div>
-                    
+                    : <div>
+                         o artigo nao tem quantidade de vendas
                 </div>}
+                </Box> 
                 
-                { (lucro.length !== 0) ? <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
+                <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
+                    { (lucro.length !== 0) ?
                     <Box className="second-half-sales-graph">
                      <Totalsales vendas={lucro}/>   
                     </Box>
-                </Box> : <div>
-                    
-                </div>
-                }
+                    : <div>
+                    o artigo nao tem receitas de vendas
+                </div>}
+                </Box> 
                 
                 
             </Box>

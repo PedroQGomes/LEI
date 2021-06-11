@@ -7,7 +7,7 @@ async function getItemByRef(itemRef) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
-            .query("SELECT ref,design,usr1,usr5,opendata from st WHERE ref = @itemRef");
+            .query("SELECT ref,design,usr1,usr5,opendata,imagem from st WHERE ref = @itemRef");
         //console.log(result.recordsets);
         return result.recordsets[0];
     } catch (error) {
@@ -20,7 +20,7 @@ async function getItemByRefAllData(itemRef) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
-            .query("SELECT ref,design,fornecedor,fornec,desc2,usr1,usr2,usr3,usr4,usr5 from st WHERE ref = @itemRef");
+            .query("SELECT ref,design,fornecedor,fornec,desc2,usr1,usr2,usr3,usr4,usr5,imagem from st WHERE ref = @itemRef");
         //console.log(result.recordsets);
         return result.recordsets[0];
     } catch (error) {
@@ -86,7 +86,7 @@ async function getItemByName(nome, page) {
             .input('nome', sql.VarChar, nome)
             .input('page', sql.Int, page)
             .input('rows', sql.Int, constants.pagesize)
-            .query("SELECT ref,design,usr1,usr5,opendata,COUNT(*) OVER() AS total from st WHERE design = @nome ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
+            .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design = @nome ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
         //console.log(result.recordsets);
         return result.recordsets[0];
     } catch (error) {
@@ -103,7 +103,7 @@ async function getItemBycategory(categ, page) {
             .input('categ', sql.VarChar, categ)
             .input('page', sql.Int, page)
             .input('rows', sql.Int, constants.pagesize)
-            .query("SELECT ref,design,usr1,usr5,opendata,COUNT(*) OVER() AS total from st WHERE usr1 = @categ ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
+            .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE usr1 = @categ ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
         //console.log(result.recordsets)
         return result.recordsets[0];
     } catch (error) {

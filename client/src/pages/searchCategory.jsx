@@ -8,7 +8,7 @@ import './css/pagingSearch.css';
 const SearchCategory = () => {
     const [categoria, setcategoria] = useState("")
     const [currPage, setcurrPage] = useState(0)
-    const [data, setData] = useState([]);
+    const [data, setData] = useState(null);
     const [pageCount, setPageCount] = useState(0);
     const [errormessage, seterrormessage] = useState(false);
     const [loading, setloading] = useState(false);
@@ -27,24 +27,28 @@ const SearchCategory = () => {
          
         }).catch((error) => {
           seterrormessage(true);
-          setData([]);
+          setData(null);
           setloading(false);
         });
     }
 
     useEffect(() => {
-         axios.get('/api/stock/category/'+ categoria +"?page=" + currPage).then((res) => {
+        if(categoria !== ""){
+            axios.get('/api/stock/category/'+ categoria +"?page=" + currPage).then((res) => {
             setPageCount(res.data.totalpages);
             var artigos = res.data.content;
              const postData = artigos.map(pd => <div>
                     <ItemBox artigo={pd}/> : 
             </div>)
             setData(postData);
+            seterrormessage(false);
+            }).catch((error) => {
+                setData(null);
+                seterrormessage(true);
+            
+            });
+        }
          
-        }).catch((error) => {
-            setData([]);
-          
-        });
     }, [currPage])
     
         
@@ -58,15 +62,19 @@ const SearchCategory = () => {
       return(<Spinner className="loading" size="xl" color="red.500" />);
     }
 
-    if(data.length === 0){
+    if(data === null){
         return(
         <Box className="page" >
 
             <Box className="input-and-button-wrapper">
                 <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)}/>
 
-                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Search</Button>
+                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box> 
+            {errormessage ? 
+                <FormLabel className="error-message">0 Artigos Encontrados</FormLabel> 
+                : <FormLabel className="error-message">Faça uma pesquisa de um artigo por categoria, ex: CALÇAS - 0400</FormLabel>
+            }
       </Box>);
     }
 
@@ -77,7 +85,7 @@ const SearchCategory = () => {
             <Box className="input-and-button-wrapper">
                 <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)}/>
 
-                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Search</Button>
+                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box>
 
             <Box className="dataGrid"  overflowY="auto" borderWidth="2px" borderRadius="lg" >

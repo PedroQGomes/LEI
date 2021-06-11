@@ -6,14 +6,14 @@ import './ItemBox.css';
 const ItemBox = (props) => {
 
   const history = useHistory();
-
+  console.log(props.artigo.info)
   const moreInfo = () =>{
       history.push("/item/" + props.artigo.info.ref);
   }
 
     return (
         <Box className="itemBox" borderWidth="7px" borderRadius="lg" overflow="hidden" bg="#A3CFEC">
-          <Image src={process.env.PUBLIC_URL + '/android-chrome-192x192.png'} className="image"/>
+          <Image src={process.env.PUBLIC_URL + props.artigo.info.imagem.substring(13)} className="image"/>
           <Box className="textbox">
             <Box className="firstTextBox">
               <Text className="text">
