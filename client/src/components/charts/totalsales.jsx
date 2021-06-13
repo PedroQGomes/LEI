@@ -16,7 +16,7 @@ const Totalsales = (props) => {
                         <stop offset="95%" stopColor="#82ca9d" stopOpacity={0}/>
                         </linearGradient>
                     </defs>
-                    <XAxis dataKey="datalc" />
+                    <XAxis dataKey="mes" />
                     <YAxis allowDecimals={false}/>
                     <CartesianGrid strokeDasharray="3 3" />
                     <Tooltip />
