@@ -1,13 +1,15 @@
 .itemBox {
     margin-top: 5vh;
     margin-left: 2vw;
-    margin-right: 5vw;
+    width: 77vw;
+    height: 11vw;
     display: flex;
     flex-direction: row;
     flex: 1;
 }
 
 .textbox {
+    margin-top: 0.5vh;
     margin-left: 1vw;
     display: flex;
     flex-direction: row;
@@ -15,7 +17,7 @@
 }
 
 .firstTextBox {
-    margin-top: 1vh;
+    width: 11vw;
     margin-left: 0.5vw;
 }
 
@@ -37,16 +39,18 @@
     margin-left: 1vh;
     margin-top: 1vh;
     margin-bottom: 1vh;
+    width: 9vw;
+    height: 10vh;
 }
 
 .plusbutton {
-    margin-right: 2vw;
     margin-top: 8vh;
-    margin-left: 5vw;
+    width: 15vw;
     text-align: center;
 }
 
 .tabela {
+    width: 15vw;
     margin-top: 4vh;
     margin-left: 4vw;
 }

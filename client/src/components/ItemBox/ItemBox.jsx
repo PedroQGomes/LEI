@@ -13,7 +13,9 @@ const ItemBox = (props) => {
 
     return (
         <Box className="itemBox" borderWidth="7px" borderRadius="lg" overflow="hidden" bg="#A3CFEC">
-          <Image src={process.env.PUBLIC_URL + props.artigo.info.imagem.substring(13)} className="image"/>
+          <div className="image">
+            <Image src={process.env.PUBLIC_URL + props.artigo.info.imagem.substring(13)} fallbackSrc={process.env.PUBLIC_URL + "/No_image_available.png"}/>
+          </div>
           <Box className="textbox">
             <Box className="firstTextBox">
               <Text className="text">
@@ -28,7 +30,7 @@ const ItemBox = (props) => {
               <Text className="text">
                 {JSON.stringify(props.artigo.info.usr5).split('"').join('')}
               </Text> 
-              <Text className="text2">
+              <Text className="text">
                 Stock Total : {props.artigo.totalStock}
               </Text> 
               <Text className="text">
@@ -86,8 +88,10 @@ const ItemBox = (props) => {
                 </Tbody>
             </Table>
             </Box>
+            <Box className="plusbutton">
+              <Button colorScheme='blue' color='white' onClick={moreInfo}>+</Button>  
+            </Box>
             
-            <Button className="plusbutton" colorScheme='blue' color='white' onClick={moreInfo}>+</Button>
           </Box>
         </Box> 
 

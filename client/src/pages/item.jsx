@@ -108,7 +108,7 @@ const Item = ({ match }) => {
 
                 </Box>
                 <Box className="first-half-image">
-                    <Image src={process.env.PUBLIC_URL + artigo.info.imagem.substring(13)} />    
+                    <Image src={process.env.PUBLIC_URL + artigo.info.imagem.substring(13)} fallbackSrc={process.env.PUBLIC_URL + "/No_image_available.png"}/>    
                 </Box>
                 
                 

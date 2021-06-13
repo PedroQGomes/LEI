@@ -70,7 +70,7 @@ const SearchName = () => {
             <Box className="input-and-button-wrapper">
                 <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Nome" onChange={(e) => setnome(e.target.value)}/>
 
-                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Search</Button>
+                <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box> 
             {errormessage ? 
                 <FormLabel className="error-message">0 Artigos Encontrados</FormLabel> 

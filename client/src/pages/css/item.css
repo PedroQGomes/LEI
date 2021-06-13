@@ -12,13 +12,18 @@
 }
 
 .first-half-item-SecondTextBox {
-    width: 50vw;
+    width: 55vw;
+}
+
+img {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
 .first-half-image {
-    margin-left: 1vw;
-    margin-top: 1vw;
-    width: 15vw;
+    margin-top: 1.5vw;
+    width: 10vw;
 }
 
 .first-half-item-text {
