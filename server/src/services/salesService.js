@@ -8,8 +8,8 @@ async function getItemSalesQtt(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select datalc,SUM (qtt) AS vendas from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt >0 GROUP BY datalc ORDER BY datalc ASC");
-        //console.log(result.recordsets[0]);
+            .query("select  ano = YEAR(datalc),mes = MONTH(datalc),SUM (qtt) AS vendas from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt >0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc),MONTH(datalc)  ASC");
+        console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -40,8 +40,8 @@ async function getItemReturns(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select datalc,ABS(SUM (qtt)) AS retornos from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY datalc ORDER BY datalc ASC");
-        //console.log(result.recordsets[0]);
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),ABS(SUM (qtt)) AS retornos from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc),MONTH(datalc)  ASC");
+        console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -55,7 +55,8 @@ async function getItemSalesValues(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select datalc,SUM(ETT) AS receita from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 GROUP BY datalc ORDER BY datalc ASC");
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0  AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc),MONTH(datalc)  ASC");
+        console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);

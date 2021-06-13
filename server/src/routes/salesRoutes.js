@@ -41,40 +41,83 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
     }
     itemRef = req.params.ref;
-
-
+    console.log(itemRef)
     salesService.getItemSalesQtt(itemRef).then((sales) => {
-        sales = formatDateArray(sales);
+        if (sales.length > 0) {
+            salesmap = formatVendasArray(sales);
+        }
+        var vendasObj = {};
+        var vendasArr = [];
+
+        function registrarVendasDoMapa(valor, chave, mapa) {
+            vendasObj.arr = valor;
+            vendasObj.ano = chave;
+            vendasArr.push(vendasObj);
+            vendasObj = {};
+        }
+
+        salesmap.forEach(registrarVendasDoMapa);
+
 
         salesService.getItemReturns(itemRef).then((returns) => {
+            if (returns.length > 0) {
+                returnsmap = formatRetornosArray(returns);
+            }
 
-            returns = formatDateArray(returns);
+            var returnsObj = {};
+            var returnsArr = [];
 
+            function registrarReturnsDoMapa(valor, chave, mapa) {
+                returnsObj.arr = valor;
+                returnsObj.ano = chave;
+                returnsArr.push(returnsObj);
+                returnsObj = {};
+            }
+
+            returnsmap.forEach(registrarReturnsDoMapa);
 
             salesService.getItemSalesCorlorsNSizes(itemRef).then((topvendas) => {
 
                 salesService.getItemSalesValues(itemRef).then((totalsales) => {
-                    totalsales = formatDateArray(totalsales);
+                    if (totalsales.length > 0) {
+                        totalsalesmap = formatReceitaArray(totalsales);
+                    }
+
+                    var receitaObj = {};
+                    var receitaArr = [];
+
+                    function registrarReceitaDoMapa(valor, chave, mapa) {
+                        receitaObj.arr = valor;
+                        receitaObj.ano = chave;
+                        receitaArr.push(receitaObj);
+                        receitaObj = {};
+                    }
+
+                    totalsalesmap.forEach(registrarReceitaDoMapa);
 
                     const final = {
-                        "sales": sales,
-                        "retornos": returns,
+                        "sales": vendasArr,
+                        "retornos": returnsArr,
                         "topvendas": topvendas,
-                        "totalsales": totalsales
+                        "totalsales": receitaArr
                     };
                     res.status(200).json(final);
                 }).catch((err) => {
+                    console.log("akjsdasd1")
                     res.status(404).send("sales not found");
                 });
 
             }).catch((err) => {
+                console.log("akjsdasd2")
                 res.status(404).send("sales not found");
             });
         }).catch((err) => {
+            console.log("akjsdasd3")
             res.status(404).send("sales not found");
         });
 
     }).catch((err) => {
+        console.log(err)
         res.status(404).send("sales not found");
     });
 });
@@ -85,12 +128,52 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
 
 
 
-const formatDateArray = (array) => {
+const formatReceitaArray = (array) => {
+    myMap = new Map()
+
     for (var i = 0; i < array.length; i++) {
-        datastring = array[i].datalc.toLocaleDateString('en-GB');
-        array[i].datalc = datastring;
+        entry = array[i];
+        if (myMap.get(entry.ano) === undefined) {
+            myMap.set(entry.ano, [{ mes: 1, receita: 0 }, { mes: 2, receita: 0 }, { mes: 3, receita: 0 }, { mes: 4, receita: 0 }, { mes: 5, receita: 0 }, { mes: 6, receita: 0 },
+                { mes: 7, receita: 0 }, { mes: 8, receita: 0 }, { mes: 9, receita: 0 }, { mes: 10, receita: 0 }, { mes: 11, receita: 0 }, { mes: 12, receita: 0 }
+            ]);
+        }
+        myMap.get(entry.ano)[entry.mes - 1].receita = entry.receita;
     }
-    return array
+    console.log(myMap)
+    return myMap
+}
+
+const formatVendasArray = (array) => {
+    myMap = new Map()
+
+    for (var i = 0; i < array.length; i++) {
+        entry = array[i];
+        if (myMap.get(entry.ano) === undefined) {
+            myMap.set(entry.ano, [{ mes: 1, vendas: 0 }, { mes: 2, vendas: 0 }, { mes: 3, vendas: 0 }, { mes: 4, vendas: 0 }, { mes: 5, vendas: 0 }, { mes: 6, vendas: 0 },
+                { mes: 7, vendas: 0 }, { mes: 8, vendas: 0 }, { mes: 9, vendas: 0 }, { mes: 10, vendas: 0 }, { mes: 11, vendas: 0 }, { mes: 12, vendas: 0 }
+            ]);
+        }
+        myMap.get(entry.ano)[entry.mes - 1].vendas = entry.vendas;
+    }
+    console.log(myMap)
+    return myMap
+}
+
+const formatRetornosArray = (array) => {
+    myMap = new Map()
+
+    for (var i = 0; i < array.length; i++) {
+        entry = array[i];
+        if (myMap.get(entry.ano) === undefined) {
+            myMap.set(entry.ano, [{ mes: 1, retornos: 0 }, { mes: 2, retornos: 0 }, { mes: 3, retornos: 0 }, { mes: 4, retornos: 0 }, { mes: 5, retornos: 0 }, { mes: 6, retornos: 0 },
+                { mes: 7, retornos: 0 }, { mes: 8, retornos: 0 }, { mes: 9, retornos: 0 }, { mes: 10, retornos: 0 }, { mes: 11, retornos: 0 }, { mes: 12, retornos: 0 }
+            ]);
+        }
+        myMap.get(entry.ano)[entry.mes - 1].retornos = entry.retornos;
+    }
+    console.log(myMap)
+    return myMap
 }
 
 
@@ -110,5 +193,4 @@ const formatDateArray = (array) => {
 
 
 
-module.exports = router;
 module.exports = router;
