@@ -4,6 +4,7 @@ import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
 import { Input,Button,Box,FormLabel,Spinner } from "@chakra-ui/react"
 import './css/pagingSearch.css';
+import { DataGrid } from '@material-ui/data-grid';
 
 const SearchCategory = () => {
     const [categoria, setcategoria] = useState("")
@@ -12,19 +13,17 @@ const SearchCategory = () => {
     const [pageCount, setPageCount] = useState(0);
     const [errormessage, seterrormessage] = useState(false);
     const [loading, setloading] = useState(false);
+    const [pageSize, setpageSize] = useState(5)
 
     const searchCat = () =>{
       setloading(true);
        axios.get('/api/stock/category/'+ categoria).then((res) => {
-         setPageCount(res.data.totalpages);
-            var artigos = res.data.content;
-             const postData = artigos.map(pd => <div>
-                    <ItemBox artigo={pd}/> : 
-            </div>)
-         setData(postData);
-         seterrormessage(false);
-         setloading(false);
-         
+        setPageCount(res.data.totalpages);
+        var artigos = res.data.content;
+        const postData = artigos.map(pd => <div> <ItemBox artigo={pd}/> : </div>)
+        setData(postData);
+        seterrormessage(false);
+        setloading(false);
         }).catch((error) => {
           seterrormessage(true);
           setData(null);
@@ -78,6 +77,16 @@ const SearchCategory = () => {
       </Box>);
     }
 
+    /**
+     * <DataGrid
+                pageSize={pageSize}
+                onPageSizeChange={handlePageSizeChange}
+                rowsPerPageOptions={[5, 10, 20]}
+                pagination
+                {...data}
+                />
+     */
+
 
     return (
         <Box className="page" >
@@ -87,6 +96,8 @@ const SearchCategory = () => {
 
                 <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box>
+
+            
 
             <Box className="dataGrid"  overflowY="auto" borderWidth="2px" borderRadius="lg" >
                 {data}    
@@ -111,4 +122,7 @@ const SearchCategory = () => {
     )
 }
 
+function handlePageSizeChange() {
+    
+}
 export default SearchCategory

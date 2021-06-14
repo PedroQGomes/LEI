@@ -17,7 +17,10 @@
 }
 
 .firstTextBox {
-    width: 11vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 21vw;
     margin-left: 0.5vw;
 }
 
@@ -45,12 +48,12 @@
 
 .plusbutton {
     margin-top: 8vh;
-    width: 15vw;
+    width: 10vw;
     text-align: center;
 }
 
 .tabela {
-    width: 15vw;
+    width: 12vw;
     margin-top: 4vh;
     margin-left: 4vw;
 }

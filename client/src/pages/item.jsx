@@ -6,7 +6,7 @@ import { Image,Box,Stack,Select,tab,Table,Thead,Tr,Th,Td,Tbody} from "@chakra-ui
 import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
-import DatePicker from '../components/DatePicker/myDatePicker'
+import TableInfo from '../components/Table/TableInfo'
 import moment from 'moment';
 
 const Item = ({ match }) => {
@@ -78,30 +78,7 @@ const Item = ({ match }) => {
         <Box>
             <Box className="first-half-item-fullstats"  borderWidth="2px" borderRadius="lg" overflow="hidden">
                 <Box className="first-half-item-FirstTextBox" >
-                    <Box className="first-half-item-text">
-                        
-                        {artigo.info.ref}
-                    </Box>
-                    <Box className="first-half-item-text">
-                        
-                        {artigo.info.design}
-                    </Box>
-                    <Box className="first-half-item-text">
-                        
-                        {artigo.info.fornecedor} {artigo.info.desc2}
-                    </Box>
-                    <Box className="first-half-item-text">
-                        
-                         {artigo.info.usr1}
-                    </Box>
-                    <Box className="first-half-item-text">
-                        
-                         {artigo.info.usr5}
-                    </Box>
-                    <Box className="first-half-item-saldo">
-                         Stock total: {artigo.totalStock}
-                    </Box>
-
+                    <TableInfo artigo={artigo.info} totalStock={artigo.totalStock} size="sm" fornecedor={true}/>
                 </Box>
                 <Box className="first-half-image">
                     <Image src={process.env.PUBLIC_URL + artigo.info.imagem.substring(13)} fallbackSrc={process.env.PUBLIC_URL + "/No_image_available.png"}/>    
@@ -155,9 +132,14 @@ const Item = ({ match }) => {
                             
   
                         </Box>
-                        <Box className="second-half-sales-return-graph">
+                        {(retornos.length != 0) ? <Box className="second-half-sales-return-graph">
                             <SalesNreturns vendas={vendas[0].arr} retornos={retornos[0].arr}/>
+                        </Box>  :
+                        <Box className="second-half-sales-return-graph">
+                            <SalesNreturns vendas={vendas[0].arr} />
                         </Box>   
+                        }
+                        
                     </Box>
                     : <div>
                          o artigo nao tem quantidade de vendas

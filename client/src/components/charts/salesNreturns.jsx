@@ -3,7 +3,7 @@ import { ComposedChart ,XAxis,Tooltip,CartesianGrid,YAxis,Legend,Bar,ResponsiveC
 const SalesNreturns = (props) => {
 
     const [vendas, setvendas] = useState(()=>{
-        if(props.vendas === null) {
+        if(props.vendas === undefined) {
             return []
         }
 
@@ -20,7 +20,7 @@ const SalesNreturns = (props) => {
     })
 
     const [retornos, setretornos] = useState(()=>{
-        if(props.retornos === null) {
+        if(props.retornos === undefined) {
             return []
         }
 

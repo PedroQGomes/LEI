@@ -1,12 +1,15 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { Box,Image,FormLabel,Button,Table,Thead,Tr,Th,Td,Tbody,Text } from "@chakra-ui/react"
 import { Link, useHistory } from "react-router-dom";
 import './ItemBox.css';
+import TableInfo from '../Table/TableInfo'
 
 const ItemBox = (props) => {
 
   const history = useHistory();
   console.log(props.artigo.info)
+  const [artigo, setartigo] = useState(props.artigo.info)
+  const [totalStock, settotalStock] = useState(props.artigo.totalStock)
   const moreInfo = () =>{
       history.push("/item/" + props.artigo.info.ref);
   }
@@ -18,25 +21,32 @@ const ItemBox = (props) => {
           </div>
           <Box className="textbox">
             <Box className="firstTextBox">
-              <Text className="text">
-                Ref : {props.artigo.info.ref.split('"').join('')}
-              </Text>
-              <Text className="text">
-                Nome: {props.artigo.info.design.split('"').join('')}
-              </Text>
-              <Text className="text">
-                Cat: {props.artigo.info.usr1.split('"').join('')}
-              </Text>
-              <Text className="text">
-                {JSON.stringify(props.artigo.info.usr5).split('"').join('')}
-              </Text> 
-              <Text className="text">
-                Stock Total : {props.artigo.totalStock}
-              </Text> 
-              <Text className="text">
-                {props.artigo.info.opendata.substring(0, 10)}
-              </Text> 
+              <Table size="sm" variant="simple">
               
+                             <Tbody>
+                                        <Tr>
+                                            <Td>Referencia</Td>
+                                            <Td isNumeric>{props.artigo.info.ref}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Nome</Td>
+                                            <Td isNumeric>{props.artigo.info.design}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Categoria</Td>
+                                            <Td isNumeric>{props.artigo.info.usr1}</Td>
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Composiçao</Td>
+                                            <Td isNumeric>{props.artigo.info.usr5}</Td>
+                                            
+                                        </Tr>
+                                        <Tr>
+                                            <Td>Stock Total</Td>
+                                            <Td isNumeric>{props.artigo.totalStock}</Td>
+                                        </Tr>
+                                </Tbody>
+            </Table>
             </Box>
              
             <Box className="tabela">
