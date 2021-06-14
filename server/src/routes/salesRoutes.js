@@ -22,8 +22,8 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
         salesService.getYearSalesQtt(year).then((vendas) => {
 
             vendas = formatVendasinMonth(vendas);
-            console.log(vendas)
-            console.log(receitasMonth)
+            //console.log(vendas)
+            //console.log(receitasMonth)
             res.status(200).json({
                 receita: receitasMonth,
                 vendas: vendas
@@ -142,7 +142,7 @@ const formatReceitaArray = (array) => {
         }
         myMap.get(entry.ano)[entry.mes - 1].receita = entry.receita;
     }
-    console.log(myMap)
+    //console.log(myMap)
     return myMap
 }
 
@@ -158,7 +158,7 @@ const formatVendasArray = (array) => {
         }
         myMap.get(entry.ano)[entry.mes - 1].vendas = entry.vendas;
     }
-    console.log(myMap)
+    //console.log(myMap)
     return myMap
 }
 
@@ -174,7 +174,7 @@ const formatRetornosArray = (array) => {
         }
         myMap.get(entry.ano)[entry.mes - 1].retornos = entry.retornos;
     }
-    console.log(myMap)
+    //console.log(myMap)
     return myMap
 }
 

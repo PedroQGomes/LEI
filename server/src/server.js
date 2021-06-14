@@ -7,6 +7,7 @@ const cookieParser = require("cookie-parser");
 const stockapi = require("./routes/stockRoutes");
 const salesapi = require("./routes/salesRoutes");
 const userapi = require("./routes/userRoutes");
+const ordersapi = require("./routes/ordersRoutes");
 require('dotenv').config()
 
 
@@ -41,6 +42,7 @@ app.use("/api/stock", stockapi);
 app.use("/api/sales", salesapi);
 
 app.use("/api/user", userapi);
+app.use("/api/orders", ordersapi);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {

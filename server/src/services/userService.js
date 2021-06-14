@@ -20,7 +20,7 @@ async function getUser(userno) {
     try {
         const pool = await poolPromise
         const result = await pool.request()
-            .input('userno', sql.VarChar, userno)
+            .input('userno', sql.Numeric, userno)
             .query("SELECT username,userno,grupo,email,ESA FROM us WHERE userno = @userno ");
         // console.log(result.recordsets[0]);
         return result.recordsets[0][0];

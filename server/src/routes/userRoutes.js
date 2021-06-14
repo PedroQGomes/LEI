@@ -121,4 +121,3 @@ router.get('/info/', authUtils.authenticateJWT, (req, res, next) => {
 
 
 module.exports = router;
-module.exports = router;
