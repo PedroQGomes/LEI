@@ -2,7 +2,7 @@ import React,{useEffect,useState} from 'react'
 import { useLocation } from "react-router-dom";
 import axios from 'axios';
 import './css/item.css';
-import { Image,Box,OrderedList,ListItem,tab,Table,Thead,Tr,Th,Td,Tbody} from "@chakra-ui/react"
+import { Image,Box,Stack,Select,tab,Table,Thead,Tr,Th,Td,Tbody} from "@chakra-ui/react"
 import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
@@ -19,9 +19,6 @@ const Item = ({ match }) => {
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
-    
-    const [startDate, setstartDate] = useState(null);
-    const [endDate, setendDate] = useState(null);
 
     useEffect(() => {
         setstockLoading(true);
@@ -46,8 +43,9 @@ const Item = ({ match }) => {
             
         }).catch((error) => {
             console.log(error)
-            setvendas(null);
-            setretornos(null);
+            setvendas([]);
+            setretornos([]);
+            setlucro([]);
             setsalesLoading(false);
         });
         
@@ -121,7 +119,7 @@ const Item = ({ match }) => {
           
             <Box className="second-half-sales-statistics">
                 <Box  overflowY="auto" className="second-half-1st-box"  borderWidth="2px" borderRadius="lg" >
-                    {(topVendas) ?
+                    {(topVendas.length != 0) ?
                     <Table size="x-sm" variant="simple" className="tabela-top-vendas" >
                         <Thead>
                             <Tr>
@@ -138,9 +136,25 @@ const Item = ({ match }) => {
                     </div>}
                 </Box>
                 <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
-                    {vendas ?
-                    <Box>
-                        Ano Selecionado {vendas[0].ano}
+                    {(vendas.length != 0) ?
+                    <Box> 
+                        <Box >
+                            <Box className="select-year-text-item">
+                                Ano Selecionado :
+                            </Box>
+                            <Box className="select-item">
+                                <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
+                                    {vendas.map((tab,index) => {
+                                        return(
+                                            <option value={vendas[index]}>{vendas[index].ano}</option>
+                                        )
+                                    })}
+                                </Select> 
+                                
+                            </Box>
+                            
+  
+                        </Box>
                         <Box className="second-half-sales-return-graph">
                             <SalesNreturns vendas={vendas[0].arr} retornos={retornos[0].arr}/>
                         </Box>   
@@ -151,9 +165,28 @@ const Item = ({ match }) => {
                 </Box> 
                 
                 <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
-                    { (lucro) ?
-                    <Box className="second-half-sales-graph">
-                     <Totalsales vendas={lucro[0].arr}/>   
+                    { (lucro .length != 0) ?
+                    <Box>
+                        <Box >
+                            <Box className="select-year-text-item">
+                                Ano Selecionado :
+                            </Box>
+                            <Box className="select-item">
+                                <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
+                                    {vendas.map((tab,index) => {
+                                        return(
+                                            <option value={vendas[index]}>{vendas[index].ano}</option>
+                                        )
+                                    })}
+                                </Select> 
+                                
+                            </Box>
+                            
+  
+                        </Box> 
+                        <Box className="second-half-sales-graph">
+                            <Totalsales vendas={lucro[0].arr}/>   
+                        </Box>
                     </Box>
                     : <div>
                     o artigo nao tem receitas de vendas
@@ -170,10 +203,6 @@ const Item = ({ match }) => {
  
 
 const formatTopVendasEntry = (entry) =>{
-    /*
-    return(
-        <ListItem>Tamanho : {entry.tam} Cor : {entry.cor} Quantidade : {entry.qtt}</ListItem>
-    )*/
 
     return(
          <Tr>
@@ -183,6 +212,11 @@ const formatTopVendasEntry = (entry) =>{
         </Tr>
     )
 }
+
+const receitasHandler = (event) => {
+        
+}
+
 
 
 

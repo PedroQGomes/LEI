@@ -41,59 +41,61 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
     }
     itemRef = req.params.ref;
-    console.log(itemRef)
+
     salesService.getItemSalesQtt(itemRef).then((sales) => {
-        if (sales.length > 0) {
-            salesmap = formatVendasArray(sales);
-        }
-        var vendasObj = {};
         var vendasArr = [];
 
-        function registrarVendasDoMapa(valor, chave, mapa) {
-            vendasObj.arr = valor;
-            vendasObj.ano = chave;
-            vendasArr.push(vendasObj);
-            vendasObj = {};
-        }
+        if (sales.length > 0) {
+            salesmap = formatVendasArray(sales);
+            var vendasObj = {};
 
-        salesmap.forEach(registrarVendasDoMapa);
+
+            function registrarVendasDoMapa(valor, chave, mapa) {
+                vendasObj.arr = valor;
+                vendasObj.ano = chave;
+                vendasArr.push(vendasObj);
+                vendasObj = {};
+            }
+            salesmap.forEach(registrarVendasDoMapa);
+        }
 
 
         salesService.getItemReturns(itemRef).then((returns) => {
+
+            var returnsArr = [];
             if (returns.length > 0) {
                 returnsmap = formatRetornosArray(returns);
+                var returnsObj = {};
+
+
+                function registrarReturnsDoMapa(valor, chave, mapa) {
+                    returnsObj.arr = valor;
+                    returnsObj.ano = chave;
+                    returnsArr.push(returnsObj);
+                    returnsObj = {};
+                }
+
+                returnsmap.forEach(registrarReturnsDoMapa);
             }
-
-            var returnsObj = {};
-            var returnsArr = [];
-
-            function registrarReturnsDoMapa(valor, chave, mapa) {
-                returnsObj.arr = valor;
-                returnsObj.ano = chave;
-                returnsArr.push(returnsObj);
-                returnsObj = {};
-            }
-
-            returnsmap.forEach(registrarReturnsDoMapa);
-
             salesService.getItemSalesCorlorsNSizes(itemRef).then((topvendas) => {
 
                 salesService.getItemSalesValues(itemRef).then((totalsales) => {
-                    if (totalsales.length > 0) {
-                        totalsalesmap = formatReceitaArray(totalsales);
-                    }
-
-                    var receitaObj = {};
                     var receitaArr = [];
 
-                    function registrarReceitaDoMapa(valor, chave, mapa) {
-                        receitaObj.arr = valor;
-                        receitaObj.ano = chave;
-                        receitaArr.push(receitaObj);
-                        receitaObj = {};
-                    }
+                    if (totalsales.length > 0) {
+                        totalsalesmap = formatReceitaArray(totalsales);
+                        var receitaObj = {};
 
-                    totalsalesmap.forEach(registrarReceitaDoMapa);
+
+                        function registrarReceitaDoMapa(valor, chave, mapa) {
+                            receitaObj.arr = valor;
+                            receitaObj.ano = chave;
+                            receitaArr.push(receitaObj);
+                            receitaObj = {};
+                        }
+
+                        totalsalesmap.forEach(registrarReceitaDoMapa);
+                    }
 
                     const final = {
                         "sales": vendasArr,
@@ -103,21 +105,21 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
                     };
                     res.status(200).json(final);
                 }).catch((err) => {
-                    console.log("akjsdasd1")
+
                     res.status(404).send("sales not found");
                 });
 
             }).catch((err) => {
-                console.log("akjsdasd2")
+
                 res.status(404).send("sales not found");
             });
         }).catch((err) => {
-            console.log("akjsdasd3")
+
             res.status(404).send("sales not found");
         });
 
     }).catch((err) => {
-        console.log(err)
+        //console.log(err)
         res.status(404).send("sales not found");
     });
 });

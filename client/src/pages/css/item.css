@@ -6,6 +6,25 @@
     flex: 1;
 }
 
+.select-year-box {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.select-item {
+    width: 10vw;
+    margin-top: 1vh;
+    margin-left: 5vh;
+}
+
+.select-year-text-item {
+    font-size: large;
+    margin-top: 2vh;
+    margin-left: 5vh;
+    width: 10vw;
+}
+
 .first-half-item-FirstTextBox {
     width: 20vw;
     margin-top: 2vh;
@@ -63,13 +82,13 @@ img {
 }
 
 .second-half-sales-graph {
-    margin-top: 10vh;
+    margin-top: 5vh;
     height: 40vh;
     width: 34vw;
 }
 
 .second-half-sales-return-graph {
-    margin-top: 10vh;
+    margin-top: 5vh;
     height: 40vh;
     width: 34vw;
 }

@@ -49,7 +49,7 @@ const SalesNreturns = (props) => {
                 <Tooltip />
                 <Legend />
                 <Line type="monotone" dataKey="retornos" stroke="#ff7300" />
-                 <Area type="monotone"  data={vendas} dataKey="vendas" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+                <Area type="monotone"  data={vendas} dataKey="vendas" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
             </ComposedChart>
         </ResponsiveContainer>
     )

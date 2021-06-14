@@ -33,8 +33,7 @@ const Dashboard = () => {
                 
         }).catch((error) => {
             //console.log(error)
-        });
-        
+        }); 
     }
 
     if(receita === null || vendas === null){
