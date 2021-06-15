@@ -8,6 +8,7 @@ const stockapi = require("./routes/stockRoutes");
 const salesapi = require("./routes/salesRoutes");
 const userapi = require("./routes/userRoutes");
 const ordersapi = require("./routes/ordersRoutes");
+const authapi = require("./routes/authRoutes");
 require('dotenv').config()
 
 
@@ -43,6 +44,7 @@ app.use("/api/sales", salesapi);
 
 app.use("/api/user", userapi);
 app.use("/api/orders", ordersapi);
+app.use("/api/auth", authapi);
 
 // This middleware informs the express application to serve our compiled React files
 if (process.env.NODE_ENV === "production" || process.env.NODE_ENV === "staging") {

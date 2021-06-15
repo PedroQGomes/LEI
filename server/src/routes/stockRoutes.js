@@ -4,6 +4,33 @@ var { lojasDefault, formatLojasDefault, formatLojasColorsNSizes, pagesize } = re
 var authUtils = require('../authUtils');
 const stockService = require('../services/stockService');
 
+router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
+
+    // pesquisa por artigos de um dado nome
+    if (req.params.code === undefined) {
+        res.status(400).send();
+    }
+
+    var code = req.params.code;
+    //console.log(name);
+    stockService.getStockOfStore(code).then((results) => {
+        res.status(200).send(results);
+    });
+
+
+});
+
+
+
+
+
+
+
+
+
+
+
+
 
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  
 router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {

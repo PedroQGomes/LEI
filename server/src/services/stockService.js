@@ -15,6 +15,22 @@ async function getItemByRef(itemRef) {
     }
 }
 
+async function getStockOfStore(code) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('code', sql.Numeric, code)
+            .query("SELECT ref,stock FROM sa WHERE armazem = @code AND stock > 0");
+        console.log(result.recordsets);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
+
 async function getItemByRefAllData(itemRef) {
     try {
         const pool = await poolPromise
@@ -138,5 +154,6 @@ module.exports = {
     getItemStockInStores: getItemStockInStores,
     getItemByCollersAndSizes: getItemByCollersAndSizes,
     getItemByRefAllData: getItemByRefAllData,
-    get5ItemsStockInStores: get5ItemsStockInStores
+    get5ItemsStockInStores: get5ItemsStockInStores,
+    getStockOfStore: getStockOfStore
 }
