@@ -19,6 +19,12 @@ const Item = ({ match }) => {
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
+    const [salesYear, setsalesYear] = useState(0);
+
+    const [graphSalesData, setgraphSalesData] = useState([])
+    const [graphReturnsData, setgraphReturnsData] = useState([])
+    const [graphReceitaData, setgraphReceitaData] = useState([])
+
 
     useEffect(() => {
         setstockLoading(true);
@@ -27,7 +33,7 @@ const Item = ({ match }) => {
             setartigo(res.data);
             setstockLoading(false);
         }).catch((error) => {
-            console.log(error)
+            //console.log(error)
             setstockLoading(false);
             setartigo(null);
         });
@@ -39,10 +45,21 @@ const Item = ({ match }) => {
             setlucro(res.data.totalsales);
             settopVendas(res.data.topvendas);
             
+            if(res.data.sales.length > 0){
+                setgraphSalesData(res.data.sales[0].arr)
+            }
+            if(res.data.retornos.length > 0){
+                setgraphReturnsData(res.data.retornos[0].arr)
+            }
+            if(res.data.totalsales.length > 0){
+                setgraphReceitaData(res.data.totalsales[0].arr)
+            }
+
+
             setsalesLoading(false);
             
         }).catch((error) => {
-            console.log(error)
+            //console.log(error)
             setvendas([]);
             setretornos([]);
             setlucro([]);
@@ -51,8 +68,31 @@ const Item = ({ match }) => {
         
     }, [])
 
-   
-    console.log(vendas)
+ 
+    
+    const receitasHandler = (event) => {
+        let val = parseInt(event.target.value);
+
+        
+        if(val < vendas.length ){
+            setgraphSalesData(vendas[val].arr);
+        }else{
+            setgraphSalesData([])
+        }
+
+        if(val < retornos.length){
+            setgraphReturnsData(retornos[val].arr);
+        }else{
+            setgraphReturnsData([])
+        }
+
+        if(val < lucro.length){
+            setgraphReceitaData(lucro[val].arr);
+        }else{
+            setgraphReceitaData([])
+        }
+        
+    }
 
 
     if(stockLoading === true || salesLoading === true){
@@ -72,8 +112,7 @@ const Item = ({ match }) => {
         );
     };
    
-   
-     
+    
     return (
         <Box>
             <Box className="first-half-item-fullstats"  borderWidth="2px" borderRadius="lg" overflow="hidden">
@@ -113,68 +152,77 @@ const Item = ({ match }) => {
                     </div>}
                 </Box>
                 <Box className="second-half-2st-box"  borderWidth="2px" borderRadius="lg" >
-                    {(vendas.length != 0) ?
                     <Box> 
-                        <Box >
-                            <Box className="select-year-text-item">
-                                Ano Selecionado :
+                        <Box className="select-year-and-loja-wrapper"> 
+                            <Box>
+                                <Box className="select-year-text-item">
+                                    Ano Selecionado :
+                                </Box>
+                                <Box className="select-item">
+                                    <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
+                                        {vendas.map((tab,index) => {
+                                            return(
+                                                <option value={index}>{vendas[index].ano}</option>
+                                            )
+                                        })}
+                                    </Select> 
+                                    
+                                </Box>
                             </Box>
-                            <Box className="select-item">
-                                <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
-                                    {vendas.map((tab,index) => {
-                                        return(
-                                            <option value={vendas[index]}>{vendas[index].ano}</option>
-                                        )
-                                    })}
+                            
+
+                            <Box className="select-store-box-wrapper ">
+                                <Box className="select-stor-text-item">
+                                    Loja Selecionada :
+                                </Box>
+                                <div className="select-store">
+                                    <Select id="grid-cidade" type="text" name='localidade' required>
+                                        <option value="Todas">Todas</option>
+                                        <option value="Barcelos">Barcelos</option>
+                                        <option value="Viana">Viana</option>
+                                        <option value="Guima">Guima</option>
+                                        <option value="Online">Online</option>
+                                        <option value="Santander">Santander</option>
+                                        <option value="Leiria">Leiria</option>
+                                        <option value="Caldas">Caldas</option>
                                 </Select> 
+                                </div>
+                                
                                 
                             </Box>
                             
   
                         </Box>
-                        {(retornos.length != 0) ? <Box className="second-half-sales-return-graph">
-                            <SalesNreturns vendas={vendas[0].arr} retornos={retornos[0].arr}/>
-                        </Box>  :
-                        <Box className="second-half-sales-return-graph">
-                            <SalesNreturns vendas={vendas[0].arr} />
-                        </Box>   
-                        }
+                        
+                        <Box className="sales-graphs-wrapper">
+                            {retornos[salesYear] ?
+                            
+                            <Box className="second-half-sales-return-graph">
+                                <Box className="text-desc-graph">
+                                    Quantidade de vendas e retornos    
+                                </Box>
+                                <SalesNreturns vendas={graphSalesData} retornos={graphReturnsData} />
+                            </Box> : 
+                            
+                            <Box className="second-half-sales-return-graph">
+                                <Box className="text-desc-graph">
+                                    Quantidade anual de vendas e retornos    
+                                </Box>
+                                <SalesNreturns vendas={graphSalesData} retornos={[]} />
+                            </Box>}
+                            
+
+                            <Box className="second-half-sales-graph">
+                                <Box className="text-desc-graph">
+                                    Receita anual gerada    
+                                </Box>
+                                <Totalsales vendas={graphReceitaData}/>   
+                            </Box>
+                        </Box>
                         
                     </Box>
-                    : <div>
-                         o artigo nao tem quantidade de vendas
-                </div>}
+                   
                 </Box> 
-                
-                <Box className="second-half-3st-box"  borderWidth="2px" borderRadius="lg" >
-                    { (lucro .length != 0) ?
-                    <Box>
-                        <Box >
-                            <Box className="select-year-text-item">
-                                Ano Selecionado :
-                            </Box>
-                            <Box className="select-item">
-                                <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
-                                    {vendas.map((tab,index) => {
-                                        return(
-                                            <option value={vendas[index]}>{vendas[index].ano}</option>
-                                        )
-                                    })}
-                                </Select> 
-                                
-                            </Box>
-                            
-  
-                        </Box> 
-                        <Box className="second-half-sales-graph">
-                            <Totalsales vendas={lucro[0].arr}/>   
-                        </Box>
-                    </Box>
-                    : <div>
-                    o artigo nao tem receitas de vendas
-                </div>}
-                </Box> 
-                
                 
             </Box>
             
@@ -195,9 +243,6 @@ const formatTopVendasEntry = (entry) =>{
     )
 }
 
-const receitasHandler = (event) => {
-        
-}
 
 
 

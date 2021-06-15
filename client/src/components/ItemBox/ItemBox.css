@@ -54,6 +54,8 @@
 
 .tabela {
     width: 12vw;
-    margin-top: 4vh;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
     margin-left: 4vw;
 }

@@ -1,6 +1,8 @@
-import React from 'react'
+import React,{useState} from 'react'
 import { BarChart ,XAxis,Tooltip,CartesianGrid,YAxis,Legend,Bar,AreaChart,Area,ResponsiveContainer} from "recharts";
 const Totalsales = (props) => {
+
+
 
     if(props.vendas.length > 1){
         return(
@@ -33,7 +35,7 @@ const Totalsales = (props) => {
         <ResponsiveContainer width="100%" height="100%">
             <BarChart data={props.vendas}>
                 <CartesianGrid strokeDasharray="3 3" />
-                <XAxis dataKey="datalc" />
+                <XAxis dataKey="mes" />
                 <YAxis allowDecimals={false}/>
                 <Tooltip />
                 <Legend />

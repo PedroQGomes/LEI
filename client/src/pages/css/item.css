@@ -12,22 +12,11 @@
     flex: 1;
 }
 
-.select-item {
-    width: 10vw;
-    margin-top: 1vh;
-    margin-left: 5vh;
-}
-
-.select-year-text-item {
-    font-size: large;
-    margin-top: 2vh;
-    margin-left: 5vh;
-    width: 10vw;
-}
-
 .first-half-item-FirstTextBox {
     width: 25vw;
-    margin-top: 2vh;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .first-half-item-SecondTextBox {
@@ -72,7 +61,7 @@ img {
 }
 
 .second-half-2st-box {
-    width: 35vw;
+    width: 70vw;
     height: 60vh;
 }
 
@@ -82,13 +71,13 @@ img {
 }
 
 .second-half-sales-graph {
-    margin-top: 5vh;
+    margin-top: 3vh;
     height: 40vh;
     width: 34vw;
 }
 
 .second-half-sales-return-graph {
-    margin-top: 5vh;
+    margin-top: 3vh;
     height: 40vh;
     width: 34vw;
 }
@@ -96,4 +85,49 @@ img {
 .tabela-top-vendas {
     margin-top: 1vh;
     width: 18vw;
+}
+
+.sales-graphs-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.text-desc-graph {
+    text-align: center;
+}
+
+.select-year-and-loja-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.select-item {
+    width: 10vw;
+    margin-top: 1vh;
+    margin-left: 45vh;
+}
+
+.select-year-text-item {
+    font-size: large;
+    margin-top: 2vh;
+    margin-left: 45vh;
+    width: 10vw;
+}
+
+.select-store-box-wrapper {
+    width: 10vw;
+    margin-left: 5vw;
+    margin-top: 2vh;
+}
+
+.select-store {
+    margin-top: 1vh;
+    width: 10vw;
+}
+
+.select-stor-text-item {
+    font-size: large;
+    width: 10vw;
 }

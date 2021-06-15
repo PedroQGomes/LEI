@@ -1,0 +1,55 @@
+.orders-fullbox {
+    height: 90vh;
+    width: 85vw;
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.orders-new-order-box {
+    height: 90vh;
+    width: 45vw;
+}
+
+.orders-history-order-box {
+    height: 90vh;
+    width: 40vw;
+}
+
+.orders-qtt-input-box {
+    margin-top: 2vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35vw;
+}
+
+.orders-ref-input-box {
+    margin-top: 2vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35vw;
+}
+
+.orders-desc-input-box {
+    margin-top: 2vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35vw;
+}
+
+.orders-submit-button {
+    margin-top: 2vh;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 35vw;
+}
+
+.orders-title {
+    font-size: xx-large;
+    text-align: center;
+    margin-top: 2vh;
+}

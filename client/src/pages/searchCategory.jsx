@@ -20,7 +20,7 @@ const SearchCategory = () => {
        axios.get('/api/stock/category/'+ categoria).then((res) => {
         setPageCount(res.data.totalpages);
         var artigos = res.data.content;
-        const postData = artigos.map(pd => <div> <ItemBox artigo={pd}/> : </div>)
+        const postData = artigos.map(pd => <div> <ItemBox artigo={pd}/></div>)
         setData(postData);
         seterrormessage(false);
         setloading(false);
