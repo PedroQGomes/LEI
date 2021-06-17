@@ -6,6 +6,96 @@ const moment = require('moment');
 const salesService = require('../services/salesService');
 
 
+router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
+
+    if (req.params.code === undefined) {
+        res.status(400).send();
+    }
+    code = req.params.code;
+    //console.log(year)
+    salesService.getStoreSalesQtt(code).then((sales) => {
+        var vendasArr = [];
+
+        if (sales.length > 0) {
+            salesmap = formatVendasArray(sales);
+            var vendasObj = {};
+
+
+            function registrarVendasDoMapa(valor, chave, mapa) {
+                vendasObj.arr = valor;
+                vendasObj.ano = chave;
+                vendasArr.push(vendasObj);
+                vendasObj = {};
+            }
+            salesmap.forEach(registrarVendasDoMapa);
+        }
+
+
+        salesService.getStoreReturns(code).then((returns) => {
+
+            var returnsArr = [];
+            if (returns.length > 0) {
+                returnsmap = formatRetornosArray(returns);
+                var returnsObj = {};
+
+
+                function registrarReturnsDoMapa(valor, chave, mapa) {
+                    returnsObj.arr = valor;
+                    returnsObj.ano = chave;
+                    returnsArr.push(returnsObj);
+                    returnsObj = {};
+                }
+
+                returnsmap.forEach(registrarReturnsDoMapa);
+            }
+            salesService.getStoreSalesValues(code).then((totalsales) => {
+                var receitaArr = [];
+
+                if (totalsales.length > 0) {
+                    totalsalesmap = formatReceitaArray(totalsales);
+                    var receitaObj = {};
+
+
+                    function registrarReceitaDoMapa(valor, chave, mapa) {
+                        receitaObj.arr = valor;
+                        receitaObj.ano = chave;
+                        receitaArr.push(receitaObj);
+                        receitaObj = {};
+                    }
+
+                    totalsalesmap.forEach(registrarReceitaDoMapa);
+                }
+
+                const final = {
+                    "sales": vendasArr,
+                    "retornos": returnsArr,
+                    "totalsales": receitaArr
+                };
+                res.status(200).json(final);
+            }).catch((err) => {
+                console.log(err)
+                res.status(404).send("sales not found");
+            });
+
+
+        }).catch((err) => {
+            console.log(err)
+            res.status(404).send("sales not found");
+        });
+
+    }).catch((err) => {
+        console.log(err)
+        res.status(404).send("sales not found");
+    });
+
+
+});
+
+
+
+
+
+
 
 router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
 
@@ -13,7 +103,7 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
     }
     year = req.params.year;
-    console.log(year)
+    //console.log(year)
 
     salesService.getYearSalesValues(year).then((receita) => {
 

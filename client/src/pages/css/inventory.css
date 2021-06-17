@@ -1,0 +1,44 @@
+.inventory-page-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.stock-store-datagrid-wrapper {
+    height: 90vh;
+    width: 25vw;
+}
+
+.sales-store-datagrid-wrapper {
+    height: 90vh;
+    width: 60vw;
+}
+
+.store-graph-receita-wrapper {
+    margin-top: 3vh;
+    width: 57vw;
+    height: 30vh;
+}
+
+.store-graph-qtt-and-returns-wrapper {
+    margin-top: 3vh;
+    width: 57vw;
+    height: 30vh;
+}
+
+.store-info-and-select-wrapper {
+    margin-top: 1vh;
+    width: 60vw;
+    height: 19vh;
+}
+
+.store-text-title {
+    text-align: center;
+    font-size: xx-large;
+}
+
+.store-select-and-text-wrapper {
+    width: 10vw;
+    margin-left: 6vw;
+    margin-top: 2vh;
+}

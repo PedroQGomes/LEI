@@ -16,15 +16,15 @@ const Home = () => {
     
     return (
     <div className = 'home'>
-        <Button pos="absolute" top="60%" left="50%" colorScheme='blue' color='white' onClick={pushToLogin}>Join now</Button>
+        <Button pos="absolute" top="60%" left="50%" colorScheme='blue' color='white' onClick={pushToLogin}>Login</Button>
         <div className = 'ferrache'>
             Ferrache
         </div>
         <div className = 'title'>
-            Managing made easy
+            Gestão de inventario simplificado
         </div>
         <div className = 'subtitle'>
-            Dashboards, searches and more.
+            Dashboards, pesquisas e muito mais.
         </div>
         <img className='homeImg' src={process.env.PUBLIC_URL + '/homeImg.png'} /> 
     </div>

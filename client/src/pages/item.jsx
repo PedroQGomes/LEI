@@ -199,7 +199,7 @@ const Item = ({ match }) => {
                             
                             <Box className="second-half-sales-return-graph">
                                 <Box className="text-desc-graph">
-                                    Quantidade de vendas e retornos    
+                                    Quantidade anual de vendas e retornos    
                                 </Box>
                                 <SalesNreturns vendas={graphSalesData} retornos={graphReturnsData} />
                             </Box> : 

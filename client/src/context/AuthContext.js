@@ -15,7 +15,7 @@ export function AuthProvider({ children }) {
 
     async function login(username, password) {
         //console.log()
-       return axios.post('/api/user/authenticate', {
+       return axios.post('/api/auth/authenticate', {
             username: username,
             password: password
         }).then((res) => {
@@ -28,7 +28,7 @@ export function AuthProvider({ children }) {
 
     async function logout() {
         //console.log()
-        axios.post('/api/user/revoke-token').then((res) => {
+        axios.post('/api/auth/revoke-token').then((res) => {
             setCurrentUser(null);
             
         }).catch((error) => {
@@ -63,7 +63,7 @@ export function AuthProvider({ children }) {
 
         originalRequest._retry = true;
 
-        return axios.post('/api/user/refresh-token')
+        return axios.post('/api/auth/refresh-token')
         .then((response) => {
             //console.log("new acess token");
             return axios(originalRequest);

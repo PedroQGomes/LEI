@@ -1,9 +1,12 @@
 import React from 'react'
+import { useAuth } from '../context/AuthContext';
 
 const Profile = () => {
+    const { currentUser } = useAuth();
+
     return (
         <div>
-            profile page
+            {JSON.stringify(currentUser)}
         </div>
     )
 }

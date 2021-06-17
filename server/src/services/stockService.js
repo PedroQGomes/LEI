@@ -20,8 +20,8 @@ async function getStockOfStore(code) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('code', sql.Numeric, code)
-            .query("SELECT ref,stock FROM sa WHERE armazem = @code AND stock > 0");
-        console.log(result.recordsets);
+            .query("SELECT ref AS id,stock FROM sa WHERE armazem = @code AND stock > 0 ORDER BY stock DESC");
+        //console.log(result.recordsets);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
