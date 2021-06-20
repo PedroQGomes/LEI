@@ -113,7 +113,7 @@ const formatLojasColorsNSizes = (myMap, colors, totalStock) => {
         switch (obj.armazem) {
 
             case 9:
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockBarcelos += obj.stock;
                 myMap.get(obj.cor).barcelos = myMap.get(obj.cor).barcelos.concat(tmp).concat(obj.tam, ",");
 

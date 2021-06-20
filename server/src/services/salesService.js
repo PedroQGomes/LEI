@@ -102,7 +102,7 @@ async function getStoreSalesValues(storeCode) {
         const result = await pool.request()
             .input('storeCode', sql.Numeric, storeCode)
             .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where armazem=@storeCode and sl.cm >50 and sl.trfa = 0  AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
-        console.log(result.recordsets[0]);
+        //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
