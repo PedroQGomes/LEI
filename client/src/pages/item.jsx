@@ -16,6 +16,7 @@ const Item = ({ match }) => {
     const [retornos, setretornos] = useState(null);
     const [lucro, setlucro] = useState(null);
     const [topVendas, settopVendas] = useState(null);
+    const [anosvendas, setanosvendas] = useState(null);
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
@@ -38,23 +39,35 @@ const Item = ({ match }) => {
             setartigo(null);
         });
 
+        
         axios.get('/api/sales/'+ match.params.id).then((res) => {
-
-            setvendas(res.data.sales);
-            setretornos(res.data.retornos);
-            setlucro(res.data.totalsales);
+            var salesMap = new Map();
+            for(var i=0; i < res.data.sales.length; i++ ){
+                salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
+            }
+            var retrunsMap = new Map();
+            for(var i=0; i < res.data.retornos.length; i++ ){
+                retrunsMap.set(res.data.retornos[i].ano,res.data.retornos[i].arr);
+            }
+            var receitaMap = new Map();
+            for(var i=0; i < res.data.totalsales.length; i++ ){
+                receitaMap.set(res.data.totalsales[i].ano,res.data.totalsales[i].arr);
+            }
+            setanosvendas(res.data.sales);
+            setvendas(salesMap);
+            setretornos(retrunsMap);
+            setlucro(receitaMap);
             settopVendas(res.data.topvendas);
             
+            
             if(res.data.sales.length > 0){
-                setgraphSalesData(res.data.sales[0].arr)
+                setsalesYear(res.data.sales[0].ano)
+                setgraphSalesData(salesMap.get(res.data.sales[0].ano))
+                setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
             }
-            if(res.data.retornos.length > 0){
-                setgraphReturnsData(res.data.retornos[0].arr)
+            if(retrunsMap.get(res.data.sales[0].ano) !== undefined){
+                setgraphReturnsData(retrunsMap.get(res.data.sales[0].ano))
             }
-            if(res.data.totalsales.length > 0){
-                setgraphReceitaData(res.data.totalsales[0].arr)
-            }
-
 
             setsalesLoading(false);
             
@@ -72,22 +85,24 @@ const Item = ({ match }) => {
     
     const receitasHandler = (event) => {
         let val = parseInt(event.target.value);
+        
 
         
-        if(val < vendas.length ){
-            setgraphSalesData(vendas[val].arr);
+        if(vendas.get(val) !== undefined){
+            setgraphSalesData(vendas.get(val));
         }else{
             setgraphSalesData([])
         }
 
-        if(val < retornos.length){
-            setgraphReturnsData(retornos[val].arr);
+        
+        if(retornos.get(val) !== undefined){
+            setgraphReturnsData(retornos.get(val));
         }else{
             setgraphReturnsData([])
         }
 
-        if(val < lucro.length){
-            setgraphReceitaData(lucro[val].arr);
+        if(lucro.get(val) !== undefined){
+            setgraphReceitaData(lucro.get(val));
         }else{
             setgraphReceitaData([])
         }
@@ -160,9 +175,9 @@ const Item = ({ match }) => {
                                 </Box>
                                 <Box className="select-item">
                                     <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
-                                        {vendas.map((tab,index) => {
+                                        {anosvendas.map((tab,index) => {
                                             return(
-                                                <option value={index}>{vendas[index].ano}</option>
+                                                <option value={anosvendas[index].ano}>{anosvendas[index].ano}</option>
                                             )
                                         })}
                                     </Select> 
@@ -180,7 +195,7 @@ const Item = ({ match }) => {
                                         <option value="Todas">Todas</option>
                                         <option value="Barcelos">Barcelos</option>
                                         <option value="Viana">Viana</option>
-                                        <option value="Guima">Guima</option>
+                                        <option value="Guima">Guimarães</option>
                                         <option value="Online">Online</option>
                                         <option value="Santander">Santander</option>
                                         <option value="Leiria">Leiria</option>
@@ -195,21 +210,12 @@ const Item = ({ match }) => {
                         </Box>
                         
                         <Box className="sales-graphs-wrapper">
-                            {retornos[salesYear] ?
-                            
                             <Box className="second-half-sales-return-graph">
                                 <Box className="text-desc-graph">
                                     Quantidade anual de vendas e retornos    
                                 </Box>
                                 <SalesNreturns vendas={graphSalesData} retornos={graphReturnsData} />
-                            </Box> : 
-                            
-                            <Box className="second-half-sales-return-graph">
-                                <Box className="text-desc-graph">
-                                    Quantidade anual de vendas e retornos    
-                                </Box>
-                                <SalesNreturns vendas={graphSalesData} retornos={[]} />
-                            </Box>}
+                            </Box>
                             
 
                             <Box className="second-half-sales-graph">

@@ -45,7 +45,7 @@ const App = () => {
                 <PrivateRoute path='/search/ref' exact={true} component={searchRef} />
                 <PrivateRoute path='/search/name' exact={true} component={searchName} />
                 <PrivateRoute path='/search/category' exact={true} component={searchCategory} />
-                <PrivateRoute path='/inventory' exact={true} component={inventory} />
+                <PrivateRoute path='/inventory/:code' exact={true} component={inventory} />
                 <PrivateRoute path='/orders' exact={true} component={orders} />
                 <PrivateRoute path='/settings' exact={true} component={settings} />
                 <PrivateRoute path="/item/:id" exact component={ItemPage} />

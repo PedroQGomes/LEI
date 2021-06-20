@@ -32,7 +32,14 @@ function SideBar() {
               <MenuItem>Por Nome <Link to="/search/name" /> </MenuItem>
               <MenuItem>Por Categoria <Link to="/search/category" /> </MenuItem>
             </SubMenu>
-            <MenuItem icon={<FaIcons.FaWarehouse />}>Inventario <Link to="/inventory" /> </MenuItem>
+            <SubMenu title="Inventario" icon={<FaIcons.FaWarehouse />}>
+              <MenuItem>Barcelos <Link to="/inventory/9" /></MenuItem>
+              <MenuItem>Viana <Link to="/inventory/10" /> </MenuItem>
+              <MenuItem>Guimarães <Link to="/inventory/11" /> </MenuItem>
+              <MenuItem>Santander <Link to="/inventory/132" /></MenuItem>
+              <MenuItem>Leiria <Link to="/inventory/200" /> </MenuItem>
+              <MenuItem>Caldas <Link to="/inventory/201" /> </MenuItem>
+            </SubMenu>
             <MenuItem icon={<BiIcons.BiEnvelope />}>Encomendas <Link to="/orders" /> </MenuItem>
             <MenuItem icon={<BSIcons.BsGearFill />}>Definições <Link to="/settings" /> </MenuItem>
           </Menu>

@@ -7,7 +7,7 @@ import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 
 
-const Inventory = () => {
+const Inventory = ({ match }) => {
 
     const [vendas, setvendas] = useState([])
     const [retornos, setretornos] = useState([]);
@@ -15,14 +15,16 @@ const Inventory = () => {
     const [stock, setstock] = useState([])
     const [loading, setloading] = useState(true)
     const [salesYear, setsalesYear] = useState(0);
+    const [anosvendas, setanosvendas] = useState(null)
     
     const [graphSalesData, setgraphSalesData] = useState([])
     const [graphReturnsData, setgraphReturnsData] = useState([])
     const [graphReceitaData, setgraphReceitaData] = useState([])
     
+   
 
     useEffect(() => {
-        axios.get('/api/stock/store/200').then((res) => {
+        axios.get('/api/stock/store/' + match.params.code).then((res) => {
             setstock(res.data);
             setloading(false);
         }).catch((error) => {
@@ -30,19 +32,38 @@ const Inventory = () => {
             setloading(false);
         });
 
-        axios.get('/api/sales/store/200').then((res) => {
-            setvendas(res.data.sales);
-            setretornos(res.data.retornos);
-            setreceita(res.data.totalsales);
+        axios.get('/api/sales/store/' + match.params.code).then((res) => {
+            var canvas = document.getElementById('select-year-of-stores');
+            if(canvas !== null && res.data.sales.length > 0){
+                
+                document.getElementById('select-year-of-stores').value = res.data.sales[0].ano
+            }
+            
+
+            var salesMap = new Map();
+            for(var i=0; i < res.data.sales.length; i++ ){
+                salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
+            }
+            var retrunsMap = new Map();
+            for(var i=0; i < res.data.retornos.length; i++ ){
+                retrunsMap.set(res.data.retornos[i].ano,res.data.retornos[i].arr);
+            }
+            var receitaMap = new Map();
+            for(var i=0; i < res.data.totalsales.length; i++ ){
+                receitaMap.set(res.data.totalsales[i].ano,res.data.totalsales[i].arr);
+            }
+            setanosvendas(res.data.sales);
+            setvendas(salesMap);
+            setretornos(retrunsMap);
+            setreceita(receitaMap);
 
             if(res.data.sales.length > 0){
-                setgraphSalesData(res.data.sales[0].arr)
+                setsalesYear(res.data.sales[0].ano)
+                setgraphSalesData(salesMap.get(res.data.sales[0].ano))
+                setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
             }
-            if(res.data.retornos.length > 0){
-                setgraphReturnsData(res.data.retornos[0].arr)
-            }
-            if(res.data.totalsales.length > 0){
-                setgraphReceitaData(res.data.totalsales[0].arr)
+            if(retrunsMap.get(res.data.sales[0].ano) !== undefined){
+                setgraphReturnsData(retrunsMap.get(res.data.sales[0].ano))
             }
 
             setloading(false);
@@ -52,33 +73,44 @@ const Inventory = () => {
         });
 
 
-    }, [])
+    }, [match.params.code])
 
 
     const receitasHandler = (event) => {
         let val = parseInt(event.target.value);
+        
 
         
-        if(val < vendas.length ){
-            setgraphSalesData(vendas[val].arr);
+        if(vendas.get(val) !== undefined){
+            setgraphSalesData(vendas.get(val));
         }else{
             setgraphSalesData([])
         }
 
-        if(val < retornos.length){
-            setgraphReturnsData(retornos[val].arr);
+        
+        if(retornos.get(val) !== undefined){
+            setgraphReturnsData(retornos.get(val));
         }else{
             setgraphReturnsData([])
         }
 
-        if(val < receita.length){
-            setgraphReceitaData(receita[val].arr);
+        if(receita.get(val) !== undefined){
+            setgraphReceitaData(receita.get(val));
         }else{
             setgraphReceitaData([])
         }
-        
     }
 
+
+   
+ 
+    if(anosvendas === null){
+        return(
+            <div>
+            Loading data
+        </div>
+        );
+    };
 
 
     return (
@@ -87,16 +119,16 @@ const Inventory = () => {
             <Box className="sales-store-datagrid-wrapper">
                 <Box className="store-info-and-select-wrapper">
                     <Box className="store-text-title">
-                        Loja Barcelos
+                        Loja {getNameFromCode(match.params.code)}
                     </Box>
                     <Box className="store-select-and-text-wrapper">
                         <Box>
                             Ano Selecionado :
                         </Box>
-                        <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
-                                        {vendas.map((tab,index) => {
+                        <Select id="select-year-of-stores" type="text" name='localidade' onChange={receitasHandler} required  defaultValue={anosvendas[0].ano}>
+                                        {anosvendas.map((tab,index) => {
                                             return(
-                                                <option value={index}>{vendas[index].ano}</option>
+                                                <option key={tab.ano} value={tab.ano}>{tab.ano}</option>
                                             )
                                         })}
                         </Select> 
@@ -141,6 +173,29 @@ const Inventory = () => {
 
         </Box>
     )
+}
+
+function getNameFromCode(code) {
+    code = parseInt(code);
+    if(code === 9){
+       return 'Barcelos';
+    }
+    if(code === 10){
+       return 'Viana';
+    }
+    if(code === 11){
+       return 'Guimarães';
+    }
+    if(code === 132){
+      return 'Santander';
+    }
+    if(code === 200){
+       return 'Leiria';
+    }
+    if(code === 201){
+      return 'Caldas'; 
+    }
+    return ''
 }
 
 const columns = [
