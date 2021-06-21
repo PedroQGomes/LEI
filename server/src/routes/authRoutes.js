@@ -3,6 +3,7 @@ const router = express.Router();
 const jwt = require('jsonwebtoken');
 const sessionService = require('../services/sessionService');
 var authUtils = require('../authUtils');
+const userService = require('../services/userService');
 var constants = require('../constants');
 require('dotenv').config();
 
