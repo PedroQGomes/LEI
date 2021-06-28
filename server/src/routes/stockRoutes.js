@@ -9,6 +9,7 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
     // pesquisa por artigos de um dado nome
     if (req.params.code === undefined) {
         res.status(400).send();
+        return;
     }
 
     var code = req.params.code;
@@ -24,19 +25,12 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
 
 
 
-
-
-
-
-
-
-
-
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  
 router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.cat === undefined) {
         res.status(400).send();
+        return;
     }
 
     var page = req.query.page;
@@ -88,6 +82,7 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
     // pesquisa por artigos de um dado nome
     if (req.params.name === undefined) {
         res.status(400).send();
+        return;
     }
     var page = req.query.page;
 
@@ -138,6 +133,7 @@ router.get('/:id/fullstats', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.id === undefined) {
         res.status(400).send();
+        return;
     }
 
     var itemRef = req.params.id;
@@ -188,6 +184,7 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.id === undefined) {
         res.status(400).send();
+        return;
     }
 
     var itemRef = req.params.id;

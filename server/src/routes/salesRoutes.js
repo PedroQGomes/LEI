@@ -10,6 +10,7 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.code === undefined) {
         res.status(400).send();
+        return;
     }
     code = req.params.code;
     //console.log(year)
@@ -101,6 +102,7 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
 
     if (req.params.year === undefined) {
         res.status(400).send();
+        return;
     }
     year = req.params.year;
     //console.log(year)
@@ -129,44 +131,30 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
 router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
     if (req.params.ref === undefined) {
         res.status(400).send();
+        return;
     }
     itemRef = req.params.ref;
 
     salesService.getItemSalesQtt(itemRef).then((sales) => {
-        var vendasArr = [];
+        var allsalesarr = [];
 
-        if (sales.length > 0) {
-            salesmap = formatVendasArray(sales);
-            var vendasObj = {};
-
-
-            function registrarVendasDoMapa(valor, chave, mapa) {
-                vendasObj.arr = valor;
-                vendasObj.ano = chave;
-                vendasArr.push(vendasObj);
-                vendasObj = {};
-            }
-            salesmap.forEach(registrarVendasDoMapa);
-        }
-
+        salesmap = formatVendasArray(sales);
 
         salesService.getItemReturns(itemRef).then((returns) => {
 
-            var returnsArr = [];
-            if (returns.length > 0) {
-                returnsmap = formatRetornosArray(returns);
-                var returnsObj = {};
+            allsalesmap = formatRetornosArray(returns, salesmap);
+            var allsalesObj = {};
 
 
-                function registrarReturnsDoMapa(valor, chave, mapa) {
-                    returnsObj.arr = valor;
-                    returnsObj.ano = chave;
-                    returnsArr.push(returnsObj);
-                    returnsObj = {};
-                }
-
-                returnsmap.forEach(registrarReturnsDoMapa);
+            function registrarReturnsDoMapa(valor, chave, mapa) {
+                allsalesObj.arr = valor;
+                allsalesObj.ano = chave;
+                allsalesarr.push(allsalesObj);
+                allsalesObj = {};
             }
+
+            allsalesmap.forEach(registrarReturnsDoMapa);
+
             salesService.getItemSalesCorlorsNSizes(itemRef).then((topvendas) => {
 
                 salesService.getItemSalesValues(itemRef).then((totalsales) => {
@@ -188,14 +176,13 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
                     }
 
                     const final = {
-                        "sales": vendasArr,
-                        "retornos": returnsArr,
+                        "sales": allsalesarr,
                         "topvendas": topvendas,
                         "totalsales": receitaArr
                     };
                     res.status(200).json(final);
                 }).catch((err) => {
-
+                    console.log(err)
                     res.status(404).send("sales not found");
                 });
 
@@ -204,7 +191,7 @@ router.get('/:ref', authUtils.authenticateJWT, (req, res, next) => {
                 res.status(404).send("sales not found");
             });
         }).catch((err) => {
-
+            console.log(err)
             res.status(404).send("sales not found");
         });
 
@@ -242,8 +229,8 @@ const formatVendasArray = (array) => {
     for (var i = 0; i < array.length; i++) {
         entry = array[i];
         if (myMap.get(entry.ano) === undefined) {
-            myMap.set(entry.ano, [{ mes: 1, vendas: 0 }, { mes: 2, vendas: 0 }, { mes: 3, vendas: 0 }, { mes: 4, vendas: 0 }, { mes: 5, vendas: 0 }, { mes: 6, vendas: 0 },
-                { mes: 7, vendas: 0 }, { mes: 8, vendas: 0 }, { mes: 9, vendas: 0 }, { mes: 10, vendas: 0 }, { mes: 11, vendas: 0 }, { mes: 12, vendas: 0 }
+            myMap.set(entry.ano, [{ mes: 1, vendas: 0, retornos: 0 }, { mes: 2, vendas: 0, retornos: 0 }, { mes: 3, vendas: 0, retornos: 0 }, { mes: 4, vendas: 0, retornos: 0 }, { mes: 5, vendas: 0, retornos: 0 }, { mes: 6, vendas: 0, retornos: 0 },
+                { mes: 7, vendas: 0, retornos: 0 }, { mes: 8, vendas: 0, retornos: 0 }, { mes: 9, vendas: 0, retornos: 0 }, { mes: 10, vendas: 0, retornos: 0 }, { mes: 11, vendas: 0, retornos: 0 }, { mes: 12, vendas: 0, retornos: 0 }
             ]);
         }
         myMap.get(entry.ano)[entry.mes - 1].vendas = entry.vendas;
@@ -252,9 +239,7 @@ const formatVendasArray = (array) => {
     return myMap
 }
 
-const formatRetornosArray = (array) => {
-    myMap = new Map()
-
+const formatRetornosArray = (array, myMap) => {
     for (var i = 0; i < array.length; i++) {
         entry = array[i];
         if (myMap.get(entry.ano) === undefined) {

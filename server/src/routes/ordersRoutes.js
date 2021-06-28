@@ -12,6 +12,7 @@ router.post('/', authUtils.authenticateJWT, (req, res, next) => {
     console.log(req.body); // TODO MELHORAR A VERIFICAÇAO DO JSON
     if (req.body.ref === undefined || req.body.quantidade === undefined || req.body.descriçao === undefined) {
         res.status(400).send();
+        return;
     }
     const token = req.cookies.accessToken;
     let decoded = jwt.decode(token);
