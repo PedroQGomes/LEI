@@ -15,40 +15,25 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
     code = req.params.code;
     //console.log(year)
     salesService.getStoreSalesQtt(code).then((sales) => {
-        var vendasArr = [];
+        var allvendasArr = [];
 
-        if (sales.length > 0) {
-            salesmap = formatVendasArray(sales);
-            var vendasObj = {};
-
-
-            function registrarVendasDoMapa(valor, chave, mapa) {
-                vendasObj.arr = valor;
-                vendasObj.ano = chave;
-                vendasArr.push(vendasObj);
-                vendasObj = {};
-            }
-            salesmap.forEach(registrarVendasDoMapa);
-        }
-
+        salesmap = formatVendasArray(sales);
 
         salesService.getStoreReturns(code).then((returns) => {
 
-            var returnsArr = [];
-            if (returns.length > 0) {
-                returnsmap = formatRetornosArray(returns);
-                var returnsObj = {};
+            allsalesmap = formatRetornosArray(returns, salesmap);
+            var allsalesObj = {};
 
 
-                function registrarReturnsDoMapa(valor, chave, mapa) {
-                    returnsObj.arr = valor;
-                    returnsObj.ano = chave;
-                    returnsArr.push(returnsObj);
-                    returnsObj = {};
-                }
-
-                returnsmap.forEach(registrarReturnsDoMapa);
+            function registrarReturnsDoMapa(valor, chave, mapa) {
+                allsalesObj.arr = valor;
+                allsalesObj.ano = chave;
+                allvendasArr.push(allsalesObj);
+                allsalesObj = {};
             }
+
+            allsalesmap.forEach(registrarReturnsDoMapa);
+
             salesService.getStoreSalesValues(code).then((totalsales) => {
                 var receitaArr = [];
 
@@ -68,8 +53,7 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
                 }
 
                 const final = {
-                    "sales": vendasArr,
-                    "retornos": returnsArr,
+                    "sales": allvendasArr,
                     "totalsales": receitaArr
                 };
                 res.status(200).json(final);
@@ -125,6 +109,75 @@ router.get('/year/:year', authUtils.authenticateJWT, (req, res, next) => {
     });
 
 });
+
+
+router.get('/:ref/store/:store', authUtils.authenticateJWT, (req, res, next) => {
+    if (req.params.ref === undefined || req.params.store === undefined) {
+        res.status(400).send();
+        return;
+    }
+    itemRef = req.params.ref;
+    store = req.params.store;
+
+    salesService.getItemSalesQttByStore(itemRef, store).then((vendas) => {
+        var allsalesarr = [];
+
+        salesmap = formatVendasArray(vendas);
+
+        salesService.getItemReturnsByStore(itemRef, store).then((returns) => {
+            allsalesmap = formatRetornosArray(returns, salesmap);
+            var allsalesObj = {};
+
+            function registrarReturnsDoMapa(valor, chave, mapa) {
+                allsalesObj.arr = valor;
+                allsalesObj.ano = chave;
+                allsalesarr.push(allsalesObj);
+                allsalesObj = {};
+            }
+            allsalesmap.forEach(registrarReturnsDoMapa);
+
+            salesService.getItemSalesValuesByStore(itemRef, store).then((receita) => {
+                var receitaArr = [];
+
+                if (receita.length > 0) {
+                    totalsalesmap = formatReceitaArray(receita);
+                    var receitaObj = {};
+
+
+                    function registrarReceitaDoMapa(valor, chave, mapa) {
+                        receitaObj.arr = valor;
+                        receitaObj.ano = chave;
+                        receitaArr.push(receitaObj);
+                        receitaObj = {};
+                    }
+
+                    totalsalesmap.forEach(registrarReceitaDoMapa);
+                }
+
+
+                const final = {
+                    "sales": allsalesarr,
+                    "totalsales": receitaArr
+                };
+                res.status(200).json(final);
+            }).catch((err) => {
+                console.log(err)
+                res.status(404).send();
+            })
+        }).catch((err) => {
+            console.log(err)
+            res.status(404).send();
+        })
+    }).catch((err) => {
+        console.log(err)
+        res.status(404).send();
+    })
+
+
+});
+
+
+
 
 
 
@@ -247,6 +300,7 @@ const formatRetornosArray = (array, myMap) => {
                 { mes: 7, retornos: 0 }, { mes: 8, retornos: 0 }, { mes: 9, retornos: 0 }, { mes: 10, retornos: 0 }, { mes: 11, retornos: 0 }, { mes: 12, retornos: 0 }
             ]);
         }
+        console.log(entry)
         myMap.get(entry.ano)[entry.mes - 1].retornos = entry.retornos;
     }
     //console.log(myMap)

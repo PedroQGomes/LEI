@@ -17,6 +17,20 @@ async function getItemSalesQtt(ref) {
 }
 
 
+async function getItemSalesQttByStore(ref, store) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .input('store', sql.Int, store)
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM (qtt) AS vendas  from sl where sl.ref=@ref and armazem=@store and sl.cm >50 and sl.trfa = 0 AND qtt >0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY YEAR(datalc) DESC,MONTH(datalc)  ASC");
+        //console.log(result.recordsets[0]);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 async function getStoreSalesQtt(storeCode) {
     try {
         const pool = await poolPromise
@@ -64,6 +78,20 @@ async function getItemReturns(ref) {
     }
 }
 
+async function getItemReturnsByStore(ref, store) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .input('store', sql.Int, store)
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM (qtt) AS retornos  from sl where sl.ref=@ref and armazem=@store and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY YEAR(datalc) DESC,MONTH(datalc)  ASC");
+        //console.log(result.recordsets[0]);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 async function getStoreReturns(storeCode) {
     try {
@@ -93,6 +121,21 @@ async function getItemSalesValues(ref) {
         console.log(error);
     }
 }
+
+async function getItemSalesValuesByStore(ref, store) {
+    try {
+        const pool = await poolPromise
+        const result = await pool.request()
+            .input('ref', sql.VarChar, ref)
+            .input('store', sql.Int, store)
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem =@store  and sl.cm >50 and sl.trfa = 0  AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
+        //console.log(result.recordsets[0]);
+        return result.recordsets[0];
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 
 
@@ -183,6 +226,9 @@ module.exports = {
     getYearSalesReturns: getYearSalesReturns,
     getStoreSalesQtt: getStoreSalesQtt,
     getStoreReturns: getStoreReturns,
-    getStoreSalesValues: getStoreSalesValues
+    getStoreSalesValues: getStoreSalesValues,
+    getItemSalesQttByStore: getItemSalesQttByStore,
+    getItemReturnsByStore: getItemReturnsByStore,
+    getItemSalesValuesByStore: getItemSalesValuesByStore
 
 }
