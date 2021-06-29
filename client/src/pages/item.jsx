@@ -13,14 +13,21 @@ const Item = ({ match }) => {
     
     const [artigo, setartigo] = useState(null);
     const [vendas, setvendas] = useState(null);
-    const [retornos, setretornos] = useState(null);
     const [lucro, setlucro] = useState(null);
     const [topVendas, settopVendas] = useState(null);
     const [anosvendas, setanosvendas] = useState(null);
+ 
+    const [bclvendas, setbclvendas] = useState(null);
+    const [vianaVendas, setvianaVendas] = useState(null);
+    const [guimaVendas, setguimaVendas] = useState(null);
+    const [onlineVendas, setonlineVendas] = useState(null);
+    const [satanderVendas, setsatanderVendas] = useState(null);
+    const [leiriaVendas, setleiriaVendas] = useState(null);
+    const [caldasVendas, setcaldasVendas] = useState(null);
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
-    const [salesYear, setsalesYear] = useState(0);
+    
 
     const [graphSalesData, setgraphSalesData] = useState([])
     const [graphReturnsData, setgraphReturnsData] = useState([])
@@ -45,28 +52,22 @@ const Item = ({ match }) => {
             for(var i=0; i < res.data.sales.length; i++ ){
                 salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
             }
-            var retrunsMap = new Map();
-            for(var i=0; i < res.data.retornos.length; i++ ){
-                retrunsMap.set(res.data.retornos[i].ano,res.data.retornos[i].arr);
-            }
+
+
             var receitaMap = new Map();
             for(var i=0; i < res.data.totalsales.length; i++ ){
                 receitaMap.set(res.data.totalsales[i].ano,res.data.totalsales[i].arr);
             }
             setanosvendas(res.data.sales);
             setvendas(salesMap);
-            setretornos(retrunsMap);
             setlucro(receitaMap);
             settopVendas(res.data.topvendas);
             
             
             if(res.data.sales.length > 0){
-                setsalesYear(res.data.sales[0].ano)
+               
                 setgraphSalesData(salesMap.get(res.data.sales[0].ano))
                 setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
-            }
-            if(retrunsMap.get(res.data.sales[0].ano) !== undefined){
-                setgraphReturnsData(retrunsMap.get(res.data.sales[0].ano))
             }
 
             setsalesLoading(false);
@@ -74,7 +75,6 @@ const Item = ({ match }) => {
         }).catch((error) => {
             //console.log(error)
             setvendas([]);
-            setretornos([]);
             setlucro([]);
             setsalesLoading(false);
         });
@@ -95,11 +95,6 @@ const Item = ({ match }) => {
         }
 
         
-        if(retornos.get(val) !== undefined){
-            setgraphReturnsData(retornos.get(val));
-        }else{
-            setgraphReturnsData([])
-        }
 
         if(lucro.get(val) !== undefined){
             setgraphReceitaData(lucro.get(val));
@@ -177,7 +172,7 @@ const Item = ({ match }) => {
                                     <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
                                         {anosvendas.map((tab,index) => {
                                             return(
-                                                <option value={anosvendas[index].ano}>{anosvendas[index].ano}</option>
+                                                <option key={anosvendas[index].ano} value={anosvendas[index].ano}>{anosvendas[index].ano}</option>
                                             )
                                         })}
                                     </Select> 
@@ -192,15 +187,15 @@ const Item = ({ match }) => {
                                 </Box>
                                 <div className="select-store">
                                     <Select id="grid-cidade" type="text" name='localidade' required>
-                                        <option value="Todas">Todas</option>
-                                        <option value="Barcelos">Barcelos</option>
-                                        <option value="Viana">Viana</option>
-                                        <option value="Guima">Guimarães</option>
-                                        <option value="Online">Online</option>
-                                        <option value="Santander">Santander</option>
-                                        <option value="Leiria">Leiria</option>
-                                        <option value="Caldas">Caldas</option>
-                                </Select> 
+                                        <option key={0} value={0}>Todas</option>
+                                        <option key={9} value={9}>Barcelos</option>
+                                        <option key={10} value={10}>Viana</option>
+                                        <option key={11} value={11}>Guimarães</option>
+                                        <option key={900} value={900}>Online</option>
+                                        <option key={132} value={132}>Santander</option>
+                                        <option key={200} value={200}>Leiria</option>
+                                        <option key={201} value={201}>Caldas</option>
+                                    </Select> 
                                 </div>
                                 
                                 
@@ -214,7 +209,7 @@ const Item = ({ match }) => {
                                 <Box className="text-desc-graph">
                                     Quantidade anual de vendas e retornos    
                                 </Box>
-                                <SalesNreturns vendas={graphSalesData} retornos={graphReturnsData} />
+                                <SalesNreturns vendas={graphSalesData}/>
                             </Box>
                             
 
@@ -241,7 +236,7 @@ const Item = ({ match }) => {
 const formatTopVendasEntry = (entry) =>{
 
     return(
-         <Tr>
+         <Tr key={entry.tam + entry.cor}>
             <Td>{entry.tam}</Td>
             <Td>{entry.cor}</Td>
             <Td isNumeric>{entry.qtt}</Td>

@@ -10,7 +10,6 @@ import Totalsales from '../components/charts/totalsales'
 const Inventory = ({ match }) => {
 
     const [vendas, setvendas] = useState([])
-    const [retornos, setretornos] = useState([]);
     const [receita, setreceita] = useState([])
     const [stock, setstock] = useState([])
     const [loading, setloading] = useState(true)
@@ -35,18 +34,14 @@ const Inventory = ({ match }) => {
         axios.get('/api/sales/store/' + match.params.code).then((res) => {
             var canvas = document.getElementById('select-year-of-stores');
             if(canvas !== null && res.data.sales.length > 0){
-                
                 document.getElementById('select-year-of-stores').value = res.data.sales[0].ano
             }
+            console.log("sadasd")
             
 
             var salesMap = new Map();
             for(var i=0; i < res.data.sales.length; i++ ){
                 salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
-            }
-            var retrunsMap = new Map();
-            for(var i=0; i < res.data.retornos.length; i++ ){
-                retrunsMap.set(res.data.retornos[i].ano,res.data.retornos[i].arr);
             }
             var receitaMap = new Map();
             for(var i=0; i < res.data.totalsales.length; i++ ){
@@ -54,7 +49,7 @@ const Inventory = ({ match }) => {
             }
             setanosvendas(res.data.sales);
             setvendas(salesMap);
-            setretornos(retrunsMap);
+            
             setreceita(receitaMap);
 
             if(res.data.sales.length > 0){
@@ -62,12 +57,11 @@ const Inventory = ({ match }) => {
                 setgraphSalesData(salesMap.get(res.data.sales[0].ano))
                 setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
             }
-            if(retrunsMap.get(res.data.sales[0].ano) !== undefined){
-                setgraphReturnsData(retrunsMap.get(res.data.sales[0].ano))
-            }
+            
 
             setloading(false);
         }).catch((error) => {
+            console.log(error)
           
             setloading(false);
         });
@@ -87,12 +81,6 @@ const Inventory = ({ match }) => {
             setgraphSalesData([])
         }
 
-        
-        if(retornos.get(val) !== undefined){
-            setgraphReturnsData(retornos.get(val));
-        }else{
-            setgraphReturnsData([])
-        }
 
         if(receita.get(val) !== undefined){
             setgraphReceitaData(receita.get(val));
@@ -136,27 +124,17 @@ const Inventory = ({ match }) => {
                     
                 </Box>
                 <Box>
-                    {retornos[salesYear] ?
-                            
-                            <Box className="store-graph-qtt-and-returns-wrapper">
-                                <Box className="text-desc-graph">
-                                    Quantidade anual de vendas e retornos    
-                                </Box>
-                                <SalesNreturns vendas={graphSalesData} retornos={graphReturnsData} />
-                            </Box> : 
-                            
-                            <Box className="store-graph-qtt-and-returns-wrapper">
-                                <Box className="text-desc-graph">
-                                    Quantidade anual de vendas e retornos    
-                                </Box>
-                                <SalesNreturns vendas={graphSalesData} retornos={[]} />
+                    <Box className="store-graph-qtt-and-returns-wrapper">
+                            <Box className="text-desc-graph">
+                                Quantidade anual de vendas e retornos    
                             </Box>
-                    }
+                        <SalesNreturns vendas={graphSalesData} />
+                    </Box>
                     
                 </Box>
                 <Box className="store-graph-receita-wrapper">
                     <Box className="text-desc-graph">
-                                    Receita anual gerada   
+                            Receita anual gerada   
                     </Box>
                       <Totalsales vendas={graphReceitaData}/>
                 </Box>

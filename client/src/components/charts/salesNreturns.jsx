@@ -7,14 +7,15 @@ const SalesNreturns = (props) => {
  //console.log(props.vendas)
     return (
         <ResponsiveContainer width="100%" height="100%">
-            <ComposedChart data={props.retornos}>
+            <ComposedChart data={props.vendas}>
                 <XAxis dataKey="mes" />
                 <YAxis  allowDecimals={false} />
                 <CartesianGrid strokeDasharray="3 3" />
                 <Tooltip />
                 <Legend />
+                <Area type="monotone" dataKey="vendas" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
                 <Line type="monotone" dataKey="retornos" stroke="#ff7300" />
-                <Area type="monotone"  data={props.vendas} dataKey="vendas" stroke="#8884d8" fillOpacity={1} fill="url(#colorUv)" />
+                
             </ComposedChart>
         </ResponsiveContainer>
     )
