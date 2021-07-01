@@ -84,7 +84,7 @@ async function getItemReturnsByStore(ref, store) {
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
             .input('store', sql.Int, store)
-            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM (qtt) AS retornos  from sl where sl.ref=@ref and armazem=@store and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY YEAR(datalc) DESC,MONTH(datalc)  ASC");
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),ABS(SUM (qtt)) AS retornos  from sl where sl.ref=@ref and armazem=@store and sl.cm >50 and sl.trfa = 0 AND qtt < 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY YEAR(datalc) DESC,MONTH(datalc)  ASC");
         //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
