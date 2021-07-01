@@ -99,9 +99,26 @@ const Item = ({ match }) => {
 
     const handleloja = (event) => {
         let val = parseInt(event.target.value);
+
+        if(val === 0){
+            if(vendas.get(yearSales) !== undefined){
+                
+                setgraphSalesData(vendas.get(yearSales));
+            }else{
+                setgraphSalesData([])
+            }
+
+            if(lucro.get(yearSales) !== undefined){
+                setgraphReceitaData(lucro.get(yearSales));
+            }else{
+                setgraphReceitaData([])
+            }
+            return;
+        }
+        
         if(storeSales.get(val) === undefined){
             axios.get('/api/sales/'+ artigo.info.ref + "/store/" + val).then((res) => {
-                console.log(res.data);
+                
                 var salesMap = new Map();
                 for(var i=0; i < res.data.sales.length; i++ ){
                     salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
@@ -134,8 +151,13 @@ const Item = ({ match }) => {
                 console.log(error)
             });
         }else{
-            setgraphSalesData(storeSales.get(val).get(yearSales));
-            setgraphReceitaData(storeReceita.get(val).get(yearSales));
+            if(storeSales.get(val).get(yearSales) === undefined){
+                setgraphSalesData([]);
+                setgraphReceitaData([]);
+            }else{
+                setgraphSalesData(storeSales.get(val).get(yearSales));
+                setgraphReceitaData(storeReceita.get(val).get(yearSales));
+            }
         }
         
     };
@@ -165,7 +187,7 @@ const Item = ({ match }) => {
     
     return (
         <Box>
-            <Box className="first-half-item-fullstats"  borderWidth="2px" borderRadius="lg" overflow="hidden">
+            <Box className="first-half-item-fullstats"  borderWidth="2px" borderRadius="lg" overflowY="auto">
                 <Box className="first-half-item-FirstTextBox" >
                     <TableInfo artigo={artigo.info} totalStock={artigo.totalStock} size="sm" fornecedor={true}/>
                 </Box>
@@ -174,7 +196,7 @@ const Item = ({ match }) => {
                 </Box>
                 
                 
-                <Box className="first-half-item-SecondTextBox" overflowY="auto" >
+                <Box className="first-half-item-SecondTextBox">
                     {artigo.stock.length !== 0 ? <StockTabs stock={artigo.stock}/>:<Box>
                         Stock nao encontrado do artigo
                     </Box>}
@@ -206,7 +228,7 @@ const Item = ({ match }) => {
                         <Box className="select-year-and-loja-wrapper"> 
                             <Box>
                                 <Box className="select-year-text-item">
-                                    Ano Selecionado :
+                                    Ano Selecionado:
                                 </Box>
                                 <Box className="select-item">
                                     <Select id="grid-cidade" type="text" name='localidade' onChange={receitasHandler} required>
@@ -223,7 +245,7 @@ const Item = ({ match }) => {
 
                             <Box className="select-store-box-wrapper ">
                                 <Box className="select-stor-text-item">
-                                    Loja Selecionada :
+                                    Loja Selecionada:
                                 </Box>
                                 <div className="select-store">
                                     <Select id="grid-cidade" type="text" name='localidade' onChange={handleloja} required>

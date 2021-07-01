@@ -111,7 +111,7 @@ img {
 
 .select-year-text-item {
     font-size: large;
-    margin-top: 2vh;
+    margin-top: 1vh;
     margin-left: 45vh;
     width: 10vw;
 }
@@ -119,15 +119,15 @@ img {
 .select-store-box-wrapper {
     width: 10vw;
     margin-left: 5vw;
-    margin-top: 2vh;
+    margin-top: 1vh;
 }
 
 .select-store {
     margin-top: 1vh;
-    width: 10vw;
+    width: 15vw;
 }
 
 .select-stor-text-item {
     font-size: large;
-    width: 10vw;
+    width: 15vw;
 }
