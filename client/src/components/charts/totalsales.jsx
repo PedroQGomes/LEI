@@ -39,7 +39,7 @@ const Totalsales = (props) => {
                 <YAxis allowDecimals={false}/>
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="ETT" fill="#1E5CC2" />
+                <Bar dataKey="receita" fill="#1E5CC2" />
             </BarChart>
         </ResponsiveContainer>
     )

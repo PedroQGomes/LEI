@@ -19,7 +19,8 @@ const Item = ({ match }) => {
  
     const [storeSales, setstoreSales] = useState(new Map())
     const [storeReceita, setstoreReceita] = useState(new Map())
-    const [yearSales, setyearSales] = useState(0)
+    const [yearSales, setyearSales] = useState(0);
+    const [selectedStore, setselectedStore] = useState(0);
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
@@ -82,24 +83,38 @@ const Item = ({ match }) => {
     const receitasHandler = (event) => {
         let val = parseInt(event.target.value);
         setyearSales(val);
-        
-        if(vendas.get(val) !== undefined){
+        if(selectedStore === 0){
+            if(vendas.get(val) !== undefined){
             setgraphSalesData(vendas.get(val));
-        }else{
-            setgraphSalesData([])
-        }
+            }else{
+                setgraphSalesData([])
+            }
 
-        if(lucro.get(val) !== undefined){
-            setgraphReceitaData(lucro.get(val));
+            if(lucro.get(val) !== undefined){
+                setgraphReceitaData(lucro.get(val));
+            }else{
+                setgraphReceitaData([])
+            }
         }else{
-            setgraphReceitaData([])
+            if(storeSales.get(selectedStore).get(val) === undefined){
+                setgraphSalesData([]);
+            }else{
+                setgraphSalesData(storeSales.get(selectedStore).get(val));
+            }
+            if(storeReceita.get(selectedStore).get(val) === undefined){
+                setgraphReceitaData([]);
+            }else{
+                setgraphReceitaData(storeReceita.get(selectedStore).get(val));
+            }
+
         }
+        
         
     }
 
     const handleloja = (event) => {
         let val = parseInt(event.target.value);
-
+        setselectedStore(val);
         if(val === 0){
             if(vendas.get(yearSales) !== undefined){
                 
@@ -118,7 +133,7 @@ const Item = ({ match }) => {
         
         if(storeSales.get(val) === undefined){
             axios.get('/api/sales/'+ artigo.info.ref + "/store/" + val).then((res) => {
-                
+                console.log(res.data)
                 var salesMap = new Map();
                 for(var i=0; i < res.data.sales.length; i++ ){
                     salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
@@ -136,15 +151,17 @@ const Item = ({ match }) => {
                 setstoreSales(storeSales);
                 setstoreReceita(storeReceita);
 
-                if(res.data.sales.length === 0){
+                if(salesMap.get(yearSales) === undefined){
                     setgraphSalesData([]);
-                
-                    setgraphReceitaData([]);
                 }else{
                     setgraphSalesData(salesMap.get(yearSales));
+
+                }
+                if(receitaMap.get(yearSales) === undefined){                
+                    setgraphReceitaData([]);
+                }else{
                 
                     setgraphReceitaData(receitaMap.get(yearSales));
-
                 }
 
             }).catch((error) => {
@@ -153,9 +170,12 @@ const Item = ({ match }) => {
         }else{
             if(storeSales.get(val).get(yearSales) === undefined){
                 setgraphSalesData([]);
-                setgraphReceitaData([]);
             }else{
                 setgraphSalesData(storeSales.get(val).get(yearSales));
+            }
+            if(storeReceita.get(val).get(yearSales) === undefined){
+                setgraphReceitaData([]);
+            }else{
                 setgraphReceitaData(storeReceita.get(val).get(yearSales));
             }
         }
