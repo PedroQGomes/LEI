@@ -18,7 +18,7 @@ const SearchName = () => {
          setPageCount(res.data.totalpages);
             var artigos = res.data.content;
              const postData = artigos.map(pd => <div>
-                    <ItemBox artigo={pd}/> : 
+                    <ItemBox artigo={pd}/> 
             </div>)
          setData(postData);
          seterrormessage(false);
@@ -38,7 +38,7 @@ const SearchName = () => {
             setPageCount(res.data.totalpages);
             var artigos = res.data.content;
              const postData = artigos.map(pd => <div>
-                    <ItemBox artigo={pd}/> : 
+                    <ItemBox artigo={pd}/> 
             </div>)
             setData(postData);
             seterrormessage(false);
