@@ -5,7 +5,6 @@ const TableInfo = (props) => {
     const [artigo, setArtigo] = useState(props.artigo)
     const [totalStock, setTotalStock] = useState(props.totalStock)
     const [size, setsize] = useState(props.size) 
-    const [fornecedor, setFornecedor] = useState(props.fornecedor)
 
 
     return (

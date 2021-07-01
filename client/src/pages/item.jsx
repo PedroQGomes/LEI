@@ -17,20 +17,15 @@ const Item = ({ match }) => {
     const [topVendas, settopVendas] = useState(null);
     const [anosvendas, setanosvendas] = useState(null);
  
-    const [bclvendas, setbclvendas] = useState(null);
-    const [vianaVendas, setvianaVendas] = useState(null);
-    const [guimaVendas, setguimaVendas] = useState(null);
-    const [onlineVendas, setonlineVendas] = useState(null);
-    const [satanderVendas, setsatanderVendas] = useState(null);
-    const [leiriaVendas, setleiriaVendas] = useState(null);
-    const [caldasVendas, setcaldasVendas] = useState(null);
+    const [storeSales, setstoreSales] = useState(new Map())
+    const [storeReceita, setstoreReceita] = useState(new Map())
+    const [yearSales, setyearSales] = useState(0)
 
     const [stockLoading, setstockLoading] = useState(false);
     const [salesLoading, setsalesLoading] = useState(false);
     
 
     const [graphSalesData, setgraphSalesData] = useState([])
-    const [graphReturnsData, setgraphReturnsData] = useState([])
     const [graphReceitaData, setgraphReceitaData] = useState([])
 
 
@@ -49,6 +44,7 @@ const Item = ({ match }) => {
         
         axios.get('/api/sales/'+ match.params.id).then((res) => {
             var salesMap = new Map();
+            
             for(var i=0; i < res.data.sales.length; i++ ){
                 salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
             }
@@ -65,7 +61,7 @@ const Item = ({ match }) => {
             
             
             if(res.data.sales.length > 0){
-               
+                setyearSales(res.data.sales[0].ano);
                 setgraphSalesData(salesMap.get(res.data.sales[0].ano))
                 setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
             }
@@ -85,16 +81,13 @@ const Item = ({ match }) => {
     
     const receitasHandler = (event) => {
         let val = parseInt(event.target.value);
-        
-
+        setyearSales(val);
         
         if(vendas.get(val) !== undefined){
             setgraphSalesData(vendas.get(val));
         }else{
             setgraphSalesData([])
         }
-
-        
 
         if(lucro.get(val) !== undefined){
             setgraphReceitaData(lucro.get(val));
@@ -103,6 +96,51 @@ const Item = ({ match }) => {
         }
         
     }
+
+    const handleloja = (event) => {
+        let val = parseInt(event.target.value);
+        if(storeSales.get(val) === undefined){
+            axios.get('/api/sales/'+ artigo.info.ref + "/store/" + val).then((res) => {
+                console.log(res.data);
+                var salesMap = new Map();
+                for(var i=0; i < res.data.sales.length; i++ ){
+                    salesMap.set(res.data.sales[i].ano,res.data.sales[i].arr);
+                }
+                var receitaMap = new Map();
+                for(var i=0; i < res.data.totalsales.length; i++ ){
+                    receitaMap.set(res.data.totalsales[i].ano,res.data.totalsales[i].arr);
+                }
+
+
+                
+
+                storeSales.set(val,salesMap);
+                storeReceita.set(val,receitaMap)
+                setstoreSales(storeSales);
+                setstoreReceita(storeReceita);
+
+                if(res.data.sales.length === 0){
+                    setgraphSalesData([]);
+                
+                    setgraphReceitaData([]);
+                }else{
+                    setgraphSalesData(salesMap.get(yearSales));
+                
+                    setgraphReceitaData(receitaMap.get(yearSales));
+
+                }
+
+            }).catch((error) => {
+                console.log(error)
+            });
+        }else{
+            setgraphSalesData(storeSales.get(val).get(yearSales));
+            setgraphReceitaData(storeReceita.get(val).get(yearSales));
+        }
+        
+    };
+   
+
 
 
     if(stockLoading === true || salesLoading === true){
@@ -121,7 +159,9 @@ const Item = ({ match }) => {
         </div>
         );
     };
-   
+
+
+    
     
     return (
         <Box>
@@ -186,7 +226,7 @@ const Item = ({ match }) => {
                                     Loja Selecionada :
                                 </Box>
                                 <div className="select-store">
-                                    <Select id="grid-cidade" type="text" name='localidade' required>
+                                    <Select id="grid-cidade" type="text" name='localidade' onChange={handleloja} required>
                                         <option key={0} value={0}>Todas</option>
                                         <option key={9} value={9}>Barcelos</option>
                                         <option key={10} value={10}>Viana</option>
