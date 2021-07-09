@@ -300,7 +300,7 @@ const formatRetornosArray = (array, myMap) => {
                 { mes: 7, retornos: 0 }, { mes: 8, retornos: 0 }, { mes: 9, retornos: 0 }, { mes: 10, retornos: 0 }, { mes: 11, retornos: 0 }, { mes: 12, retornos: 0 }
             ]);
         }
-        console.log(entry)
+        //console.log(entry)
         myMap.get(entry.ano)[entry.mes - 1].retornos = entry.retornos;
     }
     //console.log(myMap)
