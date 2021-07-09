@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios';
 import './css/item.css';
-import { Image, Box, Spinner, Select, tab, Table, Thead, Tr, Th, Td, Tbody } from "@chakra-ui/react"
+import { Image, Box, Spinner, Select, Table, Thead, Tr, Th, Td, Tbody } from "@chakra-ui/react"
 import SalesNreturns from '../components/charts/salesNreturns'
 import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
@@ -51,8 +51,8 @@ const Item = ({ match }) => {
 
 
             var receitaMap = new Map();
-            for (var i = 0; i < res.data.totalsales.length; i++) {
-                receitaMap.set(res.data.totalsales[i].ano, res.data.totalsales[i].arr);
+            for (var j = 0; j < res.data.totalsales.length; j++) {
+                receitaMap.set(res.data.totalsales[j].ano, res.data.totalsales[j].arr);
             }
             setanosvendas(res.data.sales);
             setvendas(salesMap);
@@ -138,8 +138,8 @@ const Item = ({ match }) => {
                     salesMap.set(res.data.sales[i].ano, res.data.sales[i].arr);
                 }
                 var receitaMap = new Map();
-                for (var i = 0; i < res.data.totalsales.length; i++) {
-                    receitaMap.set(res.data.totalsales[i].ano, res.data.totalsales[i].arr);
+                for (var j = 0; j < res.data.totalsales.length; j++) {
+                    receitaMap.set(res.data.totalsales[j].ano, res.data.totalsales[j].arr);
                 }
 
 
@@ -233,7 +233,7 @@ const Item = ({ match }) => {
                                 <Th isNumeric>Vendas</Th>
                             </Tr>
                         </Thead>
-                        {(topVendas.length != 0) ?
+                        {(topVendas.length !== 0) ?
                             <Tbody>
                                 {topVendas.map((tab, index) => (formatTopVendasEntry(topVendas[index])))}
                             </Tbody> : <Tbody>

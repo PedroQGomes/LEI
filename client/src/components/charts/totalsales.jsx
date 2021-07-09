@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React from 'react'
 import { BarChart, XAxis, Tooltip, CartesianGrid, YAxis, Legend, Bar, AreaChart, Area, ResponsiveContainer } from "recharts";
 const Totalsales = (props) => {
 

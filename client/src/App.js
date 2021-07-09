@@ -1,4 +1,4 @@
-import React, { Component,useMemo,useState,useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter, Route, Switch } from "react-router-dom";
 import './App.css';
 import Login from './pages/login';
@@ -31,13 +31,13 @@ const App = () => {
   return (
     <BrowserRouter>
       <AuthProvider>
-      <Switch>
-        <PublicRoute path="/" exact component={Home} />
-        <PublicRoute path="/login" exact component={Login} />
-        <>
+        <Switch>
+          <PublicRoute path="/" exact component={Home} />
+          <PublicRoute path="/login" exact component={Login} />
+          <>
             <Navbar />
             <div className="side-nav-and-content-wrapper">
-            <SideBar />
+              <SideBar />
               <Switch>
                 <PrivateRoute path='/dashboard' exact={true} component={Dashboard} />
                 <PrivateRoute path='/profile' exact={true} component={Profile} />
@@ -51,12 +51,12 @@ const App = () => {
                 <PrivateRoute path="/item/:id" exact component={ItemPage} />
               </Switch>
             </div>
-        </>
-        <Route path="/" component={Error} />
-      </Switch>
+          </>
+          <Route path="/" component={Error} />
+        </Switch>
       </AuthProvider>
     </BrowserRouter>
-    );  
+  );
 };
 //<Route path="/posts/:id" exact component={Post} />
 export default App;

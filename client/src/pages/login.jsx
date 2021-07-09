@@ -1,4 +1,4 @@
-import React, {useState,useContext,useEffect} from 'react';
+import React, {useState} from 'react';
 import {
   Flex,
   Box,
@@ -8,14 +8,13 @@ import {
   Input,
   Button,
   CircularProgress,
-  Text,
   InputGroup,
   InputRightElement,
   Icon, Alert, AlertIcon, AlertDescription
 } from "@chakra-ui/react";
 import './css/login.css';
 import { useAuth } from '../context/AuthContext';
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 
 function ErrorMessage({ message }) {
   return (
@@ -34,7 +33,7 @@ const Login = () => {
 
   const history = useHistory();
 
-  const { login,currentUser } = useAuth();
+  const { login } = useAuth();
 
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");

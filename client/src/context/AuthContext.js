@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react"
 import axios from 'axios';
-import { useHistory } from "react-router-dom";
 
 const AuthContext = React.createContext()
 
@@ -11,17 +10,17 @@ export function useAuth() {
 export function AuthProvider({ children }) {
     const [currentUser, setCurrentUser] = useState()
     const [loading, setLoading] = useState(true)
-    const history = useHistory();
+
 
     async function login(username, password) {
         //console.log()
-       return axios.post('/api/auth/authenticate', {
+        return axios.post('/api/auth/authenticate', {
             username: username,
             password: password
         }).then((res) => {
             setCurrentUser(res.data);
         }).catch((error) => {
-            throw error; 
+            throw error;
         });
 
     }
@@ -30,7 +29,7 @@ export function AuthProvider({ children }) {
         //console.log()
         axios.post('/api/auth/revoke-token').then((res) => {
             setCurrentUser(null);
-            
+
         }).catch((error) => {
             setCurrentUser(null);
         });
@@ -45,10 +44,10 @@ export function AuthProvider({ children }) {
             setCurrentUser(res.data);
             setLoading(false);
         }).catch((error) => {
-            
+
             setLoading(false);
         });
-        
+
     }, [])
 
 
@@ -61,17 +60,17 @@ export function AuthProvider({ children }) {
 
         if (error.response.status === 401 && !originalRequest._retry && error.response.data !== "refresh token invalid") {
 
-        originalRequest._retry = true;
+            originalRequest._retry = true;
 
-        return axios.post('/api/auth/refresh-token')
-        .then((response) => {
-            //console.log("new acess token");
-            return axios(originalRequest);
-      });
-  }
+            return axios.post('/api/auth/refresh-token')
+                .then((response) => {
+                    //console.log("new acess token");
+                    return axios(originalRequest);
+                });
+        }
 
-  return Promise.reject(error);
-});
+        return Promise.reject(error);
+    });
 
 
 
@@ -82,9 +81,9 @@ export function AuthProvider({ children }) {
         logout
     }
 
-   return (
-    <AuthContext.Provider value={value}>
-      {!loading && children}
-    </AuthContext.Provider>
-  )
+    return (
+        <AuthContext.Provider value={value}>
+            {!loading && children}
+        </AuthContext.Provider>
+    )
 }

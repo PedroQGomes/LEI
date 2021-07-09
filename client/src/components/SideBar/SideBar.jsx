@@ -3,22 +3,15 @@ import * as FaIcons from 'react-icons/fa';
 import * as BiIcons from 'react-icons/bi';
 import * as BSIcons from 'react-icons/bs';
 import * as GOIcons from 'react-icons/go';
-import { Link,useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import './SideBar.css';
-import { useAuth } from '../../context/AuthContext';
-import { ProSidebar, Menu, MenuItem, SubMenu,SidebarContent,SidebarFooter } from 'react-pro-sidebar';
-import { IconContext } from 'react-icons';
+import { ProSidebar, Menu, MenuItem, SubMenu,SidebarContent } from 'react-pro-sidebar';
+
 
 function SideBar() {
 
-  const history = useHistory();
 
   const [sidebar, setSidebar] = useState(false);
-  const handleChange = () => {
-    history.push("/profile");
-    
-  };
-
 
   return (
     <>

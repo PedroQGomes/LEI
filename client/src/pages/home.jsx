@@ -1,8 +1,7 @@
-import React, { useState,useEffect,useContext } from 'react';
-import axios from 'axios';
-import { Input,Button,Box } from "@chakra-ui/react";
+import React from 'react';
+import { Button } from "@chakra-ui/react";
 import '../App.css';
-import { Link, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
 import './css/home.css';
 
 const Home = () => {

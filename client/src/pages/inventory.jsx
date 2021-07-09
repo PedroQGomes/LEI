@@ -13,11 +13,9 @@ const Inventory = ({ match }) => {
     const [receita, setreceita] = useState([])
     const [stock, setstock] = useState([])
     const [loading, setloading] = useState(true)
-    const [salesYear, setsalesYear] = useState(0);
     const [anosvendas, setanosvendas] = useState(null)
 
     const [graphSalesData, setgraphSalesData] = useState([])
-    const [graphReturnsData, setgraphReturnsData] = useState([])
     const [graphReceitaData, setgraphReceitaData] = useState([])
 
 
@@ -44,8 +42,8 @@ const Inventory = ({ match }) => {
                 salesMap.set(res.data.sales[i].ano, res.data.sales[i].arr);
             }
             var receitaMap = new Map();
-            for (var i = 0; i < res.data.totalsales.length; i++) {
-                receitaMap.set(res.data.totalsales[i].ano, res.data.totalsales[i].arr);
+            for (var j = 0; j < res.data.totalsales.length; j++) {
+                receitaMap.set(res.data.totalsales[j].ano, res.data.totalsales[j].arr);
             }
             setanosvendas(res.data.sales);
             setvendas(salesMap);
@@ -53,7 +51,6 @@ const Inventory = ({ match }) => {
             setreceita(receitaMap);
 
             if (res.data.sales.length > 0) {
-                setsalesYear(res.data.sales[0].ano)
                 setgraphSalesData(salesMap.get(res.data.sales[0].ano))
                 setgraphReceitaData(receitaMap.get(res.data.sales[0].ano))
             }
@@ -90,6 +87,9 @@ const Inventory = ({ match }) => {
     }
 
 
+    if (loading) {
+        return (<Spinner className="loading" size="xl" color="red.500" />);
+    }
 
 
     if (anosvendas === null) {

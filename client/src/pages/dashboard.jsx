@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { Select, Spinner } from "@chakra-ui/react"
-import SalesNreturns from '../components/charts/salesNreturns'
-import Totalsales from '../components/charts/totalsales'
 import './css/dashboard.css';
-import { BarChart, XAxis, Tooltip, CartesianGrid, YAxis, Legend, Bar, AreaChart, Area, ResponsiveContainer } from "recharts";
+import { XAxis, Tooltip, CartesianGrid, YAxis, Legend, AreaChart, Area, ResponsiveContainer } from "recharts";
+
 const Dashboard = () => {
 
     const [receita, setreceita] = useState(null);
