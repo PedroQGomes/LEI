@@ -34,7 +34,6 @@ const Inventory = ({ match }) => {
             if (canvas !== null && res.data.sales.length > 0) {
                 document.getElementById('select-year-of-stores').value = res.data.sales[0].ano
             }
-            console.log("sadasd")
 
 
             var salesMap = new Map();
@@ -139,7 +138,7 @@ const Inventory = ({ match }) => {
             </Box>
             <Box >
                 <Box className="stock-store-datagrid-wrapper">
-                    {stock ? <DataGrid rows={stock} columns={columns} pageSize={20} /> : <div>
+                    {stock ? <DataGrid rows={stock} columns={columns} pageSize={20} onRowDoubleClick={e => {  window.open("/item/" + e.id) }}/> : <div>
                         Sem Encomendas realizadas
                     </div>}
 

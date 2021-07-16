@@ -54,6 +54,11 @@ const SearchCategory = () => {
         setcurrPage(selectedPage);
     };
 
+     const onFormSubmit = e => {
+        e.preventDefault();
+        searchCat();
+
+    }
 
     if (loading) {
         return (<Spinner className="loading" size="xl" color="red.500" />);
@@ -64,8 +69,10 @@ const SearchCategory = () => {
             <Box className="page" >
 
                 <Box className="input-and-button-wrapper">
-                    <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)} />
-
+                    <form onSubmit={onFormSubmit} className="input-search-size">
+                         <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)} />
+                    </form>
+                
                     <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
                 </Box>
                 {errormessage ?

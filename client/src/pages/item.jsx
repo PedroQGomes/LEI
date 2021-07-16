@@ -228,7 +228,7 @@ const Item = ({ match }) => {
                     <Table size="x-sm" variant="simple" className="tabela-top-vendas" >
                         <Thead>
                             <Tr>
-                                <Th>Tamanho</Th>
+                                <Th>Tam</Th>
                                 <Th>Cor</Th>
                                 <Th isNumeric>Vendas</Th>
                             </Tr>
