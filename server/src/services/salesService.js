@@ -114,7 +114,7 @@ async function getItemSalesValues(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0  AND qtt > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
         //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
@@ -128,7 +128,7 @@ async function getItemSalesValuesByStore(ref, store) {
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
             .input('store', sql.Int, store)
-            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem =@store  and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where sl.ref=@ref and armazem =@store  and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0 AND qtt > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
         //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
@@ -144,7 +144,7 @@ async function getStoreSalesValues(storeCode) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('storeCode', sql.Numeric, storeCode)
-            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where armazem=@storeCode and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
+            .query("select ano = YEAR(datalc),mes = MONTH(datalc),SUM(ETT) AS receita from sl where armazem=@storeCode and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND ETT > 0 AND qtt > 0 GROUP BY YEAR(datalc),MONTH(datalc) ORDER BY  YEAR(datalc) DESC,MONTH(datalc)  ASC");
         //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
@@ -160,7 +160,7 @@ async function getItemSalesCorlorsNSizes(ref) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('ref', sql.VarChar, ref)
-            .query("SELECT SUM(qtt) AS qtt,cor,tam FROM sl Where ref =@ref and sl.cm > 50 and sl.trfa = 0 and origem ='FT' and cor != '' and tam != '' GROUP BY cor,tam ORDER BY qtt DESC");
+            .query("SELECT SUM(qtt) AS qtt,cor,tam FROM sl Where ref =@ref and sl.cm > 50 and sl.trfa = 0 and origem ='FT' and cor != '' and tam != '' AND qtt > 0 GROUP BY cor,tam ORDER BY qtt DESC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -206,7 +206,7 @@ async function getYearSalesValues(year) {
         const result = await pool.request()
             .input('firstdate', sql.DateTime, firstdate)
             .input('lastdate', sql.DateTime, lastdate)
-            .query("select mes = DATEPART(MONTH, datalc),SUM(ETT) AS receita from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND datalc >=@firstdate  AND datalc <=@lastdate  and ETT > 0 GROUP BY (DATEPART(MONTH, datalc)) ORDER BY (DATEPART(MONTH, datalc)) ASC");
+            .query("select mes = DATEPART(MONTH, datalc),SUM(ETT) AS receita from sl where armazem in (9,10,11,132,200,201,900) and sl.cm >50 and sl.trfa = 0 and origem ='FT' AND datalc >=@firstdate  AND datalc <=@lastdate  and ETT > 0 AND qtt > 0 GROUP BY (DATEPART(MONTH, datalc)) ORDER BY (DATEPART(MONTH, datalc)) ASC");
         return result.recordsets[0];
     } catch (error) {
         console.log(error);

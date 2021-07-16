@@ -51,7 +51,7 @@ async function getItemStockInStores(itemRef) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
-            .query("select armazem,stock from sa where sa.ref=@itemRef  and armazem in (9,10,11,132,200,201)");
+            .query("SELECT  armazem,sum(stock) as stock FROM sx WHERE sx.ref =@itemRef AND armazem in (9,10,11,132,200,201) and stock > 0 GROUP BY armazem ORDER BY armazem");
         //console.log(result.recordsets);
         return result.recordsets[0];
     } catch (error) {
@@ -84,8 +84,8 @@ async function getItemByCollersAndSizes(itemRef) {
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
+            //console.log(result.recordsets[0]);
             .query("SELECT  ref,stock,armazem,cor,tam FROM sx WHERE sx.ref = @itemRef AND armazem in (9,10,11,132,200,201)  AND stock > 0 ORDER BY cor,armazem");
-        //console.log(result.recordsets[0]);
         return result.recordsets[0];
     } catch (error) {
         console.log(error);
@@ -126,7 +126,6 @@ async function getItemBycategory(categ, page) {
         console.log(error);
     }
 }
-
 
 /**
 CREATE PROCEDURE stocksOf5items @itemRef VarChar(45),@itemRef2 VarChar(45),@itemRef3 VarChar(45),@itemRef4 VarChar(45),@itemRef5 VarChar(45)

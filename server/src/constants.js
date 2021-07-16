@@ -120,31 +120,31 @@ const formatLojasColorsNSizes = (myMap, colors, totalStock) => {
                 break;
             case 10:
 
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockViana += obj.stock;
-                myMap.get(obj.cor).viana = myMap.get(obj.cor).viana.concat(tmp).concat(obj.tamanho, ",");
+                myMap.get(obj.cor).viana = myMap.get(obj.cor).viana.concat(tmp).concat(obj.tam, ",");
                 break;
             case 11:
 
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockBGuima += obj.stock;
                 myMap.get(obj.cor).guima = myMap.get(obj.cor).guima.concat(tmp).concat(obj.tam, ",");
                 break;
             case 132:
 
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockSantander += obj.stock;
                 myMap.get(obj.cor).santander = myMap.get(obj.cor).santander.concat(tmp).concat(obj.tam, ",");
                 break;
             case 200:
 
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockLeiria += obj.stock;
                 myMap.get(obj.cor).leiria = myMap.get(obj.cor).leiria.concat(tmp).concat(obj.tam, ",");
                 break;
             case 201:
 
-                obj.stock > 1 ? tmp = obj.stock : tmp = ""
+                obj.stock > 1 ? tmp = obj.stock + "-" : tmp = ""
                 myMap.get(obj.cor).totalStockCaldas += obj.stock;
                 myMap.get(obj.cor).caldas = myMap.get(obj.cor).caldas.concat(tmp).concat(obj.tam, ",");
                 break;
