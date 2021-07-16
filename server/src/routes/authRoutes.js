@@ -57,7 +57,8 @@ router.post('/refresh-token/', authUtils.authenticateRefreshJWT, (req, res, next
     let payload = jwt.decode(token);
 
     sessionService.verifyJwt(token, payload.id).then((results) => {
-        if (results) {
+
+        if (results.length !== 0) {
             user = {
                 userno: payload.id,
                 ESA: payload.adm

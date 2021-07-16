@@ -15,7 +15,7 @@ async function saveJwtToken(token, userno, ip) {
             .input('ip', sql.VarChar, ip)
             .input('expires', sql.VarChar, expires)
             .input('issued', sql.VarChar, issued)
-            .query("INSERT INTO UserSession (RefreshToken, IpAddress, UserId,issued,expires) VALUES(@token,@ip,@userno,@issued,@expires)");
+            .query("INSERT INTO u_UserSession (RefreshToken, IpAddress, UserId,issued,expires) VALUES(@token,@ip,@userno,@issued,@expires)");
         //console.log(result);
         return;
     } catch (error) {
@@ -31,7 +31,7 @@ async function verifyJwt(token, userno) {
         const result = await pool.request()
             .input('userno', sql.VarChar, userno)
             .input('token', sql.VarChar, token)
-            .query("SELECT * FROM UserSession WHERE UserId = @userno AND RefreshToken = @token");
+            .query("SELECT * FROM u_UserSession WHERE UserId = @userno AND RefreshToken = @token");
         //console.log(result);
         return result.recordsets[0];
     } catch (error) {
@@ -46,7 +46,7 @@ async function updateRefreshJWT(oldtoken, newtoken, userno) {
             .input('userno', sql.VarChar, userno)
             .input('oldtoken', sql.VarChar, oldtoken)
             .input('newtoken', sql.VarChar, newtoken)
-            .query("UPDATE UserSession SET RefreshToken = @newtoken WHERE UserId = @userno AND RefreshToken = @oldtoken;");
+            .query("UPDATE u_UserSession SET RefreshToken = @newtoken WHERE UserId = @userno AND RefreshToken = @oldtoken;");
         //console.log(result);
         return result.recordsets[0];
     } catch (error) {
@@ -64,7 +64,7 @@ async function revokeJWT(token, userno) {
         const result = await pool.request()
             .input('userno', sql.VarChar, userno)
             .input('token', sql.VarChar, token)
-            .query("DELETE FROM UserSession WHERE UserId = @userno AND RefreshToken = @token");
+            .query("DELETE FROM u_UserSession WHERE UserId = @userno AND RefreshToken = @token");
     } catch (error) {
         throw error;
     }
