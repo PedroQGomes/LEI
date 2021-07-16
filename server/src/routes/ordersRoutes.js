@@ -9,20 +9,28 @@ require('dotenv').config();
 
 router.post('/', authUtils.authenticateJWT, (req, res, next) => {
 
-    console.log(req.body); // TODO MELHORAR A VERIFICAÇAO DO JSON
+    //console.log(req.body);
+    //TODO MELHORAR A VERIFICAÇAO DO JSON
     if (req.body.ref === undefined || req.body.quantidade === undefined || req.body.descriçao === undefined) {
         res.status(400).send();
         return;
     }
     const token = req.cookies.accessToken;
     let decoded = jwt.decode(token);
+
     var data = GetFormattedDate(new Date(Date.now()));
     ordersService.insereEncomenda(decoded.id, req.body.ref, 'F1129', data, req.body.quantidade, 0, req.body.descriçao).then((results) => {
 
-        res.status(200).json(results);
+        const result = {
+            "data": data,
+            "fornec": 'F1129',
+            "id_encomenda": results[0].id_encomenda
+
+        }
+        res.status(200).json(result);
 
     }).catch((err) => {
-        console.log(err)
+        console.error(err)
         res.status(404).send();
     });
 });
