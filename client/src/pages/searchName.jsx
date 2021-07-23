@@ -4,6 +4,8 @@ import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
 import { Input, Button, Box, Spinner } from "@chakra-ui/react"
 import './css/pagingSearch.css';
+import CustomScrollbars from 'react-custom-scrollbars'
+
 const SearchName = () => {
     const [nome, setnome] = useState("")
     const [currPage, setcurrPage] = useState(0)
@@ -99,7 +101,9 @@ const SearchName = () => {
             </Box>
 
             <Box className="dataGrid" overflowY="auto" borderWidth="2px" borderRadius="lg" >
+                <CustomScrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
                 {data}
+                </CustomScrollbars>
             </Box>
 
             <Box className="pagesBox">

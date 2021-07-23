@@ -7,6 +7,7 @@ import Totalsales from '../components/charts/totalsales'
 import StockTabs from '../components/Tabs/StockTabs'
 import TableInfo from '../components/Table/TableInfo'
 import ErrorMessage from '../components/messages/ErrorMessage';
+import { Scrollbars }  from 'react-custom-scrollbars'
 
 const Item = ({ match }) => {
 
@@ -204,7 +205,7 @@ const Item = ({ match }) => {
 
     return (
         <Box>
-            <Box className="first-half-item-fullstats" borderWidth="2px" borderRadius="lg" overflowY="auto">
+            <Box className="first-half-item-fullstats" >
                 <Box className="first-half-item-FirstTextBox" >
                     <TableInfo artigo={artigo.info} totalStock={artigo.totalStock} size="sm" fornecedor={true} />
                 </Box>
@@ -213,8 +214,8 @@ const Item = ({ match }) => {
                 </Box>
 
 
-                <Box className="first-half-item-SecondTextBox">
-                    {artigo.stock.length !== 0 ? <StockTabs stock={artigo.stock} /> : <Box marginTop="10vh">
+                <Box className="first-half-item-SecondTextBox" overflowY="auto">
+                    {artigo.stock.length !== 0 ?<Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}> <StockTabs stock={artigo.stock} /> </Scrollbars> : <Box marginTop="10vh">
                         <ErrorMessage message="Artigo sem stock" />
                     </Box>}
 
@@ -225,6 +226,7 @@ const Item = ({ match }) => {
 
             <Box className="second-half-sales-statistics">
                 <Box overflowY="auto" className="second-half-1st-box" borderWidth="2px" borderRadius="lg" >
+                    <Scrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
                     <Table size="x-sm" variant="simple" className="tabela-top-vendas" >
                         <Thead>
                             <Tr>
@@ -233,12 +235,14 @@ const Item = ({ match }) => {
                                 <Th isNumeric>Vendas</Th>
                             </Tr>
                         </Thead>
+                        
                         {(topVendas.length !== 0) ?
                             <Tbody>
                                 {topVendas.map((tab, index) => (formatTopVendasEntry(topVendas[index])))}
                             </Tbody> : <Tbody>
                             </Tbody>}
                     </Table>
+                    </Scrollbars>
                 </Box>
                 <Box className="second-half-2st-box" borderWidth="2px" borderRadius="lg" >
                     <Box>

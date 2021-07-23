@@ -6,7 +6,7 @@ import * as GOIcons from 'react-icons/go';
 import { Link } from 'react-router-dom';
 import './SideBar.css';
 import { ProSidebar, Menu, MenuItem, SubMenu,SidebarContent } from 'react-pro-sidebar';
-
+import CustomScrollbars from 'react-custom-scrollbars'
 
 function SideBar() {
 
@@ -17,6 +17,7 @@ function SideBar() {
     <>
      <div className='sidebar'>
         <ProSidebar collapsed={sidebar} width ="15vw" >
+          <CustomScrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
           <SidebarContent>
             <Menu iconShape="square">
             <MenuItem icon={<GOIcons.GoGraph />}>Dashboard <Link to="/dashboard" /></MenuItem>
@@ -37,7 +38,7 @@ function SideBar() {
             <MenuItem icon={<BSIcons.BsGearFill />}>Definições <Link to="/settings" /> </MenuItem>
           </Menu>
           </SidebarContent>
-
+          </CustomScrollbars>
         </ProSidebar>
         </div>
     </>

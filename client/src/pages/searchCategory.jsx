@@ -4,6 +4,7 @@ import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
 import { Input, Button, Box, Spinner } from "@chakra-ui/react"
 import './css/pagingSearch.css';
+import CustomScrollbars from 'react-custom-scrollbars'
 
 const SearchCategory = () => {
     const [categoria, setcategoria] = useState("")
@@ -95,6 +96,7 @@ const SearchCategory = () => {
 
     return (
         <Box className="page" >
+            
 
             <Box className="input-and-button-wrapper">
                 <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)} />
@@ -105,7 +107,9 @@ const SearchCategory = () => {
 
 
             <Box className="dataGrid" overflowY="auto" borderWidth="2px" borderRadius="lg" >
+                <CustomScrollbars autoHide autoHideTimeout={500} autoHideDuration={200}>
                 {data}
+                </CustomScrollbars>
             </Box>
 
             <Box className="pagesBox">
@@ -122,7 +126,7 @@ const SearchCategory = () => {
                     activeClassName={'active'}
                 />
             </Box>
-
+            
         </Box>
     )
 }
