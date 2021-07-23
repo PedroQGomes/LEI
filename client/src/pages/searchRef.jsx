@@ -76,7 +76,7 @@ const SearchRef = () => {
     return (
       <Box className="box">
         <Box className="input-and-button-wrapper">
-          <form onSubmit={onFormSubmit} className="input-search-size">
+          <form onSubmit={onFormSubmit} className="input-search-size-ref">
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
           </form>
 
@@ -95,7 +95,7 @@ const SearchRef = () => {
     return(
     <Box className="box">
       <Box className="input-and-button-wrapper">
-        <form onSubmit={onFormSubmit} className="input-search-size">
+        <form onSubmit={onFormSubmit} className="input-search-size-ref">
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
         </form>
           
@@ -113,7 +113,7 @@ const SearchRef = () => {
   return (
     <Box className="box">
       <Box className="input-and-button-wrapper">
-        <form onSubmit={onFormSubmit} className="input-search-size">
+        <form onSubmit={onFormSubmit} className="input-search-size-ref">
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
         </form>
       
