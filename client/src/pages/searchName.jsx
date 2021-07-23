@@ -2,8 +2,9 @@ import React, { useState, useEffect } from 'react'
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
-import { Input, Button, Box, Spinner } from "@chakra-ui/react"
+import { Input, Button, Box, Spinner,Checkbox } from "@chakra-ui/react"
 import './css/pagingSearch.css';
+import MyDatePicker from '../components/DatePicker/myDatePicker';
 import CustomScrollbars from 'react-custom-scrollbars'
 
 const SearchName = () => {
@@ -13,10 +14,18 @@ const SearchName = () => {
     const [pageCount, setPageCount] = useState(0);
     const [errormessage, seterrormessage] = useState(false);
     const [loading, setloading] = useState(false);
+    const [startDate, setStartDate] = useState(new Date());
+    const [isboxChecked, setisboxChecked] = useState(false);
 
     const searchCat = () => {
         setloading(true);
-        axios.get('/api/stock/name/' + nome).then((res) => {
+
+        var query ="";
+    
+        if(isboxChecked){
+            query = "?year=" + startDate.getFullYear()
+        }
+        axios.get('/api/stock/name/' + nome + query ).then((res) => {
             setPageCount(res.data.totalpages);
             var artigos = res.data.content;
             const postData = artigos.map(pd => <div>
@@ -36,7 +45,12 @@ const SearchName = () => {
     useEffect(() => {
         if (nome !== "") {
 
-            axios.get('/api/stock/name/' + nome + "?page=" + currPage).then((res) => {
+            var query ="";
+    
+            if(isboxChecked){
+                query = "&year=" + startDate.getFullYear()
+            }
+            axios.get('/api/stock/name/' + nome + "?page=" + currPage + query).then((res) => {
                 setPageCount(res.data.totalpages);
                 var artigos = res.data.content;
                 const postData = artigos.map(pd => <div>
@@ -66,6 +80,10 @@ const SearchName = () => {
 
     }
 
+    const handleBoxChange = (e)=> {
+        setisboxChecked(!isboxChecked);
+    }
+
     if (loading) {
         return (<Spinner className="loading" size="xl" color="red.500" />);
     }
@@ -81,6 +99,14 @@ const SearchName = () => {
                         <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Nome" onChange={(e) => setnome(e.target.value)} />
                     </form>
 
+                     <Box className="checked-box">
+                        <Checkbox defaultIsChecked={isboxChecked} onChange={handleBoxChange} >Pesquisa anual</Checkbox>    
+                    </Box>
+                    <Box className ="my-date-picker">
+                        <MyDatePicker valid={isboxChecked} data={startDate} onChange={(date) => setStartDate(date)}/>  
+                    </Box>
+       
+
                     <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
                 </Box>
                 {errormessage ?
@@ -95,7 +121,17 @@ const SearchName = () => {
         <Box className="page" >
 
             <Box className="input-and-button-wrapper">
-                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Nome" onChange={(e) => setnome(e.target.value)} />
+                <form onSubmit={onFormSubmit} className="input-search-size">
+                        <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Nome" onChange={(e) => setnome(e.target.value)} />
+                </form>
+
+                 <Box className="checked-box">
+                        <Checkbox defaultIsChecked={isboxChecked} onChange={handleBoxChange} >Pesquisa anual</Checkbox>    
+                    </Box>
+                <Box className ="my-date-picker">
+                    <MyDatePicker valid={isboxChecked} data={startDate} onChange={(date) => setStartDate(date)}/>  
+                </Box>
+       
 
                 <Button className="button" colorScheme='blue' color='white' onClick={searchCat}>Pesquisar</Button>
             </Box>

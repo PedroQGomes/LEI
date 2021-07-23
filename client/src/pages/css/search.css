@@ -4,18 +4,31 @@
 }
 
 .input-and-button-wrapper {
-    height: 5vh;
-    margin-left: 10vw;
-    margin-right: 10vw;
+    height: 12vh;
     display: flex;
     flex-direction: row;
     flex: 1;
-    margin-top: 5vh;
 }
 
 .button {
-    margin-top: 0vw;
     margin-left: 5vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.checked-box {
+    margin-left: 5vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.my-date-picker {
+    margin-left: 1vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .error-message {
@@ -29,5 +42,9 @@
 }
 
 .input-search-size {
-    width: 65vw
+    width: 40vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 3vw;
 }

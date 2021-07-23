@@ -15,11 +15,15 @@ const MyDatePicker = (props) => {
 
     return (
         <DatePicker
-        dateFormat="dd/MM/yyyy"
         selected={props.data}
-        onChange={props.onClick}
+        onChange={props.onChange}
+        maxDate={new Date()}
+        showYearPicker
+        dateFormat="yyyy"
+        yearItemNumber={9}
         
-        customInput={<CustomInput />}
+            
+        customInput={<CustomInput valid={props.valid}/>}
         />
     );
    
@@ -28,8 +32,9 @@ const MyDatePicker = (props) => {
 
 
 const CustomInput = React.forwardRef((props, ref) => {
+    
     return (
-        <Button rightIcon={<FaCalendarAlt />} colorScheme="teal" variant="outline" onClick={props.onClick} ref={ref}>
+        <Button disabled={!props.valid} rightIcon={<FaCalendarAlt />} colorScheme="teal" variant="outline" onClick={props.onClick} ref={ref}>
             {props.value || props.placeholder}
         </Button>
     );
