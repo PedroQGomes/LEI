@@ -86,6 +86,8 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
         res.status(400).send();
         return;
     }
+    var year = req.query.year;
+
     var page = req.query.page;
 
     if (req.query.page === undefined) {
@@ -94,7 +96,7 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
 
     var name = req.params.name;
     //console.log(name);
-    stockService.getItemByName(name, page).then((results) => {
+    stockService.getItemByName(name, page, year).then((results) => {
         var tamanho = results.length;
         if (results.length === 0) {
             res.status(404).send();

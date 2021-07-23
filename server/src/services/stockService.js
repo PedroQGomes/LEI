@@ -123,6 +123,7 @@ async function getItemByName(nome, page, year) {
             const result = await pool.request()
                 .input('nome', sql.VarChar, nome)
                 .input('page', sql.Int, page)
+                .input('year', sql.VarChar, year)
                 .input('rows', sql.Int, constants.pagesize)
                 .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design like @nome AND usr3=@year ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
             //console.log(result.recordsets);
@@ -154,7 +155,6 @@ async function getItemBycategory(categ, page, year) {
         }
     } else {
         try {
-
             year = year.toString().substr(-2)
             categ = categ + "%";
             const pool = await poolPromise
