@@ -24,7 +24,7 @@ const Dashboard = () => {
 
     const myChangeHandler = (event) => {
         let val = parseInt(event.target.value);
-        console.log(val)
+        //console.log(val)
         axios.get('/api/sales/year/' + val).then((res) => {
             //console.log(res.data)
             setreceita(res.data.receita);

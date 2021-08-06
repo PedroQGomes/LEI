@@ -1,5 +1,5 @@
 import React, { useState,useEffect } from 'react'
-import { Input, Button, Box, Spinner } from "@chakra-ui/react"
+import { Input, Button, Box, Spinner,Select } from "@chakra-ui/react"
 import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
 import './css/search.css';
@@ -22,11 +22,12 @@ const SearchRef = () => {
   const [pageCount, setPageCount] = useState(0);
   const [currPage, setcurrPage] = useState(0);
   const [loading, setloading] = useState(false);
+  const [ordertype, setordertype] = useState("DESC");
 
   const searchRef = () => {
     setloading(true);
   
-    axios.get('/api/stock/' + referencia).then((res) => {
+    axios.get('/api/stock/' + referencia +"?type=" + ordertype).then((res) => {
       setPageCount(res.data.totalpages);
       var artigos = res.data.content;
       const postData = artigos.map(pd => <div>
@@ -71,7 +72,7 @@ const SearchRef = () => {
 
   useEffect(() => {
         if (referencia !== "") {
-            axios.get('/api/stock/' + referencia + "?page=" + currPage).then((res) => {
+            axios.get('/api/stock/' + referencia + "?page=" + currPage + "&type=" + ordertype).then((res) => {
                 setPageCount(res.data.totalpages);
                 var artigos = res.data.content;
                 const postData = artigos.map(pd => <div>
@@ -93,6 +94,11 @@ const SearchRef = () => {
 
   }
 
+  const myChangeHandler =(e)=> {
+      let val = (e.target.value);
+      
+      setordertype(val)
+  }
 
   const handlePageClick = (e) => {
         const selectedPage = e.selected;
@@ -111,6 +117,15 @@ const SearchRef = () => {
           <form onSubmit={onFormSubmit} className="input-search-size-ref">
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
           </form>
+ 
+          <Box className="select-type-seatch-ref">
+            <Select id="ORDERNAR" type="text" name='ordenar' value={ordertype} onChange={myChangeHandler} required>
+                        <option value="" disabled>Ordernar por referencia</option>
+                        <option value="DESC">Descendente</option>
+                        <option value="ASC">Ascendente</option>
+            </Select>
+          </Box>
+          
 
           <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Pesquisar</Button>
         </Box>
@@ -131,6 +146,13 @@ const SearchRef = () => {
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
         </form>
           
+          <Box className="select-type-seatch-ref">
+            <Select id="ORDERNAR" type="text" name='ordenar' value={ordertype} onChange={myChangeHandler} required>
+                        <option value="" disabled>Ordernar por referencia</option>
+                        <option value="DESC">Descendente</option>
+                        <option value="ASC">Ascendente</option>
+            </Select>
+          </Box>
 
         <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Pesquisar</Button>
       </Box>
@@ -149,6 +171,13 @@ const SearchRef = () => {
                <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Referencia" onChange={(e) => setreferencia(e.target.value)} />
         </form>
       
+        <Box className="select-type-seatch-ref">
+            <Select id="ORDERNAR" type="text" name='ordenar' value={ordertype} onChange={myChangeHandler} required>
+                        <option value="" disabled>Ordernar por referencia</option>
+                        <option value="DESC">Descendente</option>
+                        <option value="ASC">Ascendente</option>
+            </Select>
+          </Box>
         <Button className="button" colorScheme='blue' color='white' onClick={searchRef}>Pesquisar</Button>
        
       </Box>

@@ -18,7 +18,7 @@
 }
 
 .checked-box {
-    margin-left: 5vw;
+    margin-left: 3vw;
     display: block;
     margin-top: auto;
     margin-bottom: auto;
@@ -42,7 +42,7 @@
 }
 
 .input-search-size {
-    width: 40vw;
+    width: 30vw;
     display: block;
     margin-top: auto;
     margin-bottom: auto;
@@ -50,9 +50,17 @@
 }
 
 .input-search-size-ref {
-    width: 55.3vw;
+    width: 40vw;
     display: block;
     margin-top: auto;
     margin-bottom: auto;
-    margin-left: 10vw;
+    margin-left: 7vw;
+}
+
+.select-type-seatch-ref {
+    width: 12vw;
+    display: block;
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-left: 2vw;
 }

@@ -27,7 +27,6 @@ router.get('/store/:code', authUtils.authenticateJWT, (req, res, next) => {
 
 // exemplo = localhost:5000/item/category/VESTIDOS - 1600  
 router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
-
     if (req.params.cat === undefined) {
         res.status(400).send();
         return;
@@ -40,8 +39,10 @@ router.get('/category/:cat', authUtils.authenticateJWT, (req, res, next) => {
         page = 0;
     }
 
+    var type = req.query.type;
+
     var categ = req.params.cat;
-    stockService.getItemBycategory(categ, page, year).then((results) => { // no maximo da 5 resultados -- page size
+    stockService.getItemBycategory(categ, page, year, type).then((results) => { // no maximo da 5 resultados -- page size
         var tamanho = results.length;
         if (results.length === 0) {
             res.status(404).send();
@@ -94,9 +95,10 @@ router.get('/name/:name', authUtils.authenticateJWT, (req, res, next) => {
         page = 0;
     }
 
+    var type = req.query.type;
     var name = req.params.name;
     //console.log(name);
-    stockService.getItemByName(name, page, year).then((results) => {
+    stockService.getItemByName(name, page, year, type).then((results) => {
         var tamanho = results.length;
         if (results.length === 0) {
             res.status(404).send();
@@ -198,9 +200,12 @@ router.get('/:id', authUtils.authenticateJWT, (req, res, next) => {
         page = 0;
     }
 
+
+    var type = req.query.type;
+
     var itemRef = req.params.id;
 
-    stockService.getItemByRef(itemRef, page).then((results) => {
+    stockService.getItemByRef(itemRef, page, type).then((results) => {
 
         var tamanho = results.length;
         if (results.length === 0) {

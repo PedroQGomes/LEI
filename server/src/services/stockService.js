@@ -2,18 +2,18 @@ var { poolPromise } = require('../data/dbConn');
 var sql = require('mssql');
 var constants = require('../constants');
 
-async function getItemByRef(itemRef, page) {
+async function getItemByRef(itemRef, page, type) {
     try {
+        if (!type) type = "DESC";
         itemRef = itemRef + "%";
         const pool = await poolPromise
         const result = await pool.request()
             .input('itemRef', sql.VarChar, itemRef)
             .input('page', sql.Int, page)
             .input('rows', sql.Int, constants.pagesize)
-            .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE ref like @itemRef ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
-        //.query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design = 
-        // @nome ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
-        //console.log(result.recordsets);
+            .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE ref like @itemRef ORDER BY ref " +
+                " " + type + " OFFSET(@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
+
         return result.recordsets[0];
     } catch (error) {
         console.error(error);
@@ -100,7 +100,8 @@ async function getItemByCollersAndSizes(itemRef) {
 
 
 
-async function getItemByName(nome, page, year) {
+async function getItemByName(nome, page, year, type) {
+    if (!type) type = "DESC";
     if (year === undefined) {
         try {
             nome = nome + "%";
@@ -109,7 +110,8 @@ async function getItemByName(nome, page, year) {
                 .input('nome', sql.VarChar, nome)
                 .input('page', sql.Int, page)
                 .input('rows', sql.Int, constants.pagesize)
-                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design like @nome ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
+                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design like @nome ORDER BY ref" +
+                    " " + type + " OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
             //console.log(result.recordsets);
             return result.recordsets[0];
         } catch (error) {
@@ -125,7 +127,8 @@ async function getItemByName(nome, page, year) {
                 .input('page', sql.Int, page)
                 .input('year', sql.VarChar, year)
                 .input('rows', sql.Int, constants.pagesize)
-                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design like @nome AND usr3=@year ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
+                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE design like @nome AND usr3=@year ORDER BY ref" +
+                    " " + type + " OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY");
             //console.log(result.recordsets);
             return result.recordsets[0];
         } catch (error) {
@@ -137,8 +140,8 @@ async function getItemByName(nome, page, year) {
 
 
 
-async function getItemBycategory(categ, page, year) {
-
+async function getItemBycategory(categ, page, year, type) {
+    if (!type) type = "DESC";
     if (year === undefined) {
         try {
             categ = categ + "%";
@@ -147,7 +150,8 @@ async function getItemBycategory(categ, page, year) {
                 .input('categ', sql.VarChar, categ)
                 .input('page', sql.Int, page)
                 .input('rows', sql.Int, constants.pagesize)
-                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE usr1 like @categ ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
+                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE usr1 like @categ ORDER BY ref" +
+                    " " + type + " OFFSET(@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
             //console.log(result.recordsets)
             return result.recordsets[0];
         } catch (error) {
@@ -163,7 +167,8 @@ async function getItemBycategory(categ, page, year) {
                 .input('year', sql.VarChar, year)
                 .input('page', sql.Int, page)
                 .input('rows', sql.Int, constants.pagesize)
-                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE usr1 like @categ AND usr3 =@year ORDER BY ref DESC OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
+                .query("SELECT ref,design,usr1,usr5,opendata,imagem,COUNT(*) OVER() AS total from st WHERE usr1 like @categ AND usr3 =@year ORDER BY ref" +
+                    " " + type + " OFFSET (@page * @rows) ROWS FETCH NEXT @rows ROWS ONLY ");
             //console.log(result.recordsets)
             return result.recordsets[0];
         } catch (error) {

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react'
 import ReactPaginate from 'react-paginate';
 import axios from 'axios';
 import ItemBox from "../components/ItemBox/ItemBox";
-import { Input, Button, Box, Spinner,Checkbox } from "@chakra-ui/react"
+import { Input, Button, Box, Spinner,Checkbox,Select } from "@chakra-ui/react"
 import './css/pagingSearch.css';
 import CustomScrollbars from 'react-custom-scrollbars'
 import MyDatePicker from '../components/DatePicker/myDatePicker';
@@ -23,15 +23,16 @@ const SearchCategory = () => {
     const [loading, setloading] = useState(false);
     const [startDate, setStartDate] = useState(new Date());
     const [isboxChecked, setisboxChecked] = useState(false);
+    const [ordertype, setordertype] = useState("DESC");
 
     const searchCat = () => {
         setloading(true);
         var query ="";
     
         if(isboxChecked){
-            query = "?year=" + startDate.getFullYear()
+            query = "&year=" + startDate.getFullYear()
         }
-        axios.get('/api/stock/category/' + categoria +query ).then((res) => {
+        axios.get('/api/stock/category/' + categoria + "?type=" + ordertype + query ).then((res) => {
             setPageCount(res.data.totalpages);
             var artigos = res.data.content;
             const postData = artigos.map(pd => <div> <ItemBox artigo={pd} /></div>)
@@ -80,7 +81,7 @@ const SearchCategory = () => {
                 query = "&year=" + startDate.getFullYear()
             }
 
-            axios.get('/api/stock/category/' + categoria +"?page=" + currPage + query).then((res) => {
+            axios.get('/api/stock/category/' + categoria +"?page=" + currPage + query + "&type=" + ordertype).then((res) => {
                 setPageCount(res.data.totalpages);
                 var artigos = res.data.content;
                 const postData = artigos.map(pd => <div>
@@ -107,6 +108,12 @@ const SearchCategory = () => {
         setisboxChecked(!isboxChecked);
     }
 
+    const myChangeHandler =(e)=> {
+      let val = (e.target.value);
+      
+      setordertype(val)
+    }
+
      const onFormSubmit = e => {
         e.preventDefault();
         searchCat();
@@ -125,6 +132,15 @@ const SearchCategory = () => {
                     <form onSubmit={onFormSubmit} className="input-search-size">
                          <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)} />
                     </form>
+
+                    <Box className="select-type-seatch-ref">
+                        <Select id="ORDERNAR" type="text" name='ordenar' value={ordertype} onChange={myChangeHandler} required>
+                                    <option value="" disabled>Ordernar por referencia</option>
+                                    <option value="DESC">Descendente</option>
+                                    <option value="ASC">Ascendente</option>
+                        </Select>
+                    </Box>
+
                     
                     <Box className="checked-box">
                         <Checkbox defaultIsChecked={isboxChecked} onChange={handleBoxChange} >Pesquisa anual</Checkbox>    
@@ -164,6 +180,14 @@ const SearchCategory = () => {
                 <form onSubmit={onFormSubmit} className="input-search-size">
                          <Input isInvalid={errormessage} errorBorderColor="crimson" variant="outline" placeholder="Categoria" onChange={(e) => setcategoria(e.target.value)} />
                  </form>
+
+                 <Box className="select-type-seatch-ref">
+                        <Select id="ORDERNAR" type="text" name='ordenar' value={ordertype} onChange={myChangeHandler} required>
+                                    <option value="" disabled>Ordernar por referencia</option>
+                                    <option value="DESC">Descendente</option>
+                                    <option value="ASC">Ascendente</option>
+                        </Select>
+                </Box>
                  <Box className="checked-box">
                         <Checkbox defaultIsChecked={isboxChecked} onChange={handleBoxChange} >Pesquisa anual</Checkbox>    
                 </Box>
