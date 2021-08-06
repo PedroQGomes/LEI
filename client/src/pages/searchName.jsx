@@ -6,8 +6,14 @@ import { Input, Button, Box, Spinner,Checkbox } from "@chakra-ui/react"
 import './css/pagingSearch.css';
 import MyDatePicker from '../components/DatePicker/myDatePicker';
 import CustomScrollbars from 'react-custom-scrollbars'
+import { useQuery } from "../urlquery"; 
+import { useHistory } from "react-router-dom";
 
 const SearchName = () => {
+
+    const history = useHistory();
+    const query = useQuery();
+    
     const [nome, setnome] = useState("")
     const [currPage, setcurrPage] = useState(0)
     const [data, setData] = useState(null);
@@ -32,6 +38,8 @@ const SearchName = () => {
                 <ItemBox artigo={pd} />
             </div>)
             setData(postData);
+            var tmpnome = nome
+            history.push("/search/name?name="+tmpnome);
             seterrormessage(false);
             setloading(false);
 
@@ -41,6 +49,31 @@ const SearchName = () => {
             setloading(false);
         });
     }
+
+    useEffect(() => {
+        var tmpnome = query.get("name");
+        if(tmpnome !== null){
+            axios.get('/api/stock/name/' + tmpnome).then((res) => {
+                setPageCount(res.data.totalpages);
+                var artigos = res.data.content;
+                const postData = artigos.map(pd => <div>
+                    <ItemBox artigo={pd} />
+                </div>)
+                setData(postData);
+                setnome(tmpnome);
+                seterrormessage(false);
+                setloading(false);
+                
+            }).catch((error) => {
+                seterrormessage(true);
+                setData(null);
+                setloading(false);
+            });
+
+        }
+        
+    }, []);
+
 
     useEffect(() => {
         if (nome !== "") {
@@ -57,6 +90,7 @@ const SearchName = () => {
                     <ItemBox artigo={pd} />
                 </div>)
                 setData(postData);
+                
                 seterrormessage(false);
 
             }).catch((error) => {

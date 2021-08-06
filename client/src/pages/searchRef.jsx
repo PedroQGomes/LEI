@@ -6,17 +6,23 @@ import './css/search.css';
 import './css/pagingSearch.css';
 import ReactPaginate from 'react-paginate';
 import CustomScrollbars from 'react-custom-scrollbars'
-
-
+import { useQuery } from "../urlquery"; 
+import { useHistory } from "react-router-dom";
 
 
 const SearchRef = () => {
+
+  const history = useHistory();
+  const query = useQuery();
+
+
   const [referencia, setreferencia] = useState("");
   const [data, setData] = useState(null);
   const [errormessage, seterrormessage] = useState(false);
   const [pageCount, setPageCount] = useState(0);
   const [currPage, setcurrPage] = useState(0);
   const [loading, setloading] = useState(false);
+
   const searchRef = () => {
     setloading(true);
   
@@ -27,6 +33,8 @@ const SearchRef = () => {
               <ItemBox artigo={pd} />
           </div>)
       setData(postData);
+      var tmpref = referencia
+      history.push("/search/ref?ref="+tmpref);
       seterrormessage(false);
       setloading(false);
 
@@ -36,6 +44,30 @@ const SearchRef = () => {
       setloading(false);
     });
   }
+
+  useEffect(() => {
+    var tmpref = query.get("ref");
+    if(tmpref !== null){
+      axios.get('/api/stock/' + tmpref).then((res) => {
+        setPageCount(res.data.totalpages);
+        var artigos = res.data.content;
+        const postData = artigos.map(pd => <div>
+                <ItemBox artigo={pd} />
+            </div>)
+        setData(postData);
+        setreferencia(tmpref);
+        seterrormessage(false);
+        setloading(false);
+
+      }).catch((error) => {
+          seterrormessage(true);
+          setData(null);
+          setloading(false);
+      });
+
+    }
+  }, [])
+
 
   useEffect(() => {
         if (referencia !== "") {

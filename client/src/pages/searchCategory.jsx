@@ -6,8 +6,15 @@ import { Input, Button, Box, Spinner,Checkbox } from "@chakra-ui/react"
 import './css/pagingSearch.css';
 import CustomScrollbars from 'react-custom-scrollbars'
 import MyDatePicker from '../components/DatePicker/myDatePicker';
+import { useQuery } from "../urlquery"; 
+import { useHistory } from "react-router-dom";
+
 
 const SearchCategory = () => {
+
+    const history = useHistory();
+    const query = useQuery();
+
     const [categoria, setcategoria] = useState("")
     const [currPage, setcurrPage] = useState(0)
     const [data, setData] = useState(null);
@@ -29,6 +36,9 @@ const SearchCategory = () => {
             var artigos = res.data.content;
             const postData = artigos.map(pd => <div> <ItemBox artigo={pd} /></div>)
             setData(postData);
+            var tmpcat = categoria;
+            history.push("/search/category?cat="+tmpcat);
+
             seterrormessage(false);
             setloading(false);
         }).catch((error) => {
@@ -37,6 +47,29 @@ const SearchCategory = () => {
             setloading(false);
         });
     }
+
+    useEffect(() => {
+        var tmpcat = query.get("cat");
+        if(tmpcat !== null){
+            axios.get('/api/stock/category/' + tmpcat ).then((res) => {
+                setPageCount(res.data.totalpages);
+                var artigos = res.data.content;
+                const postData = artigos.map(pd => <div> <ItemBox artigo={pd} /></div>)
+                setData(postData);
+                setcategoria(tmpcat);
+                
+                seterrormessage(false);
+                setloading(false);
+            }).catch((error) => {
+                seterrormessage(true);
+                setData(null);
+                setloading(false);
+            });
+        }
+        
+    }, [])
+
+
 
     useEffect(() => {
         if (categoria !== "") {
