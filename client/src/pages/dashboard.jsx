@@ -7,8 +7,15 @@ import { XAxis, Tooltip, CartesianGrid, YAxis, Legend, AreaChart, Area, Responsi
 const Dashboard = () => {
 
     const [receita, setreceita] = useState(null);
-    const [vendas, setvendas] = useState(null);
-
+    const [vendas, setvendas] = useState(null); 
+    const [years, setyears] = useState(()=>{
+        var atual = new Date();
+        var arr = [];
+        for(var i = atual.getFullYear(); i > 2019  ; i--){
+            arr.push(i);
+        }
+        return arr;
+    })
     useEffect(() => {
         axios.get('/api/sales/year/2021').then((res) => {
             //console.log(res.data)
@@ -100,10 +107,10 @@ const Dashboard = () => {
                     </div>
                     <Select id="grid-cidade" type="text" name='localidade' onChange={myChangeHandler} required>
                         <option value="" disabled>Selecione uma opção</option>
-                        <option value="2021">2021</option>
-                        <option value="2020">2020</option>
-                        <option value="2019">2019</option>
-                        <option value="2018">2018</option>
+                        {years.map((ano,index)=>{
+                            return (
+                                <option key={index} value={ano}>{ano}</option>)
+                        })}
                     </Select>
                 </div>
             </div>

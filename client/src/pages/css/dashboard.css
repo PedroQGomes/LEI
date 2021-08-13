@@ -35,3 +35,13 @@
     font-size: large;
     margin-bottom: 1vh;
 }
+
+.all-page {
+    width: 85vw;
+    height: 90vh;
+}
+
+.center-text {
+    margin-top: 30vh;
+    text-align: center;
+}

@@ -1,0 +1,15 @@
+.image-profile-user {
+    width: 12vw;
+    height: 25vh;
+    margin-left: 36.5vw;
+}
+
+.user-profile-wrapper {
+    height: 90vh;
+    width: 85vw;
+}
+
+.user-profile-text {
+    text-align: center;
+    margin-top: 2vh;
+}

@@ -42,3 +42,15 @@
     margin-left: 6vw;
     margin-top: 2vh;
 }
+
+.filter-and-select-wrapper {
+    display: flex;
+    flex-direction: row;
+    flex: 1;
+}
+
+.collection-select-and-text-wrapper {
+    width: 15vw;
+    margin-left: 25vw;
+    margin-top: 2vh;
+}

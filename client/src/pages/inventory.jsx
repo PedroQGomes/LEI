@@ -12,8 +12,11 @@ const Inventory = ({ match }) => {
     const [vendas, setvendas] = useState([])
     const [receita, setreceita] = useState([])
     const [stock, setstock] = useState([])
+    const [tabledata, settabledata] = useState([])
     const [loading, setloading] = useState(true)
     const [anosvendas, setanosvendas] = useState(null)
+    const [PVstock, setPVstock] = useState(null)
+    const [OIstock, setOIstock] = useState(null)
 
     const [graphSalesData, setgraphSalesData] = useState([])
     const [graphReceitaData, setgraphReceitaData] = useState([])
@@ -22,7 +25,14 @@ const Inventory = ({ match }) => {
 
     useEffect(() => {
         axios.get('/api/stock/store/' + match.params.code).then((res) => {
+            setPVstock(null)
+            setOIstock(null)
             setstock(res.data);
+            settabledata(res.data);
+            var canvas2 = document.getElementById('select-collection-of-stock');
+            if (canvas2 !== null) {
+                document.getElementById('select-collection-of-stock').value = "Todas"
+            }
             setloading(false);
         }).catch((error) => {
 
@@ -34,6 +44,7 @@ const Inventory = ({ match }) => {
             if (canvas !== null && res.data.sales.length > 0) {
                 document.getElementById('select-year-of-stores').value = res.data.sales[0].ano
             }
+
 
 
             var salesMap = new Map();
@@ -85,6 +96,25 @@ const Inventory = ({ match }) => {
         }
     }
 
+    const collectionStockHandler = (event) => {
+        
+        if(event.target.value === "PV"){
+            if(PVstock === null){
+                settabledata(stock.filter(PVCollectionStock))
+            }else{
+                settabledata(PVstock)
+            }
+
+        }else if(event.target.value === "OI"){
+            if(OIstock === null){
+                settabledata(stock.filter(OICollectionStock))
+            }else{
+                settabledata(OIstock)
+            }
+        }else{
+            settabledata(stock)
+        }
+    }
 
     if (loading) {
         return (<Spinner className="loading" size="xl" color="red.500" />);
@@ -106,18 +136,38 @@ const Inventory = ({ match }) => {
                     <Box className="store-text-title">
                         Loja {getNameFromCode(match.params.code)}
                     </Box>
-                    <Box className="store-select-and-text-wrapper">
-                        <Box>
-                            Ano Selecionado :
-                        </Box>
-                        <Select id="select-year-of-stores" type="text" name='localidade' onChange={receitasHandler} required defaultValue={anosvendas[0].ano}>
-                            {anosvendas.map((tab, index) => {
-                                return (
-                                    <option key={tab.ano} value={tab.ano}>{tab.ano}</option>
-                                )
-                            })}
-                        </Select>
+                    <Box className="filter-and-select-wrapper">
+                       
+                            <Box className="store-select-and-text-wrapper">
+                                <Box>
+                                    Ano Selecionado :
+                                </Box>
+                                <Select id="select-year-of-stores" type="text" name='localidade' onChange={receitasHandler} required defaultValue={anosvendas[0].ano}>
+                                    {anosvendas.map((tab, index) => {
+                                        return (
+                                            <option key={tab.ano} value={tab.ano}>{tab.ano}</option>
+                                        )
+                                    })}
+                                </Select>
+                            
+                            </Box>
+
+                            <Box className="collection-select-and-text-wrapper">
+                                <Box>
+                                    Estação Selecionada :
+                                </Box>
+                                <Select id="select-collection-of-stock" type="text" name='localidade' onChange={collectionStockHandler} required defaultValue="Todas">
+                                    <option key={0} value="Todas">Todas</option>
+                                    <option key={1} value="PV">PV</option>
+                                    <option key={2} value="OI">OI</option>
+                                </Select>
+                            
+                            </Box>
+
+                       
+                        
                     </Box>
+                    
 
                 </Box>
                 <Box>
@@ -138,7 +188,7 @@ const Inventory = ({ match }) => {
             </Box>
             <Box >
                 <Box className="stock-store-datagrid-wrapper">
-                    {stock ? <DataGrid rows={stock} columns={columns} pageSize={20} onRowDoubleClick={e => {  window.open("/item/" + e.id) }}/> : <div>
+                    {stock ? <DataGrid rows={tabledata} columns={columns} pageSize={20} onRowDoubleClick={e => {  window.open("/item/" + e.id) }}/> : <div>
                         Sem Encomendas realizadas
                     </div>}
 
@@ -178,5 +228,12 @@ const columns = [
     { field: 'stock', headerName: 'Stock', width: 200 },
 ]
 
+function PVCollectionStock(value) {
+  return value.id.substring(0, 2) === "PV";
+}
+
+function OICollectionStock(value) {
+  return value.id.substring(0, 2) === "OI";
+}
 
 export default Inventory
